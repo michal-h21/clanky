@@ -245,7 +245,7 @@ postačí.
 
 Pokud sestavovací soubor pojmenujete stejně jako název dokumentu s příponou
 \texttt{.mk4}, bude spouštěn automaticky, jinak ho lze zadat jako parametr
-\texttt{-e} pro TeX4ebook}:
+\texttt{-e} pro TeX4ebook:
 
 \begin{verbatim}
 tex4ebook -f epub3 -e buildfile.mk4 filename.tex
@@ -253,6 +253,69 @@ tex4ebook -f epub3 -e buildfile.mk4 filename.tex
 
 \section{Konfigurační soubor pro TeX4ht}
 
+Pro vložení vlastních HTML tagů do konfigurovatelných háčků, nebo vlastních CSS
+instrukcí můžeme použít konfigurační soubor pro TeX4ht. Možnosti konfigurace si
+ukážeme na jednoduchém \TeX ovém souboru:
+
+\begin{verbatim}
+\documentclass{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[czech]{babel}
+\begin{document}
+Příliš žluťoučký kůň \textit{úpěl} 
+\textbf{ďábelské ódy} \parencite{article-full}
+\end{document}
+\end{verbatim}
+
+Po kompilaci se vygeneruje HTML soubor s následujícím obsahem:
+
+
+\begin{verbatim}
+<p class="noindent" >Příliš žluťoučký kůň <span 
+class="ecti-1000">úp</span><span 
+class="ecti-1000">ěl </span><span 
+class="ecbx-1000">ď</span><span 
+class="ecbx-1000">ábelsk</span><span 
+class="ecbx-1000">é </span><span 
+class="ecbx-1000">ódy </span>
+\end{verbatim}
+
+Slova která byla zvýrazněna jiným, než základním řezem písma, byla rozdělena do
+několika HTML elementů. Ve vykresleném dokumentu se text zobrazí v pořádku,
+ovšem bylo by lepší, kdyby k tomuto nedocházelo. Jedná se o chybu při konverzi
+\texttt{DVI} souboru příkazem \texttt{tex4ht}, který se snaží přidat
+formátování podle písma detekovaného v \texttt{DVI} souboru, ovšem pokud narazí
+na znak s diakritikou, uzavře současný element. Tento problém lze vyřešit
+jednoduchou konfigurací v konfiguračním souboru:
+
+
+\begin{verbatim}
+\Preamble{xhtml}
+\Configure{textbf}{\NoFonts\HCode{<strong>}}{\HCode{</strong>}\EndNoFonts}
+\Configure{textit}{\NoFonts\HCode{<em>}}{\HCode{</em>}\EndNoFonts}
+\begin{document}
+\EndPreamble
+\end{verbatim}
+
+
+
+  \begin{verbatim}
+<p class="noindent" >Příliš žluťoučký kůň 
+<em>úpěl</em> <strong>ďábelské ódy</strong> 
+  \end{verbatim}
+
+
+
+
+      \begin{verbatim}
+% zde můžeme vkládat balíčky
+\Preamble{xhtml,volby pro tex4ht.sty}
+...
+\begin{document}
+...
+\EndPreamble
+      \end{verbatim}
 % ## kompilace
 % ## konfigurace
 % ## make4ht
