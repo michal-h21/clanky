@@ -281,13 +281,19 @@ class="ecbx-1000">é </span><span
 class="ecbx-1000">ódy </span>
 \end{verbatim}
 
+Vygenerované soubory jsou ponechány i v adresáři s \TeX ovým dokumentem, lze
+je tedy snadno zkontrolovat ve WWW prohlížeči.
 Slova která byla zvýrazněna jiným, než základním řezem písma, byla rozdělena do
 několika HTML elementů. Ve vykresleném dokumentu se text zobrazí v pořádku,
-ovšem bylo by lepší, kdyby k tomuto nedocházelo. Jedná se o chybu při konverzi
+nicméně měli bychom tento problém vyřešit. Jedná se o chybu při konverzi
 \texttt{DVI} souboru příkazem \texttt{tex4ht}, který se snaží přidat
-formátování podle písma detekovaného v \texttt{DVI} souboru, ovšem pokud narazí
-na znak s diakritikou, uzavře současný element. Tento problém lze vyřešit
-jednoduchou konfigurací v konfiguračním souboru:
+formátování podle písma detekovaného v \texttt{DVI} souboru. Díky této
+funkcionalitě není třeba vytvářet konfigurace pro všechna uživatelská makra,
+základní textové formátování, jako jsou řezy a velikost písma, je zachováno.
+Pokud však TeX4ht narazí na znak s diakritikou, uzavře aktuální element,
+přestože nedochází ke změně písma. Tento problém lze vyřešit jednoduchou
+konfigurací pro dotčená makra v konfiguračním souboru, pojmenovaném například
+\texttt{myconfig.cfg}:
 
 
 \begin{verbatim}
@@ -300,14 +306,20 @@ jednoduchou konfigurací v konfiguračním souboru:
 \EndPreamble
 \end{verbatim}
 
+Konfigurační soubor můžeme načíst volbou \texttt{-c}:
 
+\begin{verbatim}
+tex4ebook -f epub3 -e buildfile.mk4 -c myconfig.cfg filename.tex
+\end{verbatim}
+
+Výsledný HTML kód již vypadá mnohem lépe.
 
   \begin{verbatim}
 <p class="noindent" >Příliš žluťoučký kůň 
 <em>úpěl</em> <strong>ďábelské ódy</strong> 
   \end{verbatim}
 
-
+Konfigurační soubory pro TeX4ht mají pevnou základní strukturu:
 
 
       \begin{verbatim}
@@ -318,6 +330,33 @@ jednoduchou konfigurací v konfiguračním souboru:
 ...
 \EndPreamble
       \end{verbatim}
+
+Před příkazem \verb|\Preamble| můžeme nahrávat dodatečné balíčky pomocí příkazu
+\verb|\RequirePackage|. Příkaz \verb|\Preamble| umožňuje specifikovat volby pro
+které ovlivňují nahrávání konfigurací. Jsou oddělené čárkami a povinná je
+minimálně volba \texttt{html} nebo \texttt{xhtml}, která musí být na první
+pozici. Pro Epub je třeba používat volbu druhou z nich. Dále je v konfiguračním
+souboru možno přidávat konfigurace pro háčky, v našem příkladu užíváme dvě
+konfigurace, pro příkazy \verb|textbf| a \verb|textit|. Příkaz
+\verb|\Configure| má variabilní počet argumentů, pro jednotlivé konfigurace je
+třeba konzultovat dokumentaci\footnote{Dokumentace není úplně silnou stránkou
+  projektu TeX4ht. Základní informace o konfiguraci se nachází na WWW stránkách
+  projektu, detailnější informace můžete získat z dokumentace vygenerované ze
+  zdrojových kódů TeX4ht, umístěných na stránkách
+  \url{http://michal-h21.github.io/src4ht/}. Jedná se především o dokumenty
+\texttt{tex4ht-info} a \texttt{tex4ht-html4}.}.
+
+V tomto konkrétním případě užívá příkaz \verb|\Configure| dva argumenty, jedná
+se o kód, který se vloží na začátek a na konec konfigurovaného textu. Příkazy
+\verb|\NoFonts| a \verb|\EndNoFonts| zakáží a povolí zpracování fontů z
+\texttt{DVI} souboru, čímž vyřešíme problém s rozdělenými slovy. Příkaz
+\verb|\HCode| vkládá HTML kód do dokumentu.
+
+Výsledný e-book vypadá poměrně stroze, pokud chcete vylepšit jeho vzhled, je
+možné použít kaskádové styly. Pro jednoduché úpravy je určený příkaz
+\verb|\Css|, který lze použít v konfiguračním souboru:
+
+
 % ## kompilace
 % ## konfigurace
 % ## make4ht
