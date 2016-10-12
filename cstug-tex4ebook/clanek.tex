@@ -264,7 +264,7 @@ ukážeme na jednoduchém \TeX ovém souboru:
 \usepackage[czech]{babel}
 \begin{document}
 Příliš žluťoučký kůň \textit{úpěl} 
-\textbf{ďábelské ódy} \parencite{article-full}
+\textbf{ďábelské ódy} 
 \end{document}
 \end{verbatim}
 
@@ -326,6 +326,7 @@ Konfigurační soubory pro TeX4ht mají pevnou základní strukturu:
 % zde můžeme vkládat balíčky
 \Preamble{xhtml,volby pro tex4ht.sty}
 ...
+% Konfigurace háčků a kaskádových stylů 
 \begin{document}
 ...
 \EndPreamble
@@ -335,16 +336,23 @@ Před příkazem \verb|\Preamble| můžeme nahrávat dodatečné balíčky pomoc
 \verb|\RequirePackage|. Příkaz \verb|\Preamble| umožňuje specifikovat volby pro
 které ovlivňují nahrávání konfigurací. Jsou oddělené čárkami a povinná je
 minimálně volba \texttt{html} nebo \texttt{xhtml}, která musí být na první
-pozici. Pro Epub je třeba používat volbu druhou z nich. Dále je v konfiguračním
-souboru možno přidávat konfigurace pro háčky, v našem příkladu užíváme dvě
-konfigurace, pro příkazy \verb|textbf| a \verb|textit|. Příkaz
-\verb|\Configure| má variabilní počet argumentů, pro jednotlivé konfigurace je
-třeba konzultovat dokumentaci\footnote{Dokumentace není úplně silnou stránkou
-  projektu TeX4ht. Základní informace o konfiguraci se nachází na WWW stránkách
-  projektu, detailnější informace můžete získat z dokumentace vygenerované ze
-  zdrojových kódů TeX4ht, umístěných na stránkách
-  \url{http://michal-h21.github.io/src4ht/}. Jedná se především o dokumenty
-\texttt{tex4ht-info} a \texttt{tex4ht-html4}.}.
+pozici. Pro Epub je třeba používat volbu druhou z nich. 
+
+Po příkazu \verb|\Preamble| můžete přidávat konfigurace pro
+háčky, kaskádové styly, nebo měnit definice příkazů definovaných v preamble
+dokumentu, ať již ve vkládaných balíčcích, nebo přímo v dokumentu.
+Použití \verb|\begin{document}| je povinné, definice, které po něm následují
+jsou spuštěny až na začátku dokumentu. Konfigurace končí příkazem
+\verb|\EndPreamble|.
+
+V našem příkladu užíváme dvě konfigurace, pro příkazy \verb|textbf| a
+\verb|textit|. Příkaz \verb|\Configure| má variabilní počet argumentů, pro
+jednotlivé konfigurace je třeba konzultovat dokumentaci\footnote{Dokumentace
+  není úplně silnou stránkou projektu TeX4ht. Základní informace o konfiguraci
+  se nachází na WWW stránkách projektu, detailnější informace můžete získat z
+  dokumentace vygenerované ze zdrojových kódů TeX4ht, umístěných na stránkách
+\url{http://michal-h21.github.io/src4ht/}. Jedná se především o dokumenty
+\texttt{tex4ht-info} a \texttt{tex4ht-html4}.}. 
 
 V tomto konkrétním případě užívá příkaz \verb|\Configure| dva argumenty, jedná
 se o kód, který se vloží na začátek a na konec konfigurovaného textu. Příkazy
@@ -352,9 +360,19 @@ se o kód, který se vloží na začátek a na konec konfigurovaného textu. Př
 \texttt{DVI} souboru, čímž vyřešíme problém s rozdělenými slovy. Příkaz
 \verb|\HCode| vkládá HTML kód do dokumentu.
 
+
+
+
 Výsledný e-book vypadá poměrně stroze, pokud chcete vylepšit jeho vzhled, je
 možné použít kaskádové styly. Pro jednoduché úpravy je určený příkaz
 \verb|\Css|, který lze použít v konfiguračním souboru:
+
+\begin{verbatim}
+\Preamble{xhtml}
+\Css{h3{color:blue;}}
+\begin{document}
+\end{verbatim}
+
 
 
 % ## kompilace
