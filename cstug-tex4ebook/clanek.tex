@@ -368,15 +368,133 @@ možné použít kaskádové styly. Pro jednoduché úpravy je určený příkaz
 \verb|\Css|, který lze použít v konfiguračním souboru:
 
 \begin{verbatim}
-\Preamble{xhtml}
-\Css{h3{color:blue;}}
+\Preamble{xhtml
+% konfigurace písem vynechána
+\Css{em{color:blue;}}
 \begin{document}
 \end{verbatim}
 
+Tímto příkazem obarvíme text v kurzívě modrou barvou. 
+
+Pro složitější změny je lepší vložit kompletní CSS styl. Existuje řada
+projektů stylů, které se zaměřují na dobrou typografii na webu. Můžeme využít
+například Scale.css\footlink{https://github.com/viljamis/Scale}, který vytvořil
+finský designér  Viljami Salminen. Tento styl je responzivní, což znamená že
+velikost jednotlivých prvků dokumentu se přizpůsobuje velikosti zobrazované
+plochy, tak aby byla vždy optimální z hlediska dobré čitelnosti. 
+
+Pro vložení externího stylu můžeme využít příkaz \verb|\AddCss|, který
+poskytuje balíček \texttt{include4ht}. Tento balíček je jeden z balíčků, které
+tvoří projekt \texttt{helpers4ht}. Ten má za cíl zjednodušit práci se systémem
+TeX4ht a obsahuje balíčky pro vkládání kaskádových stylů, JavaScriptových
+programů, tvorbu rejstříků a další. Balíček pro vkládání fontů můžeme použít
+pro vložení fontů do našeho e-booku.
+
+Epub 3 podporuje vkládání písem ve formátu OpenType nebo jeho zjednodušené
+verzi určené pro web, WOFF. Je vhodné využívat OpenSource písma, vložením
+komerčního písma bychom se mohli dopustit jeho ilegálního šíření.  Vhodná písma
+jsou například EB Garamond, Linux Libertine, nebo Latin Modern. Pro každý řez
+písma je třeba stáhnout odpovídající OpenType soubor a umístit ho do adresáře s
+dokumentem, stejně tak je třeba umístit zde externí kaskádové styly. Upravený
+konfigurační soubor:
 
 
-% ## kompilace
-% ## konfigurace
-% ## make4ht
+\begin{verbatim}
+\RequirePackage{include4ht}
+\RequirePackage{addfont4ht}
+\Preamble{xhtml}
+\AddCss{scale.css}
+...
+\NormalFont{EBGaramond}{EBGaramond12-Regular.woff}
+\BoldFont{EBGaramond}{EBGaramond12-Italic.woff}
+\ItalicFont{EBGaramond}{EBGaramond12-Italic.woff}
+\Configure{@HEAD}{\HCode{<style type='text/css' >
+    \Hnewline body{font-family:rmfamily, 
+      "EBGaramond", sans-serif;}\Hnewline
+    </style>}}
+\begin{document}
+\EndPreamble
+\end{verbatim}
+
+Příkazy \verb|\NormalFont|, \verb|\BoldFont| a \verb|\ItalicFont| vloží fonty.
+První parametr určuje jméno rodiny, na které se dále odkazujeme. Příkaz
+\verb|\Configure{@HEAD}| vkládá kód do hlavičky HTML dokumentu. V tomto případě
+je použit pro vložení kaskádového stylu, který vybírá námi definovanou rodinu
+\textit{EBGaramond} jako hlavní písmo dokumentu.
+
+\section{Konfigurace vlastních balíčků}
+
+Příkazem \verb|\Configure| můžeme konfigurovat pouze příkazy, do kterých byly
+pro toto použití vložené háčky. Pokud chceme přidat podporu pro nový balíček,
+je třeba vytvořit pro něj \texttt{.4ht} soubor. Jeho tvorbu si ukážeme na
+jednoduchém příkladu.
+
+Mějme balíček pro tvorbu vzdělávacích dokumentů, který umožňuje tvorbu dvou
+verzí dokumentu -- pro studenty a pro učitele, s poznámkami, které se ve
+studentské verzi nezobrazují. Balíček bude mít přepínač, kterým se bude vybírat
+mezi zobrazeními, pro každou verzi bude vytvořen soubor, který bude sloužit pro
+kompilaci a který bude vkládat samotný text dokumentu.
+
+Budeme také využívat rozšířených metadat, která poskytuje formát Epub 3.
+Vzniklo několik profilů, které specifikují metadata podle určení dokumentu.
+Pro tvorbu vzdělávacích dokumentů vznikl profil \textit{Epub for
+Education}\footlink{http://www.idpf.org/epub/profiles/edu/spec/}, který
+využijeme v našem dokumentu.
+
+Balíček \texttt{edupub.sty} je poměrně prostý:
+
+
+\begin{verbatim}
+\ProvidesPackage{edupub}
+\RequirePackage{kvoptions}
+\RequirePackage{etoolbox}
+\newbool{teacher}
+\boolfalse{teacher}
+\newcommand\teacherinfo[1]{}
+\DeclareVoidOption{teacher}{%
+  \renewcommand\teacherinfo[1]{%
+    \edupub@print@teacherinfo{##1}}
+  \booltrue{teacher}}
+\newcommand\edupub@print@teacherinfo[1]{#1}
+\ProcessKeyvalOptions*
+\end{verbatim}
+
+Definuje pouze příkaz \verb|\teacherinfo|, který vypíše poznámky pro učitele
+pokud je balíček nahrán s volbou \texttt{teacher}. Nyní vytvoříme konfigurační
+soubor pro TeX4ht, \texttt{edupub.4ht}:
+
+
+\begin{verbatim}
+\ifbool{teacher}{%
+  \Configure{OpfMetadata}
+  {\HCode{<dc:type>teacher-edition</dc:type>}}
+}{}%
+\NewConfigure{teacherinfo}{2}
+
+\let\old:teacherinfo\edupub@print@teacherinfo
+
+\renewcommand\edupub@print@teacherinfo[1]{
+  \a:teacherinfo
+  \old:teacherinfo{#1}
+  \b:teacherinfo
+}
+\Configure{teacherinfo}
+{\HCode{<span epub:type="answer">}}
+{\HCode{</span>}}
+\end{verbatim}
+
+Konfigurace \verb|\Configure{OpfMetadata}| vloží informace do souboru s
+metadaty pro dokument. V tomto případě označí verzi dokumentu pro učitele.
+
+Příkaz \verb|\NewConfigure| deklaruje konfigurační háčky, které se vkládají do
+redefinovaných příkazů. První argument je název konfigurace, druhý je počet
+háčků, které budou vytvořeny. Pokud chceme vkládat nějaký kód před příkaz a po
+jeho skončení, stačí nám dva háčky. Háčky jsou příkazy ve formátu
+\verb|\[a-i]:název háčku|, v našem případě jsou vytvořeny dva,
+\verb|\a:teacherinfo| a \verb|\b:teacherinfo|. Pomocí příkazu \verb|\let| si
+můžeme uložit původní definici příkazu, který chceme upravit a poté použít
+například příkaz \verb|\renewcommand| pro úpravu definice. 
+
+
 
 \end{document}
