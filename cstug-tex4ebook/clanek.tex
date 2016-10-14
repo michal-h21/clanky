@@ -9,7 +9,7 @@
 % # osnova
 
 % ## úvod do ebooků
-
+\section{Elektronické knihy}
 
 Elektronické knihy (e-booky) se rozvíjejí především od 70.~let 20.~století, kdy
 byl spuštěn projekt Guttenberg, jehož cílem je digitalizace knih a textů, na
@@ -422,6 +422,37 @@ První parametr určuje jméno rodiny, na které se dále odkazujeme. Příkaz
 je použit pro vložení kaskádového stylu, který vybírá námi definovanou rodinu
 \textit{EBGaramond} jako hlavní písmo dokumentu.
 
+\section{Matematika a e-booky}
+
+Velký problém e-booků je matematika, stejně jako na webu, kde zobrazování
+matematiky řeší formát MathML. Alespoň teoreticky, protože jeho podpora ve WWW
+prohlížečích je špatná, všechny ho podporují pouze částečně. 
+
+Formát MathML je součástí specifikace Epub~3, teoreticky by ho tedy měla čtecí
+zařízení podporovat, realita je ovšem odlišná\footnote{Tabulku shrnující
+  podporu lze nalézt na stránkách knihovny MathJax:
+\url{http://docs.mathjax.org/en/latest/misc/epub.html}}. Pokud MathML
+podporují, je to za pomoci knihovny MathJax. Ta dokáže výborně vykreslit
+matematiku na WWW stránkách, ovšem je poměrně náročná na výkon a na tabletech
+nebo mobilních telefonech trvá delší chvíli, než se stránky obsahující
+matematiku vykreslí.
+
+V případě ostatních formátů je situace ještě horší, v případě Epub i Mobi lze
+matematiku zobrazit pouze za pomoci obrázků, což pro TeX4ht není problém,
+naopak je to jeho výchozí nastavení. Problémem je, že tyto obrázky nebudou
+sedět na účaří a velikost a typ písma nebudou odpovídat okolnímu textu. Zatím
+jsem nenalezl uspokojivé a univerzální řešení těchto problémů, proto doporučuji
+pro matematické e-booky používat Epub~3  podporou MathML, jehož podpora ve
+čtecích zařízeních se může zlepšit.
+
+Podpora MathML se může zapnout pomocí přepínače \texttt{mathml} umístěného v
+příkazu \verb|\Preamble| v konfiguračním souboru, nebo ve druhém argumentu
+příkazu \texttt{tex4ebook}:
+
+\begin{verbatim}
+tex4ebook -f epub3 filename mathml
+\end{verbatim}
+
 \section{Konfigurace vlastních balíčků}
 
 Příkazem \verb|\Configure| můžeme konfigurovat pouze příkazy, do kterých byly
@@ -439,7 +470,7 @@ Budeme také využívat rozšířených metadat, která poskytuje formát Epub~3
 Vzniklo několik profilů, které specifikují metadata podle určení dokumentu.
 Pro tvorbu vzdělávacích dokumentů vznikl profil \textit{Epub for
 Education}\footlink{http://www.idpf.org/epub/profiles/edu/spec/}, který
-využijeme v našem dokumentu.
+využijeme v našem dokumentu. 
 
 Balíček \texttt{edupub.sty} je poměrně prostý:
 
@@ -497,7 +528,45 @@ například příkaz \verb|\renewcommand| pro úpravu definice.
 
 Nakonec konfigurujeme naše háčky promocí \verb|\Configure{teacherinfo}|,
 poznámky pro učitele označíme elementem \texttt{span} s atributem
-\texttt{epub:type}, který Epub~3 používá pro sémantické značkování textu.
+\texttt{epub:type}, který Epub~3 používá pro sémantické značkování textu. Tento
+konkrétní typ je součástí profilu \textit{Epub for Education}.
+
+Naše ukázková publikace tedy bude mít dvě verze, jednu pro studenty a druhou
+pro učitele. Pro každou z nich vytvoříme řídící dokument, který bude obsahovat
+pouze hlavičku dokumentu, samotný text se bude vkládat a bude pro obě verze
+stejný. 
+
+Řídící soubor pro učitele \texttt{teacher.tex}
+
+\begin{verbatim}
+\documentclass{article}
+...
+\usepackage[teacher]{edupub} 
+\begin{document}
+\include{text}
+\end{document}
+\end{verbatim}
+
+Verze pro studenta bude totožná, pouze balíček \texttt{edupub} vložíme bez
+volby \texttt{teacher}. Samotný text dokumentu může mít následující obsah:
+
+
+\begin{verbatim}
+\newcommand\odpoved[1]{\teacherinfo{\\ #1}}
+\begin{enumerate}
+\item Jak se jmenuje největší had vyskytující se v České republice?
+\odpoved{Užovka stromová}
+\end{enumerate}
+\end{verbatim}
+
+\section{Závěr}
+Toto byl pouze jednoduchý příklad, na kterém jsem chtěl ukázat základní
+konfiguraci TeX4ht a pokročilé možnosti, které nabízí formát Epub~3. 
+Pokročilá konfigurace TeX4ht je složité téma a současný vývojový tým tohoto
+projektu se stále nachází spíše ve stadiu digitální archeologie, protože pro
+mnoho vlastností neexistuje dokumentace a princip jejich fungování se zjišťuje
+zkoumáním zdrojových kódů. 
+
 
 
 \end{document}
