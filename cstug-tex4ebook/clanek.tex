@@ -1,11 +1,21 @@
 \documentclass{csbulletin}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage[czech]{babel}
+% \usepackage[czech]{babel}
 \usepackage{url}
 \usepackage{metalogo}
 \newcommand\footlink[1]{\footnote{\url{#1}}}
+\title{Elektronické knihy a systém TeX4ebook}
+\EnglishTitle{E-books and TeX4ebook system}
+\podpis{Michal Hoftich}
 \begin{document}
+\author{Michal Hoftich}
+\maketitle
+\begin{abstract}
+Článek pojednává o konverzi dokumentů vytvořených v \TeX u do formátů
+elektronických knih, především Epub 3. Na konkrétních příkladech jsou ukázány
+možnosti uzpůsobení průběhu konverze a vzhledu výsledného e-booku.
+\end{abstract}
 % # osnova
 
 % ## úvod do ebooků
@@ -573,6 +583,11 @@ konferenci nebo na issue tracker na stránkách
 nalézt také na serveru TeX.sx, pod heslem \texttt{tex4ht}:
 \url{http://tex.stackexchange.com/questions/tagged/tex4ht} 
 
+\begin{summary}
+  This article describes the process of conversion of a  \TeX{} document to
+  e-book using TeX4ebook system. Concrete examples of configuration and caveats
+  are provided.
+\end{summary}
 
 
 \end{document}
