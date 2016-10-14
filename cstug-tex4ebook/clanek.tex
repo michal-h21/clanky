@@ -27,7 +27,7 @@ potřeb konkrétního čtenáře. Některé čtečky také umožňují předčí
 technologií text to speech.
 
 V průběhu vývoje se objevilo množství formátů e-booků, v dnešní době jsou
-nejrozšířenějšími Epub, z něho vycházející Epub 3 a Mobi, používaný Amazonem.
+nejrozšířenějšími Epub, z něho vycházející Epub~3 a Mobi, používaný Amazonem.
 % Formát PDF se často nepovažuje za e-bookový formát, protože 
 Tyto formáty v podstatě vychází z formátů HTML a CSS, běžně používaných na WWW
 stránkách, a pomocných metadat. Formát Mobi se vytváří kompilací Epubu
@@ -48,15 +48,15 @@ způsobem.
 
 Protože formát Epub vznikal živelně a jeho implementace v čtecích zařízeních je
 nejednotná, organizace IPDF\footnote{The International Digital Publishing
-Forum} vytvořila standard Epub 3. Ten by měl mimo jiné zlepšit podporu pro
+Forum} vytvořila standard Epub~3. Ten by měl mimo jiné zlepšit podporu pro
 technické publikace nebo pro asistenční služby pro čtenáře se specifickými
 potřebami. Tento formát bude tedy pro uživatele \TeX u patrně nejzajímavější,
 ovšem je třeba zmínit, že přestože je tento formát standardizovaný, čtecí
 zařízení zdaleka nepodporují všechny jeho vlastnosti. V současné době vzniká
-jeho nová verze, Epub 3.1, která obsahuje opět poměrně zásadní změny, ovšem
+jeho nová verze, Epub~3.1, která obsahuje opět poměrně zásadní změny, ovšem
 zatím nebyla představena finální verze, proto se jím nebudeme dále zabývat.
 
-Užitečné vlastnosti Epub 3 pro technické publikace jsou podpora MathML
+Užitečné vlastnosti Epub~3 pro technické publikace jsou podpora MathML
 pro sazbu matematiky\footnote{V ostatních formátech je třeba používat obrázky,
 což je především pro matematiku vloženou v textu nevhodné řešení}, podpora SVG pro vektorové obrázky, podpora JavaScriptu,
 která umožňuje tvorbu interaktivních prvků, vkládání fontů do dokumentu.
@@ -64,7 +64,7 @@ Významnou změnou jsou  nové HTML elementy pro značkování logické struktur
 dokumentu (například poznámky pod čarou, bibliografie, rejstřík). Formát SMIL
 umožňuje vkládání multimediálního obsahu.
 
-Patrně nejzajímavější ukázkou možností Epub 3, která v současnosti existuje, je
+Patrně nejzajímavější ukázkou možností Epub~3, která v současnosti existuje, je
 projekt Aeneas\footlink{https://www.readbeyond.it/aeneas/}, který umožňuje
 synchronizovat čtenou verzi knihy s jejím textem. Takto připravené e-booky
 lze číst v aplikaci,
@@ -109,8 +109,8 @@ systém pro konverzi \TeX u na e-booky.
 
 \section{TeX4ebook}
 
-TeX4ebook je systém pro konverzi \TeX u do formátů Epub, Epub 3 a Mobi, hlavní
-důraz je kladený na Epub 3. Hlavní výhodou oproti pouhé konverzi \TeX u do HTML
+TeX4ebook je systém pro konverzi \TeX u do formátů Epub, Epub~3 a Mobi, hlavní
+důraz je kladený na Epub~3. Hlavní výhodou oproti pouhé konverzi \TeX u do HTML
 a jeho následné konverzi na e-book externími nástroji je možnost získání
 různých metadat přímo ze zpracovávaného dokumentu. Systém emuluje základní
 postup kompilace používaný TeX4ht a přidává několik kroků navíc. Celý postup je
@@ -166,7 +166,7 @@ například v Linuxu.
 tex4ebook -f epub3 filename.tex
 \end{verbatim}
 
-Tento příkaz vytvoří soubor \texttt{filename.epub} ve formátu Epub 3, kódování
+Tento příkaz vytvoří soubor \texttt{filename.epub} ve formátu Epub~3, kódování
 \texttt{UTF-8} je použito automaticky. 
 
 Hlavní rozdíl TeX4ebook oproti TeX4ht spočívá ve třetím kompilačním kroku.
@@ -390,7 +390,7 @@ TeX4ht a obsahuje balíčky pro vkládání kaskádových stylů, JavaScriptový
 programů, tvorbu rejstříků a další. Balíček pro vkládání fontů můžeme použít
 pro vložení fontů do našeho e-booku.
 
-Epub 3 podporuje vkládání písem ve formátu OpenType nebo jeho zjednodušené
+Epub~3 podporuje vkládání písem ve formátu OpenType nebo jeho zjednodušené
 verzi určené pro web, WOFF. Je vhodné využívat OpenSource písma, vložením
 komerčního písma bychom se mohli dopustit jeho ilegálního šíření.  Vhodná písma
 jsou například EB Garamond, Linux Libertine, nebo Latin Modern. Pro každý řez
@@ -435,7 +435,7 @@ studentské verzi nezobrazují. Balíček bude mít přepínač, kterým se bude
 mezi zobrazeními, pro každou verzi bude vytvořen soubor, který bude sloužit pro
 kompilaci a který bude vkládat samotný text dokumentu.
 
-Budeme také využívat rozšířených metadat, která poskytuje formát Epub 3.
+Budeme také využívat rozšířených metadat, která poskytuje formát Epub~3.
 Vzniklo několik profilů, které specifikují metadata podle určení dokumentu.
 Pro tvorbu vzdělávacích dokumentů vznikl profil \textit{Epub for
 Education}\footlink{http://www.idpf.org/epub/profiles/edu/spec/}, který
@@ -495,6 +495,9 @@ jeho skončení, stačí nám dva háčky. Háčky jsou příkazy ve formátu
 můžeme uložit původní definici příkazu, který chceme upravit a poté použít
 například příkaz \verb|\renewcommand| pro úpravu definice. 
 
+Nakonec konfigurujeme naše háčky promocí \verb|\Configure{teacherinfo}|,
+poznámky pro učitele označíme elementem \texttt{span} s atributem
+\texttt{epub:type}, který Epub~3 používá pro sémantické značkování textu.
 
 
 \end{document}
