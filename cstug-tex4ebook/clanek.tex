@@ -68,17 +68,18 @@ zatím nebyla představena finální verze, proto se jím nebudeme dále zabýva
 
 Užitečné vlastnosti Epub~3 pro technické publikace jsou podpora MathML
 pro sazbu matematiky\footnote{V ostatních formátech je třeba používat obrázky,
-což je především pro matematiku vloženou v~textu nevhodné řešení}, podpora SVG pro vektorové obrázky, podpora JavaScriptu,
-která umožňuje tvorbu interaktivních prvků, vkládání fontů do dokumentu.
+což je především pro matematiku vloženou v~textu nevhodné řešení}, podpora SVG
+pro vektorové obrázky, podpora JavaScriptu, která umožňuje tvorbu
+interaktivních prvků, vkládání fontů do dokumentu.
 Významnou změnou jsou  nové HTML elementy pro značkování logické struktury
 dokumentu (například poznámky pod čarou, bibliografie, rejstřík). Formát SMIL
 umožňuje vkládání multimediálního obsahu.
 
 Patrně nejzajímavější ukázkou možností Epub~3, která v~současnosti existuje, je
-projekt Aeneas\footlink{https://www.readbeyond.it/aeneas/}, který umožňuje
+projekt Aeneas~\cite{bib:aeneas}, který umožňuje
 synchronizovat čtenou verzi knihy s~jejím textem. Takto připravené e-booky
 lze číst v~aplikaci,
-Menestrello\footlink{https://www.readbeyond.it/menestrello/index.html}, která
+Menestrello~\cite{bib:menestrello}, která
 zvýrazňuje právě předčítaný text. Je to vynikající pomůcka například pro
 procvičování výuky jazyků.
 
@@ -94,10 +95,10 @@ z~\TeX u do HTML, přidání nezbytných metadat a zabalení výsledných soubor
 e-bookového formátu.
 
 Pro konverzi \TeX u do HTML se dá použít řada nástrojů, nejrozšířenějšími jsou
-LaTeX2HTML\footlink{http://www.latex2html.org/},
-LaTeXML\footlink{http://dlmf.nist.gov/LaTeXML/},
-Pandoc\footlink{http://pandoc.org/} a
-TeX4ht\footlink{http://www.tug.org/tex4ht/}. První tři z~nich jsou založené na
+LaTeX2HTML~\cite{bib:latex2html},
+LaTeXML~\cite{bib:latexml},
+Pandoc~\cite{bib:pandoc} a
+TeX4ht~\cite{bib:tex4ht}. První tři z~nich jsou založené na
 zpracování \TeX ového dokumentu externím programem, který se snaží rozpoznat
 použitá makra a převést je na HTML. LaTeXML je z~nich nejpokročilejší, neboť 
 emuluje \TeX ovou expanzi maker a podporuje tudíž i uživatelská makra a
@@ -114,7 +115,7 @@ podporuje i jiné formáty, například Plain, ovšem u~nich může být třeba 
 dokument. Pro překlad je možné použít současné nejpoužívanější \TeX ové enginy,
 tedy pdf\TeX, \XeTeX a \LuaTeX. Systém vytvářel Eitan Gurari, po jeho smrti
 vývoj převzal Karl Berry, CV Radhakrishnan a autor článku. Právě TeX4ht je
-použit jako základ pro TeX4ebook\footlink{https://www.ctan.org/pkg/tex4ebook},
+použit jako základ pro TeX4ebook~\cite{bib:tex4ebook},
 systém pro konverzi \TeX u na e-booky.
 
 \section{TeX4ebook}
@@ -187,7 +188,7 @@ kompilaci a tvorbě pomocných souborů je možné spustit příkazy pro tvorbu
 rejstříku a bibliografie. 
 
 Postup kompilace je možné řídit pomocí sestavovacích skriptů pro
-Make4ht\footlink{https://www.ctan.org/pkg/make4ht}. To je sestavovací program
+Make4ht~\cite{bib:make4ht}. To je sestavovací program
 pro TeX4ht, který původně vznikal jako součást TeX4ebook, ale postupně se
 vyvinul do samostané aplikace a knihovny, která nahrazuje skripty používané pro
 kompilaci TeX4ht.
@@ -388,7 +389,7 @@ Tímto příkazem obarvíme text v~kurzívě modrou barvou.
 
 Pro složitější změny je lepší vložit kompletní CSS styl. Existuje řada
 projektů stylů, které se zaměřují na dobrou typografii na webu. Můžeme využít
-například Scale.css\footlink{https://github.com/viljamis/Scale}, který vytvořil
+například Scale.css~\cite{bib:viljamis}, který vytvořil
 finský designér  Viljami Salminen. Tento styl je responzivní, což znamená že
 velikost jednotlivých prvků dokumentu se přizpůsobuje velikosti zobrazované
 plochy, tak aby byla vždy optimální z~hlediska dobré čitelnosti. 
@@ -479,8 +480,7 @@ kompilaci a který bude vkládat samotný text dokumentu.
 Budeme také využívat rozšířených metadat, která poskytuje formát Epub~3.
 Vzniklo několik profilů, které specifikují metadata podle určení dokumentu.
 Pro tvorbu vzdělávacích dokumentů vznikl profil \textit{Epub for
-Education}\footlink{http://www.idpf.org/epub/profiles/edu/spec/}, který
-využijeme v~našem dokumentu. 
+Education}~\cite{bib:edupub}, který využijeme v~našem dokumentu. 
 
 Balíček \texttt{edupub.sty} je poměrně prostý:
 
@@ -582,6 +582,21 @@ konferenci nebo na issue tracker na stránkách
 \url{https://www.tug.org/tex4ht/}. Mnoho konkretních příkladů konfigurace lze
 nalézt také na serveru TeX.sx, pod heslem \texttt{tex4ht}:
 \url{http://tex.stackexchange.com/questions/tagged/tex4ht} 
+
+\begin{thebibliography}{plain}
+  \bibitem{bib:aeneas} Alberto Pettarin. \textit{Aeneas}. \url{https://www.readbeyond.it/aeneas/}.
+  \bibitem{bib:menestrello} Alberto Pettarin. \textit{Menestrello}.  \url{https://www.readbeyond.it/menestrello/index.html}.
+  \bibitem{bib:latex2html} \textit{LaTeX2HTML}. \url{http://www.latex2html.org/}.
+  \bibitem{bib:latexml}  Bruce Miller. \textit{LaTeXML}. \url{http://dlmf.nist.gov/LaTeXML/}.
+  \bibitem{bib:pandoc} \textit{Pandoc}. \url{http://pandoc.org/}.
+  \bibitem{bib:tex4ht} Eitan Gurari. \textit{TeX4ht}. \url{http://www.tug.org/tex4ht/}.
+  \bibitem{bib:tex4ebook} Michal Hoftich. \textit{TeX4ebook}. \url{https://www.ctan.org/pkg/tex4ebook}.
+  \bibitem{bib:make4ht} Michal Hoftich. \textit{Make4ht}. \url{https://www.ctan.org/pkg/make4ht}.
+  \bibitem{bib:viljamis} Viljami Salminen. \textit{Scale.css}. \url{https://github.com/viljamis/Scale}.
+  \bibitem{bib:edupub} The EPUB Working Group. \textit{EPUB for Education}. \url{http://www.idpf.org/epub/profiles/edu/spec/}
+
+
+\end{thebibliography}
 
 \begin{summary}
   This article describes the process of conversion of a  \TeX{} document to
