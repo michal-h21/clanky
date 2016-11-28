@@ -4,7 +4,7 @@
 % \usepackage[czech]{babel}
 \usepackage{url}
 \usepackage{metalogo}
-\newcommand\footlink[1]{\footnote{\url{#1}}}
+% \newcommand\footlink[1]{\footnote{\url{#1}}}
 \title{Elektronické knihy a systém TeX4ebook}
 \EnglishTitle{E-books and TeX4ebook system}
 \podpis{Michal Hoftich}
@@ -57,9 +57,9 @@ měl být zdrojový Epub soubor připraven, aby konverze proběhla nejlepším
 způsobem.
 
 Protože formát Epub vznikal živelně a jeho implementace v~čtecích zařízeních je
-nejednotná, organizace IPDF\footnote{The International Digital Publishing
-Forum} vytvořila standard Epub~3. Ten by měl mimo jiné zlepšit podporu pro
-technické publikace nebo pro asistenční služby pro čtenáře se specifickými
+nejednotná, organizace IPDF \cite{bib:ipdf} vytvořila standard Epub~3. Ten by
+měl mimo jiné zlepšit podporu pro technické publikace nebo pro asistenční
+služby pro čtenáře se specifickými
 potřebami. Tento formát bude tedy pro uživatele \TeX u patrně nejzajímavější,
 ovšem je třeba zmínit, že přestože je tento formát standardizovaný, čtecí
 zařízení zdaleka nepodporují všechny jeho vlastnosti. V~současné době vzniká
@@ -441,8 +441,7 @@ prohlížečích je špatná, všechny ho podporují pouze částečně.
 
 Formát MathML je součástí specifikace Epub~3, teoreticky by ho tedy měla čtecí
 zařízení podporovat, realita je ovšem odlišná\footnote{Tabulku shrnující
-  podporu lze nalézt na stránkách knihovny MathJax:
-\url{http://docs.mathjax.org/en/latest/misc/epub.html}}. Pokud MathML
+  podporu lze nalézt na stránkách knihovny MathJax~\cite{bib:mathjax}}. Pokud MathML
 podporují, je to za pomoci knihovny MathJax. Ta dokáže výborně vykreslit
 matematiku na WWW stránkách, ovšem je poměrně náročná na výkon a na tabletech
 nebo mobilních telefonech trvá delší chvíli, než se stránky obsahující
@@ -594,7 +593,8 @@ nalézt také na serveru TeX.sx, pod heslem \texttt{tex4ht}:
   \bibitem{bib:make4ht} Michal Hoftich. \textit{Make4ht}. \url{https://www.ctan.org/pkg/make4ht}.
   \bibitem{bib:viljamis} Viljami Salminen. \textit{Scale.css}. \url{https://github.com/viljamis/Scale}.
   \bibitem{bib:edupub} The EPUB Working Group. \textit{EPUB for Education}. \url{http://www.idpf.org/epub/profiles/edu/spec/}
-
+  \bibitem{bib:ipdf}  The International Digital Publishing Forum. \textit{EPUB 3}. \url{http://idpf.org/epub/30}.
+  \bibitem{bib:mathjax} The MathJax Consortium. \textit{EPUB3 Reading systems overview}. \url{http://docs.mathjax.org/en/latest/misc/epub.html}.
 
 \end{thebibliography}
 
