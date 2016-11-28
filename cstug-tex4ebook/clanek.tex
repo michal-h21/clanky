@@ -12,7 +12,7 @@
 \author{Michal Hoftich}
 \maketitle
 \begin{abstract}
-Článek pojednává o konverzi dokumentů vytvořených v \TeX u do formátů
+Článek pojednává o~konverzi dokumentů vytvořených v~\TeX u do formátů
 elektronických knih, především Epub 3. Na konkrétních příkladech jsou ukázány
 možnosti uzpůsobení průběhu konverze a vzhledu výsledného e-booku.
 \end{abstract}
@@ -26,58 +26,58 @@ byl spuštěn projekt Guttenberg, jehož cílem je digitalizace knih a textů, n
 které se nevztahují autorská práva. Prudký rozvoj nastal od 90. let, kdy se
 objevily osobní digitální asistenty (PDA) a masověji se rozšířily osobní
 počítače. Zpočátku je tvořili především nadšenci, komerční vydavatelství pouze
-pomalu ztrácela nedůvěru. V roce 2004 se objevila první čtečka s displejem s
-elektronickým inkoustem (e-ink), o tři roky později internetový obchod Amazon
+pomalu ztrácela nedůvěru. V~roce 2004 se objevila první čtečka s~displejem
+s~elektronickým inkoustem (e-ink), o~tři roky později internetový obchod Amazon
 představil svojí čtečku Kindle a nastal velký komerční rozvoj.
 
 Hlavními vlastnostmi e-booků jsou flexibilita zobrazení, neboť je třeba, aby
-šly zobrazit na řadě zařízení s různou velikostí a vlastnostmi displeje,
+šly zobrazit na řadě zařízení s~různou velikostí a vlastnostmi displeje,
 možnost upravit vlastnosti zobrazení, jako je velikost nebo barva písma podle
 potřeb konkrétního čtenáře. Některé čtečky také umožňují předčítání textu
 technologií text to speech.
 
-V průběhu vývoje se objevilo množství formátů e-booků, v dnešní době jsou
-nejrozšířenějšími Epub, z něho vycházející Epub~3 a Mobi, používaný Amazonem.
+V~průběhu vývoje se objevilo množství formátů e-booků, v~dnešní době jsou
+nejrozšířenějšími Epub, z~něho vycházející Epub~3 a Mobi, používaný Amazonem.
 % Formát PDF se často nepovažuje za e-bookový formát, protože 
-Tyto formáty v podstatě vychází z formátů HTML a CSS, běžně používaných na WWW
+Tyto formáty v~podstatě vychází z~formátů HTML a CSS, běžně používaných na WWW
 stránkách, a pomocných metadat. Formát Mobi se vytváří kompilací Epubu
 programem Kindlegen, který Amazon poskytuje pro Windows, Mac OS i Linux. 
 
 Výhodou Epubu je jeho široká podpora nejrůznější škálou zařízení a programů,
 které ovšem často podporují pouze některé jeho vlastnosti, často mají problém
-například s CSS styly, takže formátování e-booku může být zcela rozdílné, než
+například s~CSS styly, takže formátování e-booku může být zcela rozdílné, než
 autor zamýšlel. Nejlepší využití Epubu je pro jednoduchý text bez složitějšího
 formátování, například pro beletrii nebo literaturu faktu. 
 
-To samé platí v podstatě i o formátu Mobi, který vzniká konverzí z Epub. V
-podstatě se jedná o dva formáty v jednom, neboť Kindlegen vytváří verzi pro
+To samé platí v~podstatě i o~formátu Mobi, který vzniká konverzí z~Epub.
+V~podstatě se jedná o~dva formáty v~jednom, neboť Kindlegen vytváří verzi pro
 novější i starší verzi svých zařízení. Amazon pro autory připravil dokument
 \textit{Kindle design guidelines}, kde konkrétně specifikuje, jakým způsobem by
 měl být zdrojový Epub soubor připraven, aby konverze proběhla nejlepším
 způsobem.
 
-Protože formát Epub vznikal živelně a jeho implementace v čtecích zařízeních je
+Protože formát Epub vznikal živelně a jeho implementace v~čtecích zařízeních je
 nejednotná, organizace IPDF\footnote{The International Digital Publishing
 Forum} vytvořila standard Epub~3. Ten by měl mimo jiné zlepšit podporu pro
 technické publikace nebo pro asistenční služby pro čtenáře se specifickými
 potřebami. Tento formát bude tedy pro uživatele \TeX u patrně nejzajímavější,
 ovšem je třeba zmínit, že přestože je tento formát standardizovaný, čtecí
-zařízení zdaleka nepodporují všechny jeho vlastnosti. V současné době vzniká
+zařízení zdaleka nepodporují všechny jeho vlastnosti. V~současné době vzniká
 jeho nová verze, Epub~3.1, která obsahuje opět poměrně zásadní změny, ovšem
 zatím nebyla představena finální verze, proto se jím nebudeme dále zabývat.
 
 Užitečné vlastnosti Epub~3 pro technické publikace jsou podpora MathML
 pro sazbu matematiky\footnote{V ostatních formátech je třeba používat obrázky,
-což je především pro matematiku vloženou v textu nevhodné řešení}, podpora SVG pro vektorové obrázky, podpora JavaScriptu,
+což je především pro matematiku vloženou v~textu nevhodné řešení}, podpora SVG pro vektorové obrázky, podpora JavaScriptu,
 která umožňuje tvorbu interaktivních prvků, vkládání fontů do dokumentu.
 Významnou změnou jsou  nové HTML elementy pro značkování logické struktury
 dokumentu (například poznámky pod čarou, bibliografie, rejstřík). Formát SMIL
 umožňuje vkládání multimediálního obsahu.
 
-Patrně nejzajímavější ukázkou možností Epub~3, která v současnosti existuje, je
+Patrně nejzajímavější ukázkou možností Epub~3, která v~současnosti existuje, je
 projekt Aeneas\footlink{https://www.readbeyond.it/aeneas/}, který umožňuje
-synchronizovat čtenou verzi knihy s jejím textem. Takto připravené e-booky
-lze číst v aplikaci,
+synchronizovat čtenou verzi knihy s~jejím textem. Takto připravené e-booky
+lze číst v~aplikaci,
 Menestrello\footlink{https://www.readbeyond.it/menestrello/index.html}, která
 zvýrazňuje právě předčítaný text. Je to vynikající pomůcka například pro
 procvičování výuky jazyků.
@@ -86,20 +86,20 @@ procvičování výuky jazyků.
 
 \section{Konverze \TeX u na e-book}
 
-Kvůli stále rozšířenějšímu čtení textů z elektronických zařízení, ať již jsou
-to PC, mobilní telefony, tablety nebo e-ink čtečky, vzniká potřeba konverze z
-\TeX u do do e-booků.  Všechny zmíněné formáty jsou v podstatě balíčky WWW
-stránek s přidanými metadaty, takže tato úloha se v podstatě skládá z konverze
-z \TeX u do HTML, přidání nezbytných metadat a zabalení výsledných souborů do
+Kvůli stále rozšířenějšímu čtení textů z~elektronických zařízení, ať již jsou
+to PC, mobilní telefony, tablety nebo e-ink čtečky, vzniká potřeba konverze
+z~\TeX u do do e-booků.  Všechny zmíněné formáty jsou v~podstatě balíčky WWW
+stránek s~přidanými metadaty, takže tato úloha se v~podstatě skládá z~konverze
+z~\TeX u do HTML, přidání nezbytných metadat a zabalení výsledných souborů do
 e-bookového formátu.
 
 Pro konverzi \TeX u do HTML se dá použít řada nástrojů, nejrozšířenějšími jsou
 LaTeX2HTML\footlink{http://www.latex2html.org/},
 LaTeXML\footlink{http://dlmf.nist.gov/LaTeXML/},
 Pandoc\footlink{http://pandoc.org/} a
-TeX4ht\footlink{http://www.tug.org/tex4ht/}. První tři z nich jsou založené na
+TeX4ht\footlink{http://www.tug.org/tex4ht/}. První tři z~nich jsou založené na
 zpracování \TeX ového dokumentu externím programem, který se snaží rozpoznat
-použitá makra a převést je na HTML. LaTeXML je z nich nejpokročilejší, neboť 
+použitá makra a převést je na HTML. LaTeXML je z~nich nejpokročilejší, neboť 
 emuluje \TeX ovou expanzi maker a podporuje tudíž i uživatelská makra a
 balíčky. Zbylé dva systémy podporují především základní příkazy \LaTeX u a se
 složitějšími dokumenty mohou mít problém. Všechny podporují pouze \LaTeX,
@@ -109,8 +109,8 @@ TeX4ht je sada maker, která se automaticky načítá do dokumentu a upravuje
 definici jednotlivých příkazů tak, aby bylo možné vkládat formátovací značky
 podporovaných výstupních formátů (kromě HTML je to především OpenDocument
 Format, TEI nebo Docbook). Díky tomu, že pro překlad je používaný samotný \TeX,
-neměl by být problém s užíváním uživatelských maker a balíčků. Kromě \LaTeX u
-podporuje i jiné formáty, například Plain, ovšem u nich může být třeba upravit
+neměl by být problém s~užíváním uživatelských maker a balíčků. Kromě \LaTeX u
+podporuje i jiné formáty, například Plain, ovšem u~nich může být třeba upravit
 dokument. Pro překlad je možné použít současné nejpoužívanější \TeX ové enginy,
 tedy pdf\TeX, \XeTeX a \LuaTeX. Systém vytvářel Eitan Gurari, po jeho smrti
 vývoj převzal Karl Berry, CV Radhakrishnan a autor článku. Právě TeX4ht je
@@ -124,20 +124,20 @@ důraz je kladený na Epub~3. Hlavní výhodou oproti pouhé konverzi \TeX u do 
 a jeho následné konverzi na e-book externími nástroji je možnost získání
 různých metadat přímo ze zpracovávaného dokumentu. Systém emuluje základní
 postup kompilace používaný TeX4ht a přidává několik kroků navíc. Celý postup je
-konfigurovatelný s použitím sestavovacího skriptu.
+konfigurovatelný s~použitím sestavovacího skriptu.
 
-Základní postup je shodný s TeX4ht a sestává ze tří kroků:
+Základní postup je shodný s~TeX4ht a sestává ze tří kroků:
 
 \begin{enumerate}
   \item Kompilace dokumentu \TeX em. Ještě před načtením dokumentu je nahrán
     balíček \texttt{tex4ht.sty}, který řídí další postup zpracování dokumentu.
-    Pro každý načtený balíček se testuje existence souboru s příponou
+    Pro každý načtený balíček se testuje existence souboru s~příponou
     \texttt{.4ht}, který, pokud existuje, je načten po skončení preamble
-    dokumentu. V tomto konfiguračním souboru se mohou předefinovávat makra a
+    dokumentu. V~tomto konfiguračním souboru se mohou předefinovávat makra a
     vkládají se do nich takzvané \textit{háčky}. Po nahrání všech \texttt{.4ht}
-    souborů pro použité balíčky jsou nahrány soubory s konfigurací pro daný
+    souborů pro použité balíčky jsou nahrány soubory s~konfigurací pro daný
     výstupní formát. Obsahují instrukce, které jsou vloženy do háčků
-    definovaných v předešlém kroku. Háčky je také možné konfigurovat pomocí
+    definovaných v~předešlém kroku. Háčky je také možné konfigurovat pomocí
     konfiguračního souboru, který bude popsaný dále. 
 
     Kompilace je spouštěna několikrát, protože jsou využívány pomocné soubory
@@ -149,18 +149,18 @@ Základní postup je shodný s TeX4ht a sestává ze tří kroků:
     výstupní soubory, převádí různá vstupní kódování na \texttt{UTF-8} a
     vytváří dva pomocné soubory: \texttt{.idv} soubor je speciální soubor ve
     formátu DVI, který obsahuje stránky, které mají být převedeny na obrázky.
-    Jedná se například o prostředí \texttt{picture} LaTeXu, nebo matematiku,
+    Jedná se například o~prostředí \texttt{picture} LaTeXu, nebo matematiku,
     pokud není převáděna do formátu MathML. \texttt{.lg} soubor obsahuje seznam
     výstupních souborů, CSS instrukce, a instrukce pro kompilaci jednotlivých
-    stránek v \texttt{.idv} souboru na obrázky.
-  \item Zpracování \texttt{.lg} souboru příkazem \texttt{t4ht}. V tomto kroku
+    stránek v~\texttt{.idv} souboru na obrázky.
+  \item Zpracování \texttt{.lg} souboru příkazem \texttt{t4ht}. V~tomto kroku
     je vytvořen CSS soubor, dochází ke konverzi obrázků a výstupní soubory
-    mohou být předány externím programům k dalšímu zpracování.
+    mohou být předány externím programům k~dalšímu zpracování.
 \end{enumerate} 
 
 TeX4ht používá pro kompilaci řadu skriptů, které se liší použitým \TeX ovým
 formátem, enginem a výstupním formátem. Všechny provádí tři kompilační kroky
-popsané výše a předávají jednotlivým příkazům argumenty v uvozovkách.
+popsané výše a předávají jednotlivým příkazům argumenty v~uvozovkách.
 Například pro vytvoření dokumentu ve formátu XHTML a kódování \texttt{UTF-8} je
 možné použít následující příkaz: 
   
@@ -169,8 +169,8 @@ htlatex filename.tex "xhtml,charset=utf-8" " -utf8 -cunihtf"
 \end{verbatim}
 
 Tento postup není úplně uživatelsky přívětivý, proto TeX4ebook umožňuje
-použít pro základní konfiguraci přepínače, známé z běžných příkazů užívaných
-například v Linuxu.
+použít pro základní konfiguraci přepínače, známé z~běžných příkazů užívaných
+například v~Linuxu.
 
 \begin{verbatim}
 tex4ebook -f epub3 filename.tex
@@ -192,7 +192,7 @@ pro TeX4ht, který původně vznikal jako součást TeX4ebook, ale postupně se
 vyvinul do samostané aplikace a knihovny, která nahrazuje skripty používané pro
 kompilaci TeX4ht.
 
-Sestavovací skripty jsou programy v jazyce Lua:
+Sestavovací skripty jsou programy v~jazyce Lua:
 
 \begin{verbatim}
 local filter = require "make4ht-filter"
@@ -211,15 +211,15 @@ Make:match("html$",
 
 
 Pomocí příkazu \verb|Make:add("biber", "biber ${input}")| definujeme příkaz
-\verb|Make:biber|, který můžeme použít  pro tvorbu bibliografie s balíčkem
-Biblatex. Druhý argument příkazu \verb|Make:add| je šablona s příkazem který se
+\verb|Make:biber|, který můžeme použít  pro tvorbu bibliografie s~balíčkem
+Biblatex. Druhý argument příkazu \verb|Make:add| je šablona s~příkazem který se
 spustí, proměnné definované Make4ht se vkládají pomocí konstruktu
 \verb|${jméno}|, proměnná \texttt{input} obsahuje název zpracovávaného souboru.
 
 Argumenty ve složených závorkách pro příkazy \texttt{Make:htlatex} a
 \texttt{Make:biber} jsou tabulky, ve kterých můžete nastavit hodnoty
-proměnných užívaných v šablonách, pokud byste například chtěli použít
-bibliografii z jiného souboru, lze použít:
+proměnných užívaných v~šablonách, pokud byste například chtěli použít
+bibliografii z~jiného souboru, lze použít:
 
 \begin{verbatim}
 Make:biber {input = "jinysoubor"}
@@ -228,18 +228,18 @@ Make:biber {input = "jinysoubor"}
 Příkazy \texttt{Make:image} a \texttt{Make:match} se spouští na výstupních
 souborech. Jejich  prvním argument je regulární výraz, kterým se testují jména
 souborů, druhým je příkaz, který se spustí, pokud jméno souboru vyhovuje
-hledanému vzoru. Příkaz může být jednak šablona s programem, nebo Lua funkce.
+hledanému vzoru. Příkaz může být jednak šablona s~programem, nebo Lua funkce.
 
-Při konverzi obrázků se používají proměnné, které nejsou k dispozici v
-kompilačních příkazech, konkrétně \texttt{source} obsahuje jméno \texttt{.idv}
-souboru, \texttt{output} je název obrázku a \texttt{page} udává číslo stránky v
-\texttt{.idv} souboru. 
+Při konverzi obrázků se používají proměnné, které nejsou k~dispozici
+v~kompilačních příkazech, konkrétně \texttt{source} obsahuje jméno \texttt{.idv}
+souboru, \texttt{output} je název obrázku a \texttt{page} udává číslo stránky
+v~\texttt{.idv} souboru. 
 
 Příkaz \texttt{Make:match} umožňuje upravovat výstupní soubory. Proměnná
-\texttt{filename} obsahuje název výstupního souboru. V našem případě je tento
+\texttt{filename} obsahuje název výstupního souboru. V~našem případě je tento
 příkaz spuštěn dvakrát, první příklad ukazuje použití filtrů, které jsou funkce
-v jazyce Lua. V tomto případě se jedná o filtr, který napravuje problém
-způsobený příkazem \verb|\hrule|, jenž TeX4ht nemůže redefinovat a v HTML
+v~jazyce Lua. V~tomto případě se jedná o~filtr, který napravuje problém
+způsobený příkazem \verb|\hrule|, jenž TeX4ht nemůže redefinovat a v~HTML
 souboru se projeví jako řada znaků \verb|_|. Jako argument pro příkaz
 \texttt{filter} lze zadat více filtrů, kromě předdefinovaných jako je
 \texttt{hruletohr}, lze zadat i vlastní funkce:
@@ -253,7 +253,7 @@ Tento příklad není úplně užitečný, neboť změní všechna písmena \uv{
 zpracovávaném dokumentu na \uv{z}, včetně HTML tagů, ovšem jako ukázka snad
 postačí.
 
-Pokud sestavovací soubor pojmenujete stejně jako název dokumentu s příponou
+Pokud sestavovací soubor pojmenujete stejně jako název dokumentu s~příponou
 \texttt{.mk4}, bude spouštěn automaticky, jinak ho lze zadat jako parametr
 \texttt{-e} pro TeX4ebook:
 
@@ -278,7 +278,7 @@ Příliš žluťoučký kůň \textit{úpěl}
 \end{document}
 \end{verbatim}
 
-Po kompilaci se vygeneruje HTML soubor s následujícím obsahem:
+Po kompilaci se vygeneruje HTML soubor s~následujícím obsahem:
 
 
 \begin{verbatim}
@@ -291,18 +291,18 @@ class="ecbx-1000">é </span><span
 class="ecbx-1000">ódy </span>
 \end{verbatim}
 
-Vygenerované soubory jsou ponechány i v adresáři s \TeX ovým dokumentem, lze
+Vygenerované soubory jsou ponechány i v~adresáři s~\TeX ovým dokumentem, lze
 je tedy snadno zkontrolovat ve WWW prohlížeči.
 Slova která byla zvýrazněna jiným, než základním řezem písma, byla rozdělena do
-několika HTML elementů. Ve vykresleném dokumentu se text zobrazí v pořádku,
-nicméně měli bychom tento problém vyřešit. Jedná se o chybu při konverzi
+několika HTML elementů. Ve vykresleném dokumentu se text zobrazí v~pořádku,
+nicméně měli bychom tento problém vyřešit. Jedná se o~chybu při konverzi
 \texttt{DVI} souboru příkazem \texttt{tex4ht}, který se snaží přidat
-formátování podle písma detekovaného v \texttt{DVI} souboru. Díky této
+formátování podle písma detekovaného v~\texttt{DVI} souboru. Díky této
 funkcionalitě není třeba vytvářet konfigurace pro všechna uživatelská makra,
 základní textové formátování, jako jsou řezy a velikost písma, je zachováno.
-Pokud však TeX4ht narazí na znak s diakritikou, uzavře aktuální element,
+Pokud však TeX4ht narazí na znak s~diakritikou, uzavře aktuální element,
 přestože nedochází ke změně písma. Tento problém lze vyřešit jednoduchou
-konfigurací pro dotčená makra v konfiguračním souboru, pojmenovaném například
+konfigurací pro dotčená makra v~konfiguračním souboru, pojmenovaném například
 \texttt{myconfig.cfg}:
 
 
@@ -346,28 +346,28 @@ Před příkazem \verb|\Preamble| můžeme nahrávat dodatečné balíčky pomoc
 \verb|\RequirePackage|. Příkaz \verb|\Preamble| umožňuje specifikovat volby pro
 které ovlivňují nahrávání konfigurací. Jsou oddělené čárkami a povinná je
 minimálně volba \texttt{html} nebo \texttt{xhtml}, která musí být na první
-pozici. Pro Epub je třeba používat volbu druhou z nich. 
+pozici. Pro Epub je třeba používat volbu druhou z~nich. 
 
 Po příkazu \verb|\Preamble| můžete přidávat konfigurace pro
-háčky, kaskádové styly, nebo měnit definice příkazů definovaných v preamble
-dokumentu, ať již ve vkládaných balíčcích, nebo přímo v dokumentu.
+háčky, kaskádové styly, nebo měnit definice příkazů definovaných v~preamble
+dokumentu, ať již ve vkládaných balíčcích, nebo přímo v~dokumentu.
 Použití \verb|\begin{document}| je povinné, definice, které po něm následují
 jsou spuštěny až na začátku dokumentu. Konfigurace končí příkazem
 \verb|\EndPreamble|.
 
-V našem příkladu užíváme dvě konfigurace, pro příkazy \verb|textbf| a
+V~našem příkladu užíváme dvě konfigurace, pro příkazy \verb|textbf| a
 \verb|textit|. Příkaz \verb|\Configure| má variabilní počet argumentů, pro
 jednotlivé konfigurace je třeba konzultovat dokumentaci\footnote{Dokumentace
-  není úplně silnou stránkou projektu TeX4ht. Základní informace o konfiguraci
-  se nachází na WWW stránkách projektu, detailnější informace můžete získat z
-  dokumentace vygenerované ze zdrojových kódů TeX4ht, umístěných na stránkách
-\url{http://michal-h21.github.io/src4ht/}. Jedná se především o dokumenty
+  není úplně silnou stránkou projektu TeX4ht. Základní informace o~konfiguraci
+  se nachází na WWW stránkách projektu, detailnější informace můžete získat
+z~dokumentace vygenerované ze zdrojových kódů TeX4ht, umístěných na stránkách
+\url{http://michal-h21.github.io/src4ht/}. Jedná se především o~dokumenty
 \texttt{tex4ht-info} a \texttt{tex4ht-html4}.}. 
 
-V tomto konkrétním případě užívá příkaz \verb|\Configure| dva argumenty, jedná
-se o kód, který se vloží na začátek a na konec konfigurovaného textu. Příkazy
-\verb|\NoFonts| a \verb|\EndNoFonts| zakáží a povolí zpracování fontů z
-\texttt{DVI} souboru, čímž vyřešíme problém s rozdělenými slovy. Příkaz
+V~tomto konkrétním případě užívá příkaz \verb|\Configure| dva argumenty, jedná
+se o~kód, který se vloží na začátek a na konec konfigurovaného textu. Příkazy
+\verb|\NoFonts| a \verb|\EndNoFonts| zakáží a povolí zpracování fontů
+z~\texttt{DVI} souboru, čímž vyřešíme problém s~rozdělenými slovy. Příkaz
 \verb|\HCode| vkládá HTML kód do dokumentu.
 
 
@@ -375,7 +375,7 @@ se o kód, který se vloží na začátek a na konec konfigurovaného textu. Př
 
 Výsledný e-book vypadá poměrně stroze, pokud chcete vylepšit jeho vzhled, je
 možné použít kaskádové styly. Pro jednoduché úpravy je určený příkaz
-\verb|\Css|, který lze použít v konfiguračním souboru:
+\verb|\Css|, který lze použít v~konfiguračním souboru:
 
 \begin{verbatim}
 \Preamble{xhtml}
@@ -384,17 +384,17 @@ možné použít kaskádové styly. Pro jednoduché úpravy je určený příkaz
 \begin{document}
 \end{verbatim}
 
-Tímto příkazem obarvíme text v kurzívě modrou barvou. 
+Tímto příkazem obarvíme text v~kurzívě modrou barvou. 
 
 Pro složitější změny je lepší vložit kompletní CSS styl. Existuje řada
 projektů stylů, které se zaměřují na dobrou typografii na webu. Můžeme využít
 například Scale.css\footlink{https://github.com/viljamis/Scale}, který vytvořil
 finský designér  Viljami Salminen. Tento styl je responzivní, což znamená že
 velikost jednotlivých prvků dokumentu se přizpůsobuje velikosti zobrazované
-plochy, tak aby byla vždy optimální z hlediska dobré čitelnosti. 
+plochy, tak aby byla vždy optimální z~hlediska dobré čitelnosti. 
 
 Pro vložení externího stylu můžeme využít příkaz \verb|\AddCss|, který
-poskytuje balíček \texttt{include4ht}. Tento balíček je jeden z balíčků, které
+poskytuje balíček \texttt{include4ht}. Tento balíček je jeden z~balíčků, které
 tvoří projekt \texttt{helpers4ht}. Ten má za cíl zjednodušit práci se systémem
 TeX4ht a obsahuje balíčky pro vkládání kaskádových stylů, JavaScriptových
 programů, tvorbu rejstříků a další. Balíček pro vkládání fontů můžeme použít
@@ -404,8 +404,8 @@ Epub~3 podporuje vkládání písem ve formátu OpenType nebo jeho zjednodušen�
 verzi určené pro web, WOFF. Je vhodné využívat OpenSource písma, vložením
 komerčního písma bychom se mohli dopustit jeho ilegálního šíření.  Vhodná písma
 jsou například EB Garamond, Linux Libertine, nebo Latin Modern. Pro každý řez
-písma je třeba stáhnout odpovídající OpenType soubor a umístit ho do adresáře s
-dokumentem, stejně tak je třeba umístit zde externí kaskádové styly. Upravený
+písma je třeba stáhnout odpovídající OpenType soubor a umístit ho do adresáře
+s~dokumentem, stejně tak je třeba umístit zde externí kaskádové styly. Upravený
 konfigurační soubor:
 
 
@@ -428,7 +428,7 @@ konfigurační soubor:
 
 Příkazy \verb|\NormalFont|, \verb|\BoldFont| a \verb|\ItalicFont| vloží fonty.
 První parametr určuje jméno rodiny, na které se dále odkazujeme. Příkaz
-\verb|\Configure{@HEAD}| vkládá kód do hlavičky HTML dokumentu. V tomto případě
+\verb|\Configure{@HEAD}| vkládá kód do hlavičky HTML dokumentu. V~tomto případě
 je použit pro vložení kaskádového stylu, který vybírá námi definovanou rodinu
 \textit{EBGaramond} jako hlavní písmo dokumentu.
 
@@ -447,7 +447,7 @@ matematiku na WWW stránkách, ovšem je poměrně náročná na výkon a na tab
 nebo mobilních telefonech trvá delší chvíli, než se stránky obsahující
 matematiku vykreslí.
 
-V případě ostatních formátů je situace ještě horší, v případě Epub i Mobi lze
+V~případě ostatních formátů je situace ještě horší, v~případě Epub i Mobi lze
 matematiku zobrazit pouze za pomoci obrázků, což pro TeX4ht není problém,
 naopak je to jeho výchozí nastavení. Problémem je, že tyto obrázky nebudou
 sedět na účaří a velikost a typ písma nebudou odpovídat okolnímu textu. Zatím
@@ -455,8 +455,8 @@ jsem nenalezl uspokojivé a univerzální řešení těchto problémů, proto do
 pro matematické e-booky používat Epub~3  podporou MathML, jehož podpora ve
 čtecích zařízeních se může zlepšit.
 
-Podpora MathML se může zapnout pomocí přepínače \texttt{mathml} umístěného v
-příkazu \verb|\Preamble| v konfiguračním souboru, nebo ve druhém argumentu
+Podpora MathML se může zapnout pomocí přepínače \texttt{mathml} umístěného
+v~příkazu \verb|\Preamble| v~konfiguračním souboru, nebo ve druhém argumentu
 příkazu \texttt{tex4ebook}:
 
 \begin{verbatim}
@@ -471,7 +471,7 @@ je třeba vytvořit pro něj \texttt{.4ht} soubor. Jeho tvorbu si ukážeme na
 jednoduchém příkladu.
 
 Mějme balíček pro tvorbu vzdělávacích dokumentů, který umožňuje tvorbu dvou
-verzí dokumentu -- pro studenty a pro učitele, s poznámkami, které se ve
+verzí dokumentu -- pro studenty a pro učitele, s~poznámkami, které se ve
 studentské verzi nezobrazují. Balíček bude mít přepínač, kterým se bude vybírat
 mezi zobrazeními, pro každou verzi bude vytvořen soubor, který bude sloužit pro
 kompilaci a který bude vkládat samotný text dokumentu.
@@ -480,7 +480,7 @@ Budeme také využívat rozšířených metadat, která poskytuje formát Epub~3
 Vzniklo několik profilů, které specifikují metadata podle určení dokumentu.
 Pro tvorbu vzdělávacích dokumentů vznikl profil \textit{Epub for
 Education}\footlink{http://www.idpf.org/epub/profiles/edu/spec/}, který
-využijeme v našem dokumentu. 
+využijeme v~našem dokumentu. 
 
 Balíček \texttt{edupub.sty} je poměrně prostý:
 
@@ -501,7 +501,7 @@ Balíček \texttt{edupub.sty} je poměrně prostý:
 \end{verbatim}
 
 Definuje pouze příkaz \verb|\teacherinfo|, který vypíše poznámky pro učitele
-pokud je balíček nahrán s volbou \texttt{teacher}. Nyní vytvoříme konfigurační
+pokud je balíček nahrán s~volbou \texttt{teacher}. Nyní vytvoříme konfigurační
 soubor pro TeX4ht, \texttt{edupub.4ht}:
 
 
@@ -524,25 +524,25 @@ soubor pro TeX4ht, \texttt{edupub.4ht}:
 {\HCode{</span>}}
 \end{verbatim}
 
-Konfigurace \verb|\Configure{OpfMetadata}| vloží informace do souboru s
-metadaty pro dokument. V tomto případě označí verzi dokumentu pro učitele.
+Konfigurace \verb|\Configure{OpfMetadata}| vloží informace do souboru
+s~metadaty pro dokument. V~tomto případě označí verzi dokumentu pro učitele.
 
 Příkaz \verb|\NewConfigure| deklaruje konfigurační háčky, které se vkládají do
 redefinovaných příkazů. První argument je název konfigurace, druhý je počet
 háčků, které budou vytvořeny. Pokud chceme vkládat nějaký kód před příkaz a po
 jeho skončení, stačí nám dva háčky. Háčky jsou příkazy ve formátu
-\verb|\[a-i]:název háčku|, v našem případě jsou vytvořeny dva,
+\verb|\[a-i]:název háčku|, v~našem případě jsou vytvořeny dva,
 \verb|\a:teacherinfo| a \verb|\b:teacherinfo|. Pomocí příkazu \verb|\let| si
 můžeme uložit původní definici příkazu, který chceme upravit a poté použít
 například příkaz \verb|\renewcommand| pro úpravu definice. 
 
 Nakonec konfigurujeme naše háčky promocí \verb|\Configure{teacherinfo}|,
-poznámky pro učitele označíme elementem \texttt{span} s atributem
+poznámky pro učitele označíme elementem \texttt{span} s~atributem
 \texttt{epub:type}, který Epub~3 používá pro sémantické značkování textu. Tento
 konkrétní typ je součástí profilu \textit{Epub for Education}.
 
 Naše ukázková publikace tedy bude mít dvě verze, jednu pro studenty a druhou
-pro učitele. Pro každou z nich vytvoříme řídící dokument, který bude obsahovat
+pro učitele. Pro každou z~nich vytvoříme řídící dokument, který bude obsahovat
 pouze hlavičku dokumentu, samotný text se bude vkládat a bude pro obě verze
 stejný. 
 
@@ -564,7 +564,7 @@ volby \texttt{teacher}. Samotný text dokumentu může mít následující obsah
 \begin{verbatim}
 \newcommand\odpoved[1]{\teacherinfo{\\ #1}}
 \begin{enumerate}
-\item Jak se jmenuje největší had vyskytující se v České republice?
+\item Jak se jmenuje největší had vyskytující se v~České republice?
 \odpoved{Užovka stromová}
 \end{enumerate}
 \end{verbatim}
