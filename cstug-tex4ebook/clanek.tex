@@ -10,7 +10,8 @@
 \newcommand\citovano[1][2016-14-10]{\online{#1}}
 \makeatletter
 % Křížové odkazy na literaturu
-\newcommand\mybibitem[2][]{\phantomsection\edef\@currentlabel{#1, \year}\label{#2}}
+\def\year{2016}
+\newcommand\mybibitem[2][]{\phantomsection\edef\@currentlabel{#1, \ifx\Rok\detokenize{*}\year\else\Rok\fi}\label{#2}}
 \renewcommand\cite[1]{(\ref{#1})}
 \makeatother
 \usepackage{bib}
@@ -452,11 +453,11 @@ prohlížečích je špatná, všechny ho podporují pouze částečně.
 
 Formát MathML je součástí specifikace Epub~3, teoreticky by ho tedy měla čtecí
 zařízení podporovat, realita je ovšem odlišná\footnote{Tabulku shrnující
-  podporu lze nalézt na stránkách knihovny MathJax~\cite{bib:mathjax}}. Pokud MathML
-podporují, je to za pomoci knihovny MathJax. Ta dokáže výborně vykreslit
-matematiku na WWW stránkách, ovšem je poměrně náročná na výkon a na tabletech
-nebo mobilních telefonech trvá delší chvíli, než se stránky obsahující
-matematiku vykreslí.
+  podporu v různých čtecích zařízeních lze nalézt na stránkách knihovny
+MathJax~\cite{bib:mathjax}}. Pokud MathML podporují, je to za pomoci knihovny
+MathJax. Ta dokáže výborně vykreslit matematiku na WWW stránkách, ovšem je
+poměrně náročná na výkon a na tabletech nebo mobilních telefonech trvá delší
+chvíli, než se stránky obsahující matematiku vykreslí.
 
 V~případě ostatních formátů je situace ještě horší, v~případě Epub i Mobi lze
 matematiku zobrazit pouze za pomoci obrázků, což pro TeX4ht není problém,
@@ -593,14 +594,27 @@ konferenci nebo na issue tracker na stránkách
 nalézt také na serveru TeX.sx, pod heslem \texttt{tex4ht}:
 \url{http://tex.stackexchange.com/questions/tagged/tex4ht} 
 
+% Článek je vhodný k publikaci ve Zpravodaji CSTUG ve stávající podobě. Je-li
+% to možné, doporučil bych však mírné rozšíření článku o informace, jaká je
+% cílová skupina konvertoru, kde a jakým výsledkem byl použit a na jaký typ
+% materiálů.  Cílí skript i na vydavatelství elektronických knih? Nebo pouze na
+% příležitostné amatérské uživatele?  Tyto informace by bylo vhodné uvést v
+% závěru (namísto stávajícího závěru, obsahujícího mimo jiné výzvu k připojení
+% se do mailové konference, což je obsah který mi do závěru článku příliš
+% nesedí).
 
-\bbib
+% 1) chybi odkazy na autorske clanky o TeX4ht, napr.
+% https://www.tug.org/TUGboat/tb25-1/gurari.pdf nebo kapitolu 4 The LaTeX Web
+% Companion.
+
+\bbib%
 \def\year{2016}
- \publS{
+
+ \publS{%
    \autor{Pettarin, Alberto} 
    \nazev{Aeneas} 
    \www{https://www.readbeyond.it/aeneas/} 
-   \verze{1}
+   \verze{1.6}
    \citovano 
    \mybibitem[Petarin]{bib:aeneas}
  }
@@ -609,21 +623,30 @@ nalézt také na serveru TeX.sx, pod heslem \texttt{tex4ht}:
  \publS{\autor{Pettarin, Alberto}
  \nazev{Menestrello}  
  \www{https://www.readbeyond.it/menestrello/index.html} 
- \def\year{2016b}
+ \verze{3.0.0}
  \citovano\mybibitem[Petarin]{bib:menestrello}
  }
 
- \publS{\mybibitem{bib:latex2html} \nazev{LaTeX2HTML}. \www{http://www.latex2html.org/} \citovano}
+ \publS{\mybibitem[Drakos]{bib:latex2html} \autor{Drakos, Nikos} \nazev{LaTeX2HTML}  \verze{98.1} \www{http://www.latex2html.org/} \citovano}
 
-  \mybibitem{bib:latexml}  Bruce Miller. \nazev{LaTeXML}. \www{http://dlmf.nist.gov/LaTeXML/} \citovano.
-  \mybibitem{bib:pandoc} \nazev{Pandoc}. \www{http://pandoc.org/} \citovano.
-  \mybibitem{bib:tex4ht} Eitan Gurari. \nazev{TeX4ht}. \www{http://www.tug.org/tex4ht/} \citovano.
-  \mybibitem{bib:tex4ebook} Michal Hoftich. \nazev{TeX4ebook}. \www{https://www.ctan.org/pkg/tex4ebook} \citovano.
-  \mybibitem{bib:make4ht} Michal Hoftich. \nazev{Make4ht}. \www{https://www.ctan.org/pkg/make4ht} \citovano.
-  \mybibitem{bib:viljamis} Viljami Salminen. \nazev{Scale.css}. \www{https://github.com/viljamis/Scale} \citovano.
-  \mybibitem{bib:edupub} The EPUB Working Group. \nazev{EPUB for Education}. \www{http://www.idpf.org/epub/profiles/edu/spec/} \citovano.
-  \mybibitem{bib:ipdf}  The International Digital Publishing Forum. \nazev{EPUB 3}. \www{http://idpf.org/epub/30} \citovano.
-  \mybibitem{bib:mathjax} The MathJax Consortium. \nazev{EPUB3 Reading systems overview}. \www{http://docs.mathjax.org/en/latest/misc/epub.html} \citovano.
+ \publS{ \mybibitem[Miller]{bib:latexml}  \autor{Miller, Bruce} \verze{0.8} \nazev{LaTeXML} \www{http://dlmf.nist.gov/LaTeXML/} \citovano}
+
+ \publS{ \mybibitem[MacFarlane]{bib:pandoc} \autor{MacFarlane, John} \nazev{Pandoc} \www{http://pandoc.org/} \citovano \verze{1.17}}
+
+ \publS{\rok{1997} \mybibitem[Gurari]{bib:tex4ht} \autor{Gurari, Eitan} \verze{200} \nazev{TeX4ht} \www{http://www.tug.org/tex4ht/} \citovano}
+ 
+ \publS{\rok{2016a}\mybibitem[Hoftich]{bib:tex4ebook} \autor{Hoftich, Michal}\nazev{TeX4ebook} \verze{0.1d} \www{https://www.ctan.org/pkg/tex4ebook} \citovano}
+
+ \publS{\rok{2016b} \mybibitem[Hoftich]{bib:make4ht} \autor{Hoftich, Michal} \nazev{Make4ht}\verze{0.1b} \www{https://www.ctan.org/pkg/make4ht} \citovano}
+
+ \publS{\rok{2012}\mybibitem[Salminen]{bib:viljamis} \autor{Salminen, Viljami} \nazev{Scale.css} \verze{0.1} \www{https://github.com/viljamis/Scale} \citovano}
+
+ \publP{\rok{2016}\mybibitem[The EPUB Worging Group]{bib:edupub} \autor{The EPUB Working Group} \nazev{EPUB for Education} \www{http://www.idpf.org/epub/profiles/edu/spec/} \citovano}
+ 
+ \publP{\mybibitem[IDPF]{bib:ipdf}  \autor{The International Digital Publishing Forum} \nazev{EPUB 3} \www{http://idpf.org/epub/30} \citovano}
+
+ \publP{ \mybibitem[The Mathjax Consortium]{bib:mathjax} \autor{The MathJax Consortium} \nazev{EPUB3 Reading systems overview} \www{http://docs.mathjax.org/en/latest/misc/epub.html} \citovano}
+
 \ebib
 
 \begin{summary}
