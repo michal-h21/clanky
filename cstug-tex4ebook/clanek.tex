@@ -4,15 +4,23 @@
 \usepackage[utf8]{inputenc}
 
 % \usepackage[czech]{babel}
-\usepackage{url}
+\usepackage{hyperref}
 \usepackage{metalogo}
 % \newcommand\footlink[1]{\footnote{\url{#1}}}
-\newcommand\citovano[1][14.\,10.\,2016]{[cit. #1]}
+\newcommand\citovano[1][2016-14-10]{\online{#1}}
+\makeatletter
+% Křížové odkazy na literaturu
+\newcommand\mybibitem[2][]{\phantomsection\edef\@currentlabel{#1, \year}\label{#2}}
+\renewcommand\cite[1]{(\ref{#1})}
+\makeatother
+\usepackage{bib}
+
 \title{Elektronické knihy a systém TeX4ebook}
 \EnglishTitle{E-books and TeX4ebook system}
 \podpis{Michal Hoftich}
 \begin{document}
 \author{Michal Hoftich}
+
 \maketitle
 \begin{abstract}
 Článek pojednává o~konverzi dokumentů vytvořených v~\TeX u do formátů
@@ -585,21 +593,38 @@ konferenci nebo na issue tracker na stránkách
 nalézt také na serveru TeX.sx, pod heslem \texttt{tex4ht}:
 \url{http://tex.stackexchange.com/questions/tagged/tex4ht} 
 
-\begin{thebibliography}{plain}
-  \bibitem{bib:aeneas} Alberto Pettarin. \textit{Aeneas}. \url{https://www.readbeyond.it/aeneas/} \citovano.
-  \bibitem{bib:menestrello} Alberto Pettarin. \textit{Menestrello}.  \url{https://www.readbeyond.it/menestrello/index.html} \citovano.
-  \bibitem{bib:latex2html} \textit{LaTeX2HTML}. \url{http://www.latex2html.org/} \citovano.
-  \bibitem{bib:latexml}  Bruce Miller. \textit{LaTeXML}. \url{http://dlmf.nist.gov/LaTeXML/} \citovano.
-  \bibitem{bib:pandoc} \textit{Pandoc}. \url{http://pandoc.org/} \citovano.
-  \bibitem{bib:tex4ht} Eitan Gurari. \textit{TeX4ht}. \url{http://www.tug.org/tex4ht/} \citovano.
-  \bibitem{bib:tex4ebook} Michal Hoftich. \textit{TeX4ebook}. \url{https://www.ctan.org/pkg/tex4ebook} \citovano.
-  \bibitem{bib:make4ht} Michal Hoftich. \textit{Make4ht}. \url{https://www.ctan.org/pkg/make4ht} \citovano.
-  \bibitem{bib:viljamis} Viljami Salminen. \textit{Scale.css}. \url{https://github.com/viljamis/Scale} \citovano.
-  \bibitem{bib:edupub} The EPUB Working Group. \textit{EPUB for Education}. \url{http://www.idpf.org/epub/profiles/edu/spec/} \citovano.
-  \bibitem{bib:ipdf}  The International Digital Publishing Forum. \textit{EPUB 3}. \url{http://idpf.org/epub/30} \citovano.
-  \bibitem{bib:mathjax} The MathJax Consortium. \textit{EPUB3 Reading systems overview}. \url{http://docs.mathjax.org/en/latest/misc/epub.html} \citovano.
 
-\end{thebibliography}
+\bbib
+\def\year{2016}
+ \publS{
+   \autor{Pettarin, Alberto} 
+   \nazev{Aeneas} 
+   \www{https://www.readbeyond.it/aeneas/} 
+   \verze{1}
+   \citovano 
+   \mybibitem[Petarin]{bib:aeneas}
+ }
+
+ 
+ \publS{\autor{Pettarin, Alberto}
+ \nazev{Menestrello}  
+ \www{https://www.readbeyond.it/menestrello/index.html} 
+ \def\year{2016b}
+ \citovano\mybibitem[Petarin]{bib:menestrello}
+ }
+
+ \publS{\mybibitem{bib:latex2html} \nazev{LaTeX2HTML}. \www{http://www.latex2html.org/} \citovano}
+
+  \mybibitem{bib:latexml}  Bruce Miller. \nazev{LaTeXML}. \www{http://dlmf.nist.gov/LaTeXML/} \citovano.
+  \mybibitem{bib:pandoc} \nazev{Pandoc}. \www{http://pandoc.org/} \citovano.
+  \mybibitem{bib:tex4ht} Eitan Gurari. \nazev{TeX4ht}. \www{http://www.tug.org/tex4ht/} \citovano.
+  \mybibitem{bib:tex4ebook} Michal Hoftich. \nazev{TeX4ebook}. \www{https://www.ctan.org/pkg/tex4ebook} \citovano.
+  \mybibitem{bib:make4ht} Michal Hoftich. \nazev{Make4ht}. \www{https://www.ctan.org/pkg/make4ht} \citovano.
+  \mybibitem{bib:viljamis} Viljami Salminen. \nazev{Scale.css}. \www{https://github.com/viljamis/Scale} \citovano.
+  \mybibitem{bib:edupub} The EPUB Working Group. \nazev{EPUB for Education}. \www{http://www.idpf.org/epub/profiles/edu/spec/} \citovano.
+  \mybibitem{bib:ipdf}  The International Digital Publishing Forum. \nazev{EPUB 3}. \www{http://idpf.org/epub/30} \citovano.
+  \mybibitem{bib:mathjax} The MathJax Consortium. \nazev{EPUB3 Reading systems overview}. \www{http://docs.mathjax.org/en/latest/misc/epub.html} \citovano.
+\ebib
 
 \begin{summary}
   This article describes the process of conversion of a  \TeX{} document to
