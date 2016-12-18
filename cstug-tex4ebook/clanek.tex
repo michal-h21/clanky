@@ -16,8 +16,8 @@
 \makeatother
 \usepackage{bib}
 
-\title{Elektronické knihy a systém TeX4ebook}
-\EnglishTitle{E-books and TeX4ebook system}
+\title{Elektronické knihy a systém \TeX{}4ebook}
+\EnglishTitle{E-books and \TeX{}4ebook system}
 \podpis{Michal Hoftich}
 \begin{document}
 \author{Michal Hoftich}
@@ -110,7 +110,7 @@ Pro konverzi \TeX u do HTML se dá použít řada nástrojů, nejrozšířeněj�
 LaTeX2HTML~\cite{bib:latex2html},
 LaTeXML~\cite{bib:latexml},
 Pandoc~\cite{bib:pandoc} a
-TeX4ht~\cite{bib:tex4ht}. První tři z~nich jsou založené na
+\TeX{}4ht~\cite{bib:tex4ht}. První tři z~nich jsou založené na
 zpracování \TeX ového dokumentu externím programem, který se snaží rozpoznat
 použitá makra a převést je na HTML. LaTeXML je z~nich nejpokročilejší, neboť 
 emuluje \TeX ovou expanzi maker a podporuje tudíž i uživatelská makra a
@@ -118,7 +118,7 @@ balíčky. Zbylé dva systémy podporují především základní příkazy \LaT
 složitějšími dokumenty mohou mít problém. Všechny podporují pouze \LaTeX,
 nikoli jiné formáty. 
 
-TeX4ht je sada maker, která se automaticky načítá do dokumentu a upravuje
+\TeX{}4ht je sada maker, která se automaticky načítá do dokumentu a upravuje
 definici jednotlivých příkazů tak, aby bylo možné vkládat formátovací značky
 podporovaných výstupních formátů (kromě HTML je to především OpenDocument
 Format, TEI nebo Docbook). Díky tomu, že pro překlad je používaný samotný \TeX,
@@ -126,20 +126,20 @@ neměl by být problém s~užíváním uživatelských maker a balíčků. Krom�
 podporuje i jiné formáty, například Plain, ovšem u~nich může být třeba upravit
 dokument. Pro překlad je možné použít současné nejpoužívanější \TeX ové enginy,
 tedy pdf\TeX, \XeTeX a \LuaTeX. Systém vytvářel Eitan Gurari, po jeho smrti
-vývoj převzal Karl Berry, CV Radhakrishnan a autor článku. Právě TeX4ht je
-použit jako základ pro TeX4ebook~\cite{bib:tex4ebook},
+vývoj převzal Karl Berry, CV Radhakrishnan a autor článku. Právě \TeX{}4ht je
+použit jako základ pro \TeX{}4ebook~\cite{bib:tex4ebook},
 systém pro konverzi \TeX u na e-booky.
 
-\section{TeX4ebook}
+\section{\TeX{}4ebook}
 
-TeX4ebook je systém pro konverzi \TeX u do formátů Epub, Epub~3 a Mobi, hlavní
+\TeX{}4ebook je systém pro konverzi \TeX u do formátů Epub, Epub~3 a Mobi, hlavní
 důraz je kladený na Epub~3. Hlavní výhodou oproti pouhé konverzi \TeX u do HTML
 a jeho následné konverzi na e-book externími nástroji je možnost získání
 různých metadat přímo ze zpracovávaného dokumentu. Systém emuluje základní
-postup kompilace používaný TeX4ht a přidává několik kroků navíc. Celý postup je
+postup kompilace používaný \TeX{}4ht a přidává několik kroků navíc. Celý postup je
 konfigurovatelný s~použitím sestavovacího skriptu.
 
-Základní postup je shodný s~TeX4ht a sestává ze tří kroků:
+Základní postup je shodný s~\TeX{}4ht a sestává ze tří kroků:
 
 \begin{enumerate}
   \item Kompilace dokumentu \TeX em. Ještě před načtením dokumentu je nahrán
@@ -171,7 +171,7 @@ Základní postup je shodný s~TeX4ht a sestává ze tří kroků:
     mohou být předány externím programům k~dalšímu zpracování.
 \end{enumerate} 
 
-TeX4ht používá pro kompilaci řadu skriptů, které se liší použitým \TeX ovým
+\TeX{}4ht používá pro kompilaci řadu skriptů, které se liší použitým \TeX ovým
 formátem, enginem a výstupním formátem. Všechny provádí tři kompilační kroky
 popsané výše a předávají jednotlivým příkazům argumenty v~uvozovkách.
 Například pro vytvoření dokumentu ve formátu XHTML a kódování \texttt{UTF-8} je
@@ -181,7 +181,7 @@ možné použít následující příkaz:
 htlatex filename.tex "xhtml,charset=utf-8" " -utf8 -cunihtf"
 \end{verbatim}
 
-Tento postup není úplně uživatelsky přívětivý, proto TeX4ebook umožňuje
+Tento postup není úplně uživatelsky přívětivý, proto \TeX{}4ebook umožňuje
 použít pro základní konfiguraci přepínače, známé z~běžných příkazů užívaných
 například v~Linuxu.
 
@@ -192,18 +192,18 @@ tex4ebook -f epub3 filename.tex
 Tento příkaz vytvoří soubor \texttt{filename.epub} ve formátu Epub~3, kódování
 \texttt{UTF-8} je použito automaticky. 
 
-Hlavní rozdíl TeX4ebook oproti TeX4ht spočívá ve třetím kompilačním kroku.
+Hlavní rozdíl \TeX{}4ebook oproti \TeX{}4ht spočívá ve třetím kompilačním kroku.
 Příkaz \texttt{t4ht} je použit pouze pro vytvoření CSS souboru, konverzi
-obrázků a spouštění externích příkazů řídí TeX4ebook sám. Kromě toho je možné
+obrázků a spouštění externích příkazů řídí \TeX{}4ebook sám. Kromě toho je možné
 spouštět příkazy mezi jednotlivými kompilacemi \TeX u, například po první
 kompilaci a tvorbě pomocných souborů je možné spustit příkazy pro tvorbu
 rejstříku a bibliografie. 
 
 Postup kompilace je možné řídit pomocí sestavovacích skriptů pro
 Make4ht~\cite{bib:make4ht}. To je sestavovací program
-pro TeX4ht, který původně vznikal jako součást TeX4ebook, ale postupně se
+pro \TeX{}4ht, který původně vznikal jako součást \TeX{}4ebook, ale postupně se
 vyvinul do samostané aplikace a knihovny, která nahrazuje skripty používané pro
-kompilaci TeX4ht.
+kompilaci \TeX{}4ht.
 
 Sestavovací skripty jsou programy v~jazyce Lua:
 
@@ -252,7 +252,7 @@ Příkaz \texttt{Make:match} umožňuje upravovat výstupní soubory. Proměnná
 \texttt{filename} obsahuje název výstupního souboru. V~našem případě je tento
 příkaz spuštěn dvakrát, první příklad ukazuje použití filtrů, které jsou funkce
 v~jazyce Lua. V~tomto případě se jedná o~filtr, který napravuje problém
-způsobený příkazem \verb|\hrule|, jenž TeX4ht nemůže redefinovat a v~HTML
+způsobený příkazem \verb|\hrule|, jenž \TeX{}4ht nemůže redefinovat a v~HTML
 souboru se projeví jako řada znaků \verb|_|. Jako argument pro příkaz
 \texttt{filter} lze zadat více filtrů, kromě předdefinovaných jako je
 \texttt{hruletohr}, lze zadat i vlastní funkce:
@@ -268,16 +268,16 @@ postačí.
 
 Pokud sestavovací soubor pojmenujete stejně jako název dokumentu s~příponou
 \texttt{.mk4}, bude spouštěn automaticky, jinak ho lze zadat jako parametr
-\texttt{-e} pro TeX4ebook:
+\texttt{-e} pro \TeX{}4ebook:
 
 \begin{verbatim}
 tex4ebook -f epub3 -e buildfile.mk4 filename.tex
 \end{verbatim}
 
-\section{Konfigurační soubor pro TeX4ht}
+\section{Konfigurační soubor pro \TeX{}4ht}
 
 Pro vložení vlastních HTML tagů do konfigurovatelných háčků, nebo vlastních CSS
-instrukcí můžeme použít konfigurační soubor pro TeX4ht. Možnosti konfigurace si
+instrukcí můžeme použít konfigurační soubor pro \TeX{}4ht. Možnosti konfigurace si
 ukážeme na jednoduchém \TeX ovém souboru:
 
 \begin{verbatim}
@@ -313,7 +313,7 @@ nicméně měli bychom tento problém vyřešit. Jedná se o~chybu při konverzi
 formátování podle písma detekovaného v~\texttt{DVI} souboru. Díky této
 funkcionalitě není třeba vytvářet konfigurace pro všechna uživatelská makra,
 základní textové formátování, jako jsou řezy a velikost písma, je zachováno.
-Pokud však TeX4ht narazí na znak s~diakritikou, uzavře aktuální element,
+Pokud však \TeX{}4ht narazí na znak s~diakritikou, uzavře aktuální element,
 přestože nedochází ke změně písma. Tento problém lze vyřešit jednoduchou
 konfigurací pro dotčená makra v~konfiguračním souboru, pojmenovaném například
 \texttt{myconfig.cfg}:
@@ -342,7 +342,7 @@ Výsledný HTML kód již vypadá mnohem lépe.
 <em>úpěl</em> <strong>ďábelské ódy</strong> 
   \end{verbatim}
 
-Konfigurační soubory pro TeX4ht mají pevnou základní strukturu:
+  Konfigurační soubory pro \TeX{}4ht mají pevnou základní strukturu:
 
 
       \begin{verbatim}
@@ -371,9 +371,9 @@ jsou spuštěny až na začátku dokumentu. Konfigurace končí příkazem
 V~našem příkladu užíváme dvě konfigurace, pro příkazy \verb|textbf| a
 \verb|textit|. Příkaz \verb|\Configure| má variabilní počet argumentů, pro
 jednotlivé konfigurace je třeba konzultovat dokumentaci\footnote{Dokumentace
-  není úplně silnou stránkou projektu TeX4ht. Základní informace o~konfiguraci
+  není úplně silnou stránkou projektu \TeX{}4ht. Základní informace o~konfiguraci
   se nachází na WWW stránkách projektu, detailnější informace můžete získat
-z~dokumentace vygenerované ze zdrojových kódů TeX4ht, umístěných na stránkách
+  z~dokumentace vygenerované ze zdrojových kódů \TeX{}4ht, umístěných na stránkách
 \url{http://michal-h21.github.io/src4ht/}. Jedná se především o~dokumenty
 \texttt{tex4ht-info} a \texttt{tex4ht-html4}.}. 
 
@@ -409,7 +409,7 @@ plochy, tak aby byla vždy optimální z~hlediska dobré čitelnosti.
 Pro vložení externího stylu můžeme využít příkaz \verb|\AddCss|, který
 poskytuje balíček \texttt{include4ht}. Tento balíček je jeden z~balíčků, které
 tvoří projekt \texttt{helpers4ht}. Ten má za cíl zjednodušit práci se systémem
-TeX4ht a obsahuje balíčky pro vkládání kaskádových stylů, JavaScriptových
+\TeX{}4ht a obsahuje balíčky pro vkládání kaskádových stylů, JavaScriptových
 programů, tvorbu rejstříků a další. Balíček pro vkládání fontů můžeme použít
 pro vložení fontů do našeho e-booku.
 
@@ -460,7 +460,7 @@ poměrně náročná na výkon a na tabletech nebo mobilních telefonech trvá d
 chvíli, než se stránky obsahující matematiku vykreslí.
 
 V~případě ostatních formátů je situace ještě horší, v~případě Epub i Mobi lze
-matematiku zobrazit pouze za pomoci obrázků, což pro TeX4ht není problém,
+matematiku zobrazit pouze za pomoci obrázků, což pro \TeX{}4ht není problém,
 naopak je to jeho výchozí nastavení. Problémem je, že tyto obrázky nebudou
 sedět na účaří a velikost a typ písma nebudou odpovídat okolnímu textu. Zatím
 jsem nenalezl uspokojivé a univerzální řešení těchto problémů, proto doporučuji
@@ -513,7 +513,7 @@ Balíček \texttt{edupub.sty} je poměrně prostý:
 
 Definuje pouze příkaz \verb|\teacherinfo|, který vypíše poznámky pro učitele
 pokud je balíček nahrán s~volbou \texttt{teacher}. Nyní vytvoříme konfigurační
-soubor pro TeX4ht, \texttt{edupub.4ht}:
+soubor pro \TeX{}4ht, \texttt{edupub.4ht}:
 
 
 \begin{verbatim}
@@ -581,18 +581,21 @@ volby \texttt{teacher}. Samotný text dokumentu může mít následující obsah
 \end{verbatim}
 
 \section{Závěr}
-Toto byl pouze jednoduchý příklad, na kterém jsem chtěl ukázat základní
-konfiguraci TeX4ht a pokročilé možnosti, které nabízí formát Epub~3. 
-Pokročilá konfigurace TeX4ht je složité téma a současný vývojový tým tohoto
-projektu se stále nachází spíše ve stadiu digitální archeologie, protože pro
-mnoho vlastností neexistuje dokumentace a princip jejich fungování se zjišťuje
-zkoumáním zdrojových kódů. Pokud byste se chtěli zapojit do projektu a
-například přidat podporu pro nový balíček, nebo nahlásit chybu na kterou jste
-narazili při zpracování svých dokumentů, můžete se zaregistrovat na mailovou
-konferenci nebo na issue tracker na stránkách
-\url{https://www.tug.org/tex4ht/}. Mnoho konkretních příkladů konfigurace lze
-nalézt také na serveru TeX.sx, pod heslem \texttt{tex4ht}:
-\url{http://tex.stackexchange.com/questions/tagged/tex4ht} 
+
+Článek představil základní použítí konvertoru 
+
+% Toto byl pouze jednoduchý příklad, na kterém jsem chtěl ukázat základní
+% konfiguraci TeX4ht a pokročilé možnosti, které nabízí formát Epub~3. 
+% Pokročilá konfigurace TeX4ht je složité téma a současný vývojový tým tohoto
+% projektu se stále nachází spíše ve stadiu digitální archeologie, protože pro
+% mnoho vlastností neexistuje dokumentace a princip jejich fungování se zjišťuje
+% zkoumáním zdrojových kódů. Pokud byste se chtěli zapojit do projektu a
+% například přidat podporu pro nový balíček, nebo nahlásit chybu na kterou jste
+% narazili při zpracování svých dokumentů, můžete se zaregistrovat na mailovou
+% konferenci nebo na issue tracker na stránkách
+% \url{https://www.tug.org/tex4ht/}. Mnoho konkretních příkladů konfigurace lze
+% nalézt také na serveru TeX.sx, pod heslem \texttt{tex4ht}:
+% \url{http://tex.stackexchange.com/questions/tagged/tex4ht} 
 
 % Článek je vhodný k publikaci ve Zpravodaji CSTUG ve stávající podobě. Je-li
 % to možné, doporučil bych však mírné rozšíření článku o informace, jaká je
@@ -611,6 +614,7 @@ nalézt také na serveru TeX.sx, pod heslem \texttt{tex4ht}:
 \def\year{2016}
 
  \publS{%
+   \rok{2016}
    \autor{Pettarin, Alberto} 
    \nazev{Aeneas} 
    \www{https://www.readbeyond.it/aeneas/} 
@@ -620,22 +624,23 @@ nalézt také na serveru TeX.sx, pod heslem \texttt{tex4ht}:
  }
 
  
- \publS{\autor{Pettarin, Alberto}
+ \publS{\rok{2016}
+   \autor{Pettarin, Alberto}
  \nazev{Menestrello}  
  \www{https://www.readbeyond.it/menestrello/index.html} 
  \verze{3.0.0}
  \citovano\mybibitem[Petarin]{bib:menestrello}
  }
 
- \publS{\mybibitem[Drakos]{bib:latex2html} \autor{Drakos, Nikos} \nazev{LaTeX2HTML}  \verze{98.1} \www{http://www.latex2html.org/} \citovano}
+ \publS{\rok{2016} \mybibitem[Drakos]{bib:latex2html} \autor{Drakos, Nikos} \nazev{LaTeX2HTML}  \verze{98.1} \www{http://www.latex2html.org/} \citovano}
 
- \publS{ \mybibitem[Miller]{bib:latexml}  \autor{Miller, Bruce} \verze{0.8} \nazev{LaTeXML} \www{http://dlmf.nist.gov/LaTeXML/} \citovano}
+ \publS{\rok{2016} \mybibitem[Miller]{bib:latexml}  \autor{Miller, Bruce} \verze{0.8} \nazev{LaTeXML} \www{http://dlmf.nist.gov/LaTeXML/} \citovano}
 
- \publS{ \mybibitem[MacFarlane]{bib:pandoc} \autor{MacFarlane, John} \nazev{Pandoc} \www{http://pandoc.org/} \citovano \verze{1.17}}
+ \publS{\rok{2016} \mybibitem[MacFarlane]{bib:pandoc} \autor{MacFarlane, John} \nazev{Pandoc} \www{http://pandoc.org/} \citovano \verze{1.17}}
 
  \publS{\rok{1997} \mybibitem[Gurari]{bib:tex4ht} \autor{Gurari, Eitan} \verze{200} \nazev{TeX4ht} \www{http://www.tug.org/tex4ht/} \citovano}
  
- \publS{\rok{2016a}\mybibitem[Hoftich]{bib:tex4ebook} \autor{Hoftich, Michal}\nazev{TeX4ebook} \verze{0.1d} \www{https://www.ctan.org/pkg/tex4ebook} \citovano}
+ \publS{\rok{2016a}\mybibitem[Hoftich]{bib:tex4ebook} \autor{Hoftich, Michal}\nazev{\TeX{}4ebook} \verze{0.1d} \www{https://www.ctan.org/pkg/tex4ebook} \citovano}
 
  \publS{\rok{2016b} \mybibitem[Hoftich]{bib:make4ht} \autor{Hoftich, Michal} \nazev{Make4ht}\verze{0.1b} \www{https://www.ctan.org/pkg/make4ht} \citovano}
 
@@ -643,15 +648,15 @@ nalézt také na serveru TeX.sx, pod heslem \texttt{tex4ht}:
 
  \publP{\rok{2016}\mybibitem[The EPUB Worging Group]{bib:edupub} \autor{The EPUB Working Group} \nazev{EPUB for Education} \www{http://www.idpf.org/epub/profiles/edu/spec/} \citovano}
  
- \publP{\mybibitem[IDPF]{bib:ipdf}  \autor{The International Digital Publishing Forum} \nazev{EPUB 3} \www{http://idpf.org/epub/30} \citovano}
+ \publP{\rok{2016}\mybibitem[IDPF]{bib:ipdf}  \autor{The International Digital Publishing Forum} \nazev{EPUB 3} \www{http://idpf.org/epub/30} \citovano}
 
- \publP{ \mybibitem[The Mathjax Consortium]{bib:mathjax} \autor{The MathJax Consortium} \nazev{EPUB3 Reading systems overview} \www{http://docs.mathjax.org/en/latest/misc/epub.html} \citovano}
+ \publP{\rok{2016} \mybibitem[The Mathjax Consortium]{bib:mathjax} \autor{The MathJax Consortium} \nazev{EPUB3 Reading systems overview} \www{http://docs.mathjax.org/en/latest/misc/epub.html} \citovano}
 
 \ebib
 
 \begin{summary}
   This article describes the process of conversion of a  \TeX{} document to
-  e-book using TeX4ebook system. Concrete examples of configuration and caveats
+  e-book using \TeX{}4ebook system. Concrete examples of configuration and caveats
   are provided.
 \end{summary}
 
