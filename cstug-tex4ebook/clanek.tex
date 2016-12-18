@@ -582,7 +582,20 @@ volby \texttt{teacher}. Samotný text dokumentu může mít následující obsah
 
 \section{Závěr}
 
-Článek představil základní použítí konvertoru 
+Článek představil základní použítí nástroje pro tvorbu elektronických knih
+\TeX{}ebook, shrnul rozdíly mezi jednotlivými formáty elektronických knih a
+zaměřil se na jeden z nich, Epub 3. Tento formát je vhodný i pro publikaci
+technicky a matematicky zaměřených publikací, tudíž je zajímavý i pro uživatele
+\TeX{}u. \TeX{}4ebook byl úspěšně použit pro tvorbu materiálů pro výuku matematiky 
+i několika menšími vydavateli.
+
+Samotný \TeX{}4ebook je nadstavba pro \TeX{}4ht, pro upravení vzhledu
+výsledného dokumentu je možné využít konfigurační nástroje, které \TeX{}4ht
+nabízí. Více informací lze nalézt v článku původního autora 
+\TeX{}4ht~\cite{bib:guraritug} nebo ve čtvrté kapitole knihy 
+\textit{\LaTeX{} Web Companion}~\cite{bib:goosens}.
+
+
 
 % Toto byl pouze jednoduchý příklad, na kterém jsem chtěl ukázat základní
 % konfiguraci TeX4ht a pokročilé možnosti, které nabízí formát Epub~3. 
@@ -613,6 +626,27 @@ volby \texttt{teacher}. Samotný text dokumentu může mít následující obsah
 \bbib%
 \def\year{2016}
 
+
+ \publS{\rok{2016} \mybibitem[Drakos]{bib:latex2html} \autor{Drakos, Nikos} \nazev{LaTeX2HTML}  \verze{98.1} \www{http://www.latex2html.org/} \citovano}
+
+ \publA{\rok{1999} \mybibitem[Goosens et al.]{bib:goosens} \autor{Goossens, Michel et al.} 
+ \nazev{The \LaTeX{} Web Companion: Integrating TeX, HTML, and XML} \nakl{Boston}{Addison-Wesley Professional} \rozsah{560 s.} \isbn{ 978-0201433111}}
+
+ \publS{\rok{1997} \mybibitem[Gurari]{bib:tex4ht} \autor{Gurari, Eitan} \verze{200} \nazev{TeX4ht} \www{http://www.tug.org/tex4ht/} \citovano}
+
+ \publE{\rok{2004} \mybibitem[Gurari]{bib:guraritug} \autor{Gurari, Eitan} \nazev{\TeX{}4ht: HTML Production} 
+ \nazevdok{TUGboat} \umist{39}{47} \issn{0896-3207} \cast{vol. 25, no. 1.} \www{https://www.tug.org/TUGboat/tb25-1/gurari.pdf} \citovano}
+
+ 
+ \publS{\rok{2016a}\mybibitem[Hoftich]{bib:tex4ebook} \autor{Hoftich, Michal}\nazev{\TeX{}4ebook} \verze{0.1d} \www{https://www.ctan.org/pkg/tex4ebook} \citovano}
+
+ \publS{\rok{2016b} \mybibitem[Hoftich]{bib:make4ht} \autor{Hoftich, Michal} \nazev{Make4ht}\verze{0.1b} \www{https://www.ctan.org/pkg/make4ht} \citovano}
+
+ \publS{\rok{2016} \mybibitem[Miller]{bib:latexml}  \autor{Miller, Bruce} \verze{0.8} \nazev{LaTeXML} \www{http://dlmf.nist.gov/LaTeXML/} \citovano}
+
+ \publS{\rok{2016} \mybibitem[MacFarlane]{bib:pandoc} \autor{MacFarlane, John} \nazev{Pandoc} \www{http://pandoc.org/} \citovano \verze{1.17}}
+
+
  \publS{%
    \rok{2016}
    \autor{Pettarin, Alberto} 
@@ -631,18 +665,6 @@ volby \texttt{teacher}. Samotný text dokumentu může mít následující obsah
  \verze{3.0.0}
  \citovano\mybibitem[Petarin]{bib:menestrello}
  }
-
- \publS{\rok{2016} \mybibitem[Drakos]{bib:latex2html} \autor{Drakos, Nikos} \nazev{LaTeX2HTML}  \verze{98.1} \www{http://www.latex2html.org/} \citovano}
-
- \publS{\rok{2016} \mybibitem[Miller]{bib:latexml}  \autor{Miller, Bruce} \verze{0.8} \nazev{LaTeXML} \www{http://dlmf.nist.gov/LaTeXML/} \citovano}
-
- \publS{\rok{2016} \mybibitem[MacFarlane]{bib:pandoc} \autor{MacFarlane, John} \nazev{Pandoc} \www{http://pandoc.org/} \citovano \verze{1.17}}
-
- \publS{\rok{1997} \mybibitem[Gurari]{bib:tex4ht} \autor{Gurari, Eitan} \verze{200} \nazev{TeX4ht} \www{http://www.tug.org/tex4ht/} \citovano}
- 
- \publS{\rok{2016a}\mybibitem[Hoftich]{bib:tex4ebook} \autor{Hoftich, Michal}\nazev{\TeX{}4ebook} \verze{0.1d} \www{https://www.ctan.org/pkg/tex4ebook} \citovano}
-
- \publS{\rok{2016b} \mybibitem[Hoftich]{bib:make4ht} \autor{Hoftich, Michal} \nazev{Make4ht}\verze{0.1b} \www{https://www.ctan.org/pkg/make4ht} \citovano}
 
  \publS{\rok{2012}\mybibitem[Salminen]{bib:viljamis} \autor{Salminen, Viljami} \nazev{Scale.css} \verze{0.1} \www{https://github.com/viljamis/Scale} \citovano}
 
