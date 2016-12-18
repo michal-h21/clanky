@@ -1,0 +1,6 @@
+Recenze na článek:
+Two applications of SWIGLIB:
+GraphicsMagick and Ghostscript
+Luigi Scarso
+
+
