@@ -1,0 +1,16 @@
+Recenze na článek:
+Two applications of SWIGLIB: GraphicsMagick and Ghostscript
+Luigi Scarso
+
+V článku jsou představeny dvě aplikace projektu SWIGLIB použité v ConTeXtu.
+Jedná se o využití programů Graphicsmagick a Ghostscript pro konverzi
+bitmapových a vektorových obrázků do PDF. Tradičně byla v ConTeXtu používána
+přímá volání těchto programů, díky SWIGLIB byla vytvořena rozhraní pro přístup  
+k jejich binárním knihovnám z LuaTeXu a tím byly zpřístupněny i v ConTeXtu.
+
+Výhodou tohoto postupu je možné zrychlení konverze obrázků, neboť odpadá
+nutnost inicializace konverzních programů pro každý jednotlivý obrázek, ovšem 
+naráží se zde na určitá technická úskalí. Článek popisuje postup, jak efektivně
+pracovat s datovými strukturami poskytnutých knihovnami, neboť jsou mnohdy
+nekompatibilní s datovými strukturami, které používá LuaTeX.
+
