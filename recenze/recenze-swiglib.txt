@@ -1,0 +1,60 @@
+
+nické knihy a systém TeX4ebook
+
+Recenze článku předloženého pro publikaci ve Zpravodaji CSTUG.
+
+V článku je představen nástroj na tvorbu elektronických knih ve formátu epub.
+Cesta tvorby je pomocí TeXu a nástrojem je upravený program Tex4ht.
+Zaměření článku odpovídá zaměření časopisu.
+Téma článku je aktuální, problametika je zajímavá pro širokou čtenářskou obec.
+Článek je na vysoké odborné úrovni, je srozumitelný, obsahuje vysvětlení problematiky
+i názorné příklady. Na ukázkách je představeno nekolik možností konfigurace systému TeX4ht,
+což je sama o sobě komplikovaná a zejména málo dokumentovaná problematika.
+Proto je článek zajímavý i pro uživatele, kteří přímo s elektronickmi knihami nepracují.
+
+V článku jsem nenašel chyby, pouze chybějíci uzavírací závorku v příkazu
+Preamble na předposledním řádku na straně 7.
+
+Článek je vhodný k publikaci ve Zpravodaji CSTUG ve stávající podobě. Je-li to možné,
+doporučil bych však mírné rozšíření článku o informace, jaká je cílová skupina konvertoru,
+kde a jakým výsledkem byl použit a na jaký typ materiálů.
+Cílí skript i na vydavatelství elektronických knih? Nebo pouze na příležitostné amatérské uživatele?
+Tyto informace by bylo vhodné uvést v závěru (namísto stávajícího závěru, obsahujícího mimo jiné výzvu
+k připojení se do mailové konference, což je obsah který mi do závěru článku příliš nesedí).
+
+=== Recenzent 2 ===
+
+Zdravím,
+
+doporučuji Přijmout s Malou revizí, kterou přikládám*.
+
+Článek se věnuje aktuálnímu tématu, převodu z TeXu do formátů vhodných
+pro e-knihy. Toto téma může být pro čtenáře Zpravodaje zajímavé.
+Doporučuji k zvážení, zda některé z odkazů, které jsou uvedeny v
+poznámkách pod čarou, nepřemístit do Literatury, která takto není vůbec
+uvedena.
+
+
+===================== Moje recenze na článek Luigi Scarsa
+
+The SWIGLIB project
+
+Článek se věnuje tématu přístupu k binárním knihovnám v LuaTeXu. Popisuje
+problémy s přístupem ke sdíleným knihovnám na rozdílných platformách a tvorbou
+rozhraní zpřístupňujících tyto knihovny pro programy v jazyce Lua. 
+
+Pro zjednodušení tvorby rozhraní pro binární knihovny je navrhnut projekt SWIG,
+který umožňuje jejich poloautomatickou tvorbu za pomoci konfiguračního souboru
+a analýzy hlavičkových souborů zpracovávaných knihoven. Projekt SWIGLIB pak
+řeší způsob kompilace tohoto rozhraní na rozdílných platformách a umístění výsledných 
+binárních knihoven tak, aby byly přístupné LuaTeXu. Pro nahrání knihoven je
+třeba upravit nahrávací rutiny v Lue, existuje podpora v ConTeXtu, pro ostatní
+formáty musí podpora teprve vzniknout.
+
+V článku jsem nenašel chyby, pouze odkaz v publikaci "Hagen, Hans. SWIGLIB
+basics" je nefunkční. Myslím, že správný odkaz je 
+http://www.pragma-ade.com/general/manuals/swiglib-mkiv.pdf
+
+Článek doporučuji přijmout v současné podobě.
+
+
