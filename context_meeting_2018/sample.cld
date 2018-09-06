@@ -1,0 +1,44 @@
+local htmlprocess = require "xml.htmlprocess"
+context.usetypescript{ "palatino" }
+context.setupbodyfont{ "palatino","12pt" }
+context.starttext()
+-- context.chapter("Hello")
+-- context.framed({frame = "on",
+-- offset = "3mm",
+-- align = "flushleft",
+-- background="color",
+-- backgroundcolor="gray",
+-- strut="no",
+-- autowidth="force"
+-- },function()
+-- context.startlines({before=""})
+-- context("very long line, more than 200pt. Is it enought?")
+-- context(true)
+-- for i=1,10 do
+--   context.bold("Line:") 
+--   context(" %i;",i) 
+--   context(true)
+-- end
+-- context.stoplines()
+-- context.type("\\type{verbatim text}")
+-- end)
+
+-- -- context(true)
+
+-- context.framed( {
+--   frame="on"
+-- }, function()
+--   context("second framed")
+-- end
+-- )
+
+local f = io.open("xml/sample.html")
+-- local f = io.open("xml/mini.html")
+local content = f:read("*all")
+f:close()
+
+htmlprocess.process(content)
+
+
+
+context.stoptext()

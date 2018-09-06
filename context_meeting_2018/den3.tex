@@ -1,0 +1,52 @@
+\section{Lua 5.3}
+
+Podpora pro integer:
+
+\startluacode
+context(2/3)
+context.par()
+-- tohle bude fungovat v Lua 5.3:
+-- context(2//3)
+\stopluacode
+
+Přiané formáty nahrazující funkci \type{string.format}
+
+\type{print(string.formatters["%p"](1233)}
+
+\startluacode
+context(string.formatters["%p"](1233))
+context.par()
+context(string.formatters["%u"](64))
+\stopluacode
+
+Nepoužívat implicitní konverze. Třeba tohle funguje, ale je špatně:
+
+\startluacode
+context("2"+5)
+\stopluacode
+
+\subsection{Buoucnost LuaTeXu}
+
+Hans s Tacem chtějí odstranit co nejvíc závislostí, včetně PDF backendu. PDF bude generované pomocí Lua.
+
+Možná budou dvě binárky, jedna bude tradiční LuaTeX, druhá (MetaTeX) bude ořezaná, užívaná jenom ConTeXtem. Jedná se o obzor tak 10 let.
+
+\section{FFI}
+
+\section{MARCS}
+
+Reportovací systém pro střední školu MEI v Kanadě + Kalifornie + Massachusetts.
+Jsou zaměření na humanitní obory + biologie. Studenti si mohou vybrat zaměření.
+
+Skupiny studnetů + 2 učitelé jezdí na několika týdenní soustředění po celém
+svět+. Příklad: expedice na 35 dní do Tanzanie. Učí se o kultuře, tradicí,
+historii, atd.
+
+Reportovací karta: mnoho různých dat o průběhu kurzu. Vstup do HTML, PDF a CSV.
+
+Systém vytvořený v PHP frameworku Lavarell.
+
+
+
+
+
