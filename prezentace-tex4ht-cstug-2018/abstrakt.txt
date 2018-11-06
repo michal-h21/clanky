@@ -1,5 +1,16 @@
 Michal Hoftich: Publikování LaTeXu na webu
 
+témata:
+- tex4ht
+  - matematika
+    - MathJax
+      - rozdíl mezi MathML a zachovaným LaTeXem (MathJax nepodporuje všechny příkazy LaTeXu)
+    - MathJax node
+  - design
+    - ukázat rozdíl mezi holým CSS a základním typografickým resetem
+    - sidenotes
+
+
  Abstrakt: tex4ebook je systém na konverzi dokumentů vytvořených v LaTeXu
  > > do formátů elektronických knih. V přednášce si vysvětlíme
  > > rozdíly mezi těmito formáty z pohledu potřeb technických
