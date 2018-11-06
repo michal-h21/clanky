@@ -1,0 +1,59 @@
+Michal Hoftich: Publikování LaTeXu na webu
+
+ Abstrakt: tex4ebook je systém na konverzi dokumentů vytvořených v LaTeXu
+ > > do formátů elektronických knih. V přednášce si vysvětlíme
+ > > rozdíly mezi těmito formáty z pohledu potřeb technických
+ > > a vědeckých publikací. Podíváme se, jak probíhá konverze
+ > > z LaTeXu za pomoci nástroje tex4ht, na kterém je tex4ebook
+ > > založen. Zaměříme se na problémy, které se mohou při konverzi
+ > > vyskytnout, jak je řešit a jak systém nakonfigurovat
+ > > pro podporu vlastních příkazů, balíčků, nebo úpravu vzhledu
+ > > výsledného dokumentu.
+ > >
+ > > Po přednášce a přestávce (14.15--14.30, možno využít
+ > > k řešení administrativy CSTUGu, placení členských příspěvků apod.).
+ > > začne valná hromada CSTUGu ve 14.30 hodin.
+ > > 
+ > > Přednáška (i VH) se bude konat v budově Provozně ekonomické
+ > > fakulty Mendelovy univerzity, Zemědělská 1, 613 00 Brno v sobotu 12. 12.
+ > > 2015, v~posluchárně s označením Q02 v přízemí budovy Q.
+ > > 
+ > > O autorovi
+ > > Autor používá LaTeX od roku 2007, vyskytuje se na serveru
+ > > tex.stackexchange.com od jeho vzniku, díky němu pronikl
+ > > hlouběji do útrob systému a začal tvořit vlastní
+ > > balíčky, nejprve citační styl ISO 690 pro BibLaTeX,
+ > > posléze se zaměřil na LuaLaTeX a tex4ht. Pracuje
+ > > v Ústřední knihovně PedF UK, kde využívá LaTeX a
+ > > skripty v jazyce Lua pro zpracování a zobrazení dat
+ > > z knihovního systému. Jeho největším mimopočítačovým
+ > > zájmem je turistika.
+
+Dávid Lupták: Sadzba bibliografie podľa normy ISO 690 v systéme L A TEX
+Dodržiavanie normy ISO 690 pri tvorbe bibliografických odkazov a citácií býva vyžadované
+mnohými inštitúciami nielen v českom akademickom prostredí. V systéme L A TEX však doteraz
+neexistovala žiadna podpora, ktorá by plnohodnotne riešila túto problematiku. Až na základe
+referenčnej implementácie balíka biblatex-iso690 vznikol balíček, ktorý splňuje požiadavky
+normy v plnom rozsahu a výrazne tak zjednodušuje citovanie informačných zdrojov.
+Prednáška bude zameraná na oboznámenie sa s novovzniknutou verziou balíka biblatex-
+iso690, predstaví možnosti jeho použitia a tým poskytne aj stručný náhľad do problematiky
+týkajúcej sa samotnej normy ISO 690.
+
+Autor je magisterský student Fakulty informatiky Masarykovy univerzity v Brně. Téma, o kterém
+bude přednášet, zpracoval v bakalářské práci Sazba bibliografie dle normy ISO 690 a implemen-
+toval v rámci projektu děkana FI MU. Jde o první úplnou TEXovou podporu aktuálně platné
+bibliografické normy pro češtinu.
+
+
+Vít Novotný: Práce s jazykem Markdown v rámci TEXových dokumentů
+Markdown je oblíbený značkovací jazyk pro přípravu strukturně jednoduchých dokumentů.
+V rámci přednášky si představíme makrobalík markdown a ukážeme si, jak jej lze využít pro
+sazbu dokumentů v jazyce Markdown. Zaměříme se na konfiguraci makrobalíku, na způsoby
+jeho využití v různých TEXových formátech a na problémy, se kterými se může uživatel při práci
+s balíkem střetnout.
+
+Autor je magisterský student Fakulty informatiky Masarykovy univerzity v Brně a projekt sazby
+rozšířeného značkovacího jazyka Markdown v TEXu, o kterém bude referovat, zpracoval v rámci
+projektu děkana FI MU. Ve své bakalářské práci se věnoval návrhu TEXové šablony fithesis3
+a obhájil ji na téma Forma odborných závěrečných prací v L A TEXu.
+
