@@ -1,6 +1,20 @@
-Michal Hoftich: Publikování LaTeXu na webu
+Michal Hoftich: Publikování z LaTeXu na web
+
+Publikování dokumentů vytvářených pomocí \LaTeX u jako webových stránek je
+poměrně komplikovaný úkol. Přednáška představí nástroj tex4ht který
+tento proces umožňuje. Ukážeme si možnosti konfigurace jeho výstupů, především
+kvality zobrazení matematiky, grafiky, nebo celkového designu výsledného
+dokumentu. Dalšími tématy budou kooperace s externími programy, upravování
+výstupu pomocí skriptů, nebo jakým způsobem vytvořit podporu pro nové \LaTeX
+ové balíčky. 
+
+Autor je knihovníkem na Pedagogické fakultě Univerzity Karlovy. Je součástí
+autorského týmu systému tex4ht.
 
 témata:
+- proč?
+  - používat LaTeX na webu
+  - ne Markdown
 - tex4ht
   - matematika
     - MathJax
@@ -9,6 +23,11 @@ témata:
   - design
     - ukázat rozdíl mezi holým CSS a základním typografickým resetem
     - sidenotes
+- make4ht
+  - extensions
+    - common_domfilters
+    - static_site
+  - konfigurační soubor
 
 
  Abstrakt: tex4ebook je systém na konverzi dokumentů vytvořených v LaTeXu
