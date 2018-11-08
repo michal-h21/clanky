@@ -1,7 +1,7 @@
 Michal Hoftich: Publikování z LaTeXu na web
 
 Publikování dokumentů vytvářených pomocí \LaTeX u jako webových stránek je
-poměrně komplikovaný úkol. Přednáška představí nástroj tex4ht který
+poměrně komplikovaný úkol. Přednáška představí nástroj tex4ht, který
 tento proces umožňuje. Ukážeme si možnosti konfigurace jeho výstupů, především
 kvality zobrazení matematiky, grafiky, nebo celkového designu výsledného
 dokumentu. Dalšími tématy budou kooperace s externími programy, upravování
