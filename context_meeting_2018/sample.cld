@@ -32,8 +32,10 @@ context.starttext()
 -- end
 -- )
 
-local f = io.open("xml/sample.html")
--- local f = io.open("xml/mini.html")
+-- local f = io.open("xml/sample.html")
+local xmlfile = arg[2] or "xml/sample.html"
+xmlfile = "xml/sample.html"
+local f = io.open(xmlfile, "r")
 local content = f:read("*all")
 f:close()
 
