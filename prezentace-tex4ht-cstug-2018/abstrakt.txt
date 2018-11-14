@@ -15,19 +15,29 @@ témata:
 - proč?
   - používat LaTeX na webu
   - ne Markdown
-- tex4ht
-  - matematika
-    - MathJax
-      - rozdíl mezi MathML a zachovaným LaTeXem (MathJax nepodporuje všechny příkazy LaTeXu)
-    - MathJax node
-  - design
-    - ukázat rozdíl mezi holým CSS a základním typografickým resetem
-    - sidenotes
 - make4ht
+  - historie a novinky
   - extensions
     - common_domfilters
     - static_site
   - konfigurační soubor
+- tex4ht
+  - matematika
+    - MathJax
+      - rozdíl mezi MathML a zachovaným LaTeXem (MathJax nepodporuje všechny příkazy LaTeXu)
+      - problémy s křížovými odkazy
+    - MathJax node
+  - design
+    - ukázat rozdíl mezi holým CSS a základním typografickým resetem
+    - sidenotes
+  - handling chyb
+    - při běhu LaTeXu 
+      - konflikty balíčků
+    - při běhu tex4ht
+      - podpora fontů
+
+brainstorming
+- rant na Epub
 
 
  Abstrakt: tex4ebook je systém na konverzi dokumentů vytvořených v LaTeXu
