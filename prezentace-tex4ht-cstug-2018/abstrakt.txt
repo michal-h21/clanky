@@ -35,6 +35,8 @@ témata:
   - handling chyb
     - při běhu LaTeXu 
       - konflikty balíčků
+        - třeba balíček minitoc
+          - https://tex.stackexchange.com/questions/461284/minilot-and-minilof-with-tex4ht
     - při běhu tex4ht
       - podpora fontů (4ht soubory)
     - příklad:
