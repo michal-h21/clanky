@@ -36,7 +36,10 @@ témata:
     - při běhu LaTeXu 
       - konflikty balíčků
     - při běhu tex4ht
-      - podpora fontů
+      - podpora fontů (4ht soubory)
+    - příklad:
+      - rozsekání znaků kvůli htf fontům
+        - ukázat common_domfilters v .make4ht
 
 brainstorming
 - rant na Epub
