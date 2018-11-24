@@ -33,6 +33,10 @@ témata:
     - ukázat rozdíl mezi holým CSS a základním typografickým resetem
     - sidenotes
   - handling chyb
+    - chybná sémantika použití příkazů
+      - vizuální výsledek v PDF je v pořádku - nedá se říct, že je to chyba
+        - $\xrightarrow{\sim}$ - chceme docílit vlnky nad šipkou (jaké je správné řešení?)
+        - https://tex.stackexchange.com/q/461445/2891
     - při běhu LaTeXu 
       - konflikty balíčků
         - třeba balíček minitoc
