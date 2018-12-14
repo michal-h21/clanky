@@ -267,8 +267,73 @@ nastavení, všechny volby jsou popsány v dokumentaci \prikaz{make4ht} \parenci
 \subsection{Sestavovací skripty}
 
 
-V sestavovacích skriptech můžeme využívat stejné postupy jako v konfiguračním souboru, ale více zaměřené na konkrétní kompilovaný dokument. Příklad sestavovacího skriptu byl představen v předešlém článku \parencite[s. 95]{hoftich:16}, ukážeme si zde tedy pouze novou vlastnost, kterou jsou DOM filtry.
+V sestavovacích skriptech můžeme využívat stejné postupy jako v konfiguračním
+souboru, ale více zaměřené na konkrétní kompilovaný dokument. Příklad
+sestavovacího skriptu byl představen v předešlém článku \parencite[s.
+95]{hoftich:16}, ukážeme si zde tedy pouze novou vlastnost, kterou jsou DOM
+filtry. Ty využívají možností knihovny LuaXML \parencite{luaxml}, která
+umožňuje zpracovávat XML soubory pomocí \nazev{Document Object Model (DOM)}
+rozhraní. Díky tomu lze snadno procházet elementy, upravovat je, vytvářet, nebo
+odstraňovat.
 
+Využití DOM filtrů si ukážeme na následujícím příkladu určeném pro Lua\LaTeX: 
+
+\begin{verbatim}
+\documentclass{article}
+\begin{document}
+Test {\itshape háčků}
+\end{document}
+\end{verbatim}
+
+Kvůli známé chybě bude vytvořen HTML soubor, kde každý znak s diakritikou bude umístěn v samostatném elementu:
+
+\begin{verbatim}
+<!--l. 4--><p class="noindent" >Test <span 
+class="rm-lmri-10">h</span><span 
+class="rm-lmri-10">á</span><span 
+class="rm-lmri-10">čk</span><span 
+class="rm-lmri-10">ů</span> </p> 
+\end{verbatim}
+
+
+Následující sestavovací soubor toto napraví pomocí vestavěného DOM filtru
+\nazev{joincharacters}. Navíc změníme atribut \nazev{class} všech elementů
+\verb|<p>| na hodnotu \nazev{mypar}, abychom si ukázali práci s DOM rozhraním:
+
+\begin{verbatim}
+local domfilter = require("make4ht-domfilter")
+
+local function domsample(dom)
+  for _, par in ipairs(dom:query_selector("p")) do
+    par:set_attribute("class", "mypar")
+  end
+
+  return dom
+end
+
+local process = domfilter({"joincharacters", domsample})
+Make:match("html$", process)
+\end{verbatim}
+
+
+Skript využívá standardní funkci jazyka Lua \verb|require| k načtení knihovny
+\verb|make4ht-domfilter|. To vytvoří funkci \verb|domfilter|, která má jako
+parametr seznam DOM filtrů, které se mají vykonat. Každé volání funkce \verb|domfilter|
+vytvoří další funkci, která může být využita jako parametr pro funkci
+\verb|Make:match|. Parametry v poli mohou být buď název existujícího DOM
+filtru, nebo funkce definovaná v sestavovacím souboru. 
+Funkce \verb|process| bude spuštěna na každém souboru jehož název končí na
+\verb|html|.
+
+Výsledný HTML soubor nyní neobsahuje nadbytečné elementy \verb|<span>| a element \verb|<p>| má hodnotu atribut \nazev{class} nastavenu na \nazev{mypar}:
+
+\begin{verbatim}
+<!-- l. 3 --><p class='mypar'>
+Test <span class='rm-lmri-10'>háčků</span> 
+</p> 
+\end{verbatim}
+
+\section{Konfigurace TeX4ht}
 
 
 
