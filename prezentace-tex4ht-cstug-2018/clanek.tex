@@ -1,0 +1,317 @@
+\documentclass{csbulletin}
+
+\usepackage[style=iso-authoryear]{biblatex}
+\addbibresource{make4ht-2018.bib}
+\newcommand\nazev[1]{\textit{#1}}
+\newcommand\prikaz[1]{\texttt{#1}}
+\newcommand\prepinac[1]{\texttt{-\/-#1}}
+\usepackage{microtype}
+
+\begin{document}
+\title{Publikování z \LaTeX u na web}
+\author{Michal Hoftich}
+\EnglishTitle{\LaTeX\ to Web Publishing}
+\maketitle
+
+\begin{abstract}
+Publikování dokumentů vytvářených pomocí \LaTeX u jako webových stránek je
+poměrně komplikovaný úkol. Přednáška představí nástroj \nazev{TeX4ht}, který
+tento proces umožňuje. Ukážeme si možnosti konfigurace jeho výstupů, především
+kvality zobrazení matematiky, grafiky, nebo celkového designu výsledného
+dokumentu. Dalšími tématy budou kooperace s externími programy, upravování
+výstupu pomocí skriptů, nebo jakým způsobem vytvořit podporu pro nové \LaTeX
+ové balíčky. 
+\end{abstract}
+
+\section{Úvod}
+
+
+
+Tento článek navazuje na předchozí příspěvek autora ve \nazev{Zpravodaji}
+\parencite{hoftich:16}, který byl zaměřený na problematiku tvorby
+elektronických knih, ovšem byly v něm také
+představeny postupy využívané konverzním systémem \nazev{TeX4ht} pro konverzi z
+\TeX u do výstupních formátů a nastíněna problematika samotné konverze z \TeX u
+do formátů založených na značkovacím jazyce XML. 
+Nyní se zaměříme na některé nové vlastnosti sestavovacího programu pro \nazev{TeX4ht} jménem
+\prikaz{make4ht} a pokročilejší možnosti konfigurace podoby výstupních souborů.
+
+Připomeňme si však některé základní informace. \nazev{TeX4ht} je konverzní
+systém který je založený na vkládání instrukcí výstupního formátu přímo při
+překladu dokumentu \TeX em. Výsledkem kompilace je DVI soubor, který je
+následně zpracován příkazem \prikaz{tex4ht}. Ten vytvoří výsledné XML soubory a
+speciální soubory s příponami \nazev{.idv} a \nazev{.lg}.
+První z nich obsahuje DVI kód, ze kterého mají být vytvořeny obrázky (v
+základním nastavení například matematická prostředí). Druhý je řídící soubor
+pro poslední příkaz, \prikaz{t4ht}. Ten je využíván pro konverzi obrázků z
+\nazev{.idv} souboru, volání externích příkazů, nebo vytvoření hlavního CSS
+souboru.
+
+V předchozím odstavci jsme použili výraz \nazev{TeX4ht} ve dvou různých
+významech. Jednak jako název celého konverzního systému, jednak jako jednu z
+částí tohoto systému, která zpracovává DVI soubor. Existuje ještě další součást
+systému s tímto názvem, balíček \TeX ových maker \prikaz{tex4ht.sty}, který
+zajišťuje vkládání XML značek do výstupního dokumentu.
+
+\section{Sestavovací program \prikaz{make4ht}}
+
+Jak do tohoto schématu zapadá \prikaz{make4ht}? Protože se celý konverzní proces
+skládá z několika na sebe navazujících kroků, vyžívají se pro kompilaci
+systémem \nazev{TeX4ht} skripty, které tento proces ulehčují. Existuje jich
+celá řada, liší se v podporovaném výstupním formátu a použitém \TeX ovém enginu
+a formátu. Nejznámější z nich je \nazev{htlatex}, který využívá pdf\LaTeX\ a
+produkuje výstup ve formátu HTML. Skripty zajišťují načtení balíčku s makry
+\prikaz{tex4ht.sty}, není tudíž třeba vkládat je v konvertovaném dokumentu.
+
+Tyto skripty jsou ovšem neflexibilní, každé jejich spuštění provede
+trojnásobnou kompilaci dokumentu \TeX em. To zajistí správnou strukturu
+hypertextových odkazů a tabulek, ty totiž vyžadují několikanásobnou kompilaci
+pro svojí správnou funkci. V následujících krocích je dokument zpracován
+\prikaz{tex4ht} a \prikaz{t4ht}. Pokud dokument obsahuje například seznam
+literatury nebo zkratek, které jsou vytvářeny externími programy, je třeba
+zavolat nejdříve \prikaz{htlatex}, poté požadovaný program a poté opět
+\prikaz{htlatex}. V případě větších dokumentů může být čas potřebný pro
+kompilaci tímto způsobem poměrně dlouhý.
+
+\prikaz{make4ht} umožňuje tvorbu sestavovacích skriptů v jazyce \nazev{Lua}, ve
+kterých lze volat externí příkazy podle potřeby. S pomocí takzvaných
+\nazev{módů} lze ovlivnit pořadí kompilace pomocí přepínačů přímo z příkazové
+řádky. Například základní skript používaný \prikaz{make4ht} podporuje
+\nazev{draft} mód, který spustí pouze jednu kompilaci dokumentu, místo
+obvyklých tří. Toho se dá využít pro zrychlení kompilace v případě, kdy se v
+dokumentu od poslední kompilace nezměnily křížové odkazy a pouze chceme získat
+rychlý náhled na jeho současnou podobu.
+
+Původně byl \prikaz{make4ht} součástí systému \nazev{TeX4ebook}, kde zajišťoval
+podporu pro sestavovací skripty, postupně se z něj však oddělil a v současné
+době nahradil staré skripty používané pro konverzi systémem \nazev{TeX4ht}. 
+Kromě podpory pro sestavovací skripty také umožňuje snadný výběr \TeX ového
+engine použitého pro kompilaci, volbu výstupního formátu, podporu pro kódování
+Unicode ve výstupních souborech a další vlastnosti.
+
+V současné době je podporován pouze \LaTeX, podpora pro Plain\TeX\ je
+komplikovanější a Con\TeX v současné době podporován není. V následujícím textu
+se zaměříme pouze na \LaTeX.
+
+\subsection{Volby \prikaz{make4ht} pro příkazovou řádku}
+
+\prikaz{make4ht} podporuje řadu přepínačů a voleb, které ovlivňují průběh kompilace a zpracování výstupních souborů. \prikaz{make4ht} může být spuštěn tímto způsobem:
+
+\begin{verbatim}
+make4ht [přepínače pro make4ht] soubor.tex "volby pro tex4ht.sty" \
+"přepínače pro tex4ht" "přepínače pro t4ht" "přepínače pro TeX"
+\end{verbatim}
+
+Tento komplikovaný způsob vychází z fungování \prikaz{htlatex} a ostatních
+starých skriptů, které řešily nutnost předávání voleb pro všechny komponenty
+zapojené v kompilaci. Ve většině případů naštěstí není třeba této možnosti
+využívat, většinu vlastností, které poskytují \prikaz{tex4ht} a \prikaz{t4ht}
+lze vyžádat pomocí přepínačů pro \prikaz{make4ht}.
+
+Všechny přepínače, které \prikaz{make4ht} podporuje mají krátkou a dlouhou verzi. Krátké přepínače lze navíc spojovat dohromady. Následující dva příkazy jsou totožné:
+
+\begin{verbatim}
+make4ht --lua --utf8 --mode draft clanek.tex
+make4ht -lum draft clanek.tex
+\end{verbatim}
+
+Tento příkaz využije Lua\LaTeX pro kompilaci, která proběhne pouze jednou díky
+využití \nazev{draft} módu a výsledný dokument bude v textovém kódování UTF-8.
+Volby pro přepínače jsou od nich odděleny mezerou.
+
+Kromě přepínačů \prepinac{lua}, \prepinac{utf-8} a \prepinac{mode} existuje ještě řada dalších užitečných přepínačů:
+
+\begin{description}
+  \item[\prepinac{config (-c)}] konfigurační soubor pro \nazev{TeX4ht}. Umožňuje uživatelsky změnit značky vkládané do výstupních souborů.
+  \item[\prepinac{build-file (-e)}] sestavovací soubor.
+  \item[\prepinac{output-dir (-d)}] adresář, do kterého budou zkopírovány výstupní soubory.
+  \item[\prepinac{shell-escape (-s)}] použije volbu \verb|--shell-escape| pro \LaTeX, bude tedy možné spouštět z něj externí příkazy.
+  \item[\prepinac{xetex (-x)}] dokument bude kompilován pomocí Xe\LaTeX u.
+  \item[\prepinac{format (-f)}] volba výstupního formátu a rozšíření.
+\end{description}
+
+Existují ještě další přepínače, ale tyto jsou nejužitečnější pro běžné využití.
+
+\subsection{Výstupní formáty a rozšíření}
+
+\nazev{TeX4ht} podporuje širokou škálu formátů založených na XML, od XHTML,
+před ODT až po DocBook a TEI. Většina těchto formátů však není v současné době
+podporována, i když konverze stále do jisté míry funguje. Uživatelské podněty
+však získáváme prakticky pouze pro HTML a ODT, které je podporováno textovými
+procesory jako je LibreOffice nebo MS Word. V budoucnu se situace samozřejmě
+může změnit, pokud bude zájem i o další formáty.
+
+Přepínač \prepinac{format} tedy podporuje pouze následující formáty: html5,
+xhtml a odt (je třeba využít malá písmena). Přednastaveným formátem je HTML5.
+
+Je zde také možné vybrat rozšíření. Rozšíření umožňují upravit kompilaci
+podobným způsobem jako sestavovací skripty. Mohou například opravit známé,
+jiným způsobem obtížně opravitelné chyby ve výsledných souborech nebo jinak
+ovlivnit kompilaci.
+
+Seznam využitých rozšíření lze zapsat za název formátu, zapínají se pomocí
+znaku plus, pomocí znaku mínus lze rozšíření zakázat\footnote{Rozšíření lze
+  zapnout i ze sestavovacího skriptu, takové rozšíření je poté možné vypnout z
+příkazové řádky.}. Následující příkaz využije příkaz \prikaz{tidy} pro
+vyčistění vygenerovaného souboru ve formátu HTML5:
+
+\begin{verbatim}
+make4ht -f html5+tidy simple-example.tex
+\end{verbatim}
+
+Dostupná jsou následující rozšíření:
+
+\begin{description}
+  \item[latexmk\_build] využije příkaz \prikaz{latexmk} pro sestavení
+    dokumentu. Ten se postará o volání externích příkazů, například pro tvorbu
+    seznamu literatury.
+  \item[tidy] vyčistí HTML soubor pomocí příkazu \prikaz{tidy}.
+  \item[dvisvgm\_hashes] efektivní generování obrázků pomocí příkazu
+    \prikaz{dvisvgm}. Dokáže využít více procesorových jader a vytváří pouze
+    obrázky, které byly změněny nebo vytvořeny od poslední kompilace. Tím
+    dochází ke znatelnému zrychlení kompilace.
+  \item[common\_filters a common\_domfilters] vyčistění dokumentu pomocí filtrů. Filtrům se budeme věnovat dále v textu.
+  \item[mathjaxnode] konverze matematického kódu ve formátu MathML do
+    speciálního HTML za využití projektu \nazev{MathJax Node
+    Page}\footnote{\url{https://github.com/pkra/mathjax-node-page/}}. Díky tomu
+    lze zobrazit kvalitně matematiku i ve webových prohlížečích bez podpory
+    MathML, bez nutnosti využít JavaScript.
+    % příklad https://www.kodymirus.cz/samples/mathjaxnode/maths.html
+  \item[staticsite]  vytvoří dokument použitelný pro generátory statických
+    stránek, jako je například
+    \nazev{Jekyll}\footnote{\url{https://jekyllrb.com/}}. Ty jsou využitelné
+    například pro tvorbu blogu.
+\end{description}
+
+Rozšíření je možné konfigurovat. Také jsme se dotkli problematiky filtrů. Tím se dostáváme k další sekci.
+
+\subsection{Konfigurační soubor pro \prikaz{make4ht}}
+
+\prikaz{make4ht} podporuje sestavovací skripty v jazyce Lua. Jejich pomocí je
+možné volat externí příkazy v průběhu kompilace, předávat jim parametry,
+používat filtry na výstupní soubory, ovlivňovat konverzi obrázků nebo
+konfigurovat rozšíření.
+
+Konfigurační soubor \texttt{.make4ht} je speciální sestavovací skript, který je
+načítaný automaticky a měl by obsahovat pouze obecné konfigurace. Oproti tomu
+normální sestavovací soubory mohou obsahovat konfigurace platné pro daný
+dokument. Konfigurační soubor může být umístěný v adresáři s dokumentem, nebo v
+jeho nadřazených adresářích. To je užitečné například pokud bychom tvořili
+blog, kde každý dokument je umístěný ve vlastním adresáři. V nadřazeném
+adresáři může být umístěný konfigurační soubor, který zajistí správné
+zpracování. Zde je drobný příklad:
+
+\begin{verbatim}
+filter_settings "staticsite" {
+  site_root = "output" 
+}
+
+Make:enable_extension("common_domfilters")
+if mode=="publish" then
+  Make:enable_extension("staticsite")
+  Make:htlatex()
+end
+
+\end{verbatim}
+
+Tento konfigurační soubor nastavuje volbu \texttt{site\_root} pro rozšíření
+\nazev{staticsite} pomocí příkazu \verb|filter_settings|. Pomocí tohoto příkazu
+lze nastavit volby pro filtry, ale také rozšíření. Název filtru nebo rozšíření
+je oddělený od příkazu mezerou, poté následuje další mezerou oddělené pole, ve
+kterém lze nastavit volby daného filtru. Oproti běžným konvencím příkazů v
+jazyce Lua zde nevyužíváme uvozovky jako u běžných funkcí!
+
+Dalším použitým příkazem je \verb|Make:enable_extension|, který povolí
+rozšíření. V tomto případě je rozšíření \nazev{common\_domfilters} použito pro
+každou kompilaci, ovšem rozšíření \nazev{staticsite} pouze v módu
+\nazev{publish}, čehož je dosaženo podmínkou \verb|mode=="publish"|.
+
+Příkaz \verb|Make:htlatex {}| vynutí jednu kompilaci \LaTeX em. 
+
+Nyní lze spustit \prikaz{make4ht} v módu \nazev{publish}: 
+
+\begin{verbatim}
+make4ht -um publish simple-example.tex
+\end{verbatim}
+
+Bude vytvořen adresář \nazev{publish}, pokud již neexistuje, do kterého budou
+zkopírovány HTML a CSS soubory ve formátu \textit{datum publikace-originální
+název}. Statické generátory většinou očekávají názvy souborů v tomto formátu,
+čímž se zajistí chronologické řazení stránek.
+
+Výsledný HTML soubor může mít následující podobu:
+
+\begin{verbatim}
+---
+time: 1544811015
+date: '2018-12-14 18:10:47'
+title: 'sample'
+styles:
+- '2018-12-14-simple-example.css'
+meta:
+- charset: 'utf-8'
+---
+<p>Sample document</p>
+\end{verbatim}
+
+
+Hlavička dokumentu uzavřená mezi párem \texttt{---} obsahuje proměnné ve
+formátu YAML extrahované z HTML souboru, ze kterého zůstal pouze základní text.
+Statický generátor poté může vytvořit stránku na základě šablony a proměnných v
+hlavičce. 
+
+Toto byl pouze základní příklad, filtry a rozšíření mají mnohem širší možnosti
+nastavení, všechny volby jsou popsány v dokumentaci \prikaz{make4ht} \parencite{make4ht}.
+
+
+\subsection{Sestavovací skripty}
+
+
+V sestavovacích skriptech můžeme využívat stejné postupy jako v konfiguračním souboru, ale více zaměřené na konkrétní kompilovaný dokument. Příklad sestavovacího skriptu byl představen v předešlém článku \parencite[s. 95]{hoftich:16}, ukážeme si zde tedy pouze novou vlastnost, kterou jsou DOM filtry.
+
+
+
+
+témata:
+- proč?
+  - používat LaTeX na webu
+  - ne Markdown
+    - vlastní makra
+    - logické bloky dokumentu (abstrakt, atd)
+- make4ht
+  - historie a novinky
+  - extensions
+    % - common_domfilters
+    % - static_site
+  - konfigurační soubor
+- tex4ht
+  - matematika
+    - MathJax
+      - rozdíl mezi MathML a zachovaným LaTeXem (MathJax nepodporuje všechny příkazy LaTeXu)
+      - problémy s křížovými odkazy
+    - MathJax node
+  - design
+    - ukázat rozdíl mezi holým CSS a základním typografickým resetem
+    - sidenotes
+    % - \Picture+
+  - handling chyb
+    - chybná sémantika použití příkazů
+      - vizuální výsledek v PDF je v pořádku - nedá se říct, že je to chyba
+        % - $\xrightarrow{\sim}$ - chceme docílit vlnky nad šipkou (jaké je správné řešení?)
+        - https://tex.stackexchange.com/q/461445/2891
+    - při běhu LaTeXu 
+      - konflikty balíčků
+        - třeba balíček minitoc
+          - https://tex.stackexchange.com/questions/461284/minilot-and-minilof-with-tex4ht
+    - při běhu tex4ht
+      - podpora fontů (4ht soubory)
+    - příklad:
+      - rozsekání znaků kvůli htf fontům
+        % - ukázat common_domfilters v .make4ht
+
+\printbibliography
+\begin{summary}
+
+\end{summary}
+
+\end{document}
