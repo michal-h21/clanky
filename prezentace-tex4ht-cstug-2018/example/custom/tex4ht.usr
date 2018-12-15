@@ -1,0 +1,6 @@
+\Configure{myoutput}{% 
+   \Hinclude[*]{html4.4ht}%
+   \Hinclude[*]{unicode.4ht}%
+   \Hinclude[*]{html5.4ht}%
+    \Hinclude[*]{myoutput.4ht}% 
+} 

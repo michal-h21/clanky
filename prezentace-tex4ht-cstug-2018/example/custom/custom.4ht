@@ -1,0 +1,5 @@
+\NewConfigure{custom}{2}
+\pend:defI\custom{\a:custom}
+\append:defI\custom{\b:custom}
+
+\Hinput{custom}

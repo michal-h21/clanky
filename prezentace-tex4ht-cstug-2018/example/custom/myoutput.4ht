@@ -1,0 +1,12 @@
+\exit:ifnot{custom} 
+\ConfigureHinput{custom} 
+
+\Configure{custom}
+{\HCode{<span class="custom">}\NoFonts}
+{\EndNoFonts\HCode{</span>}}
+
+\endinput\empty\empty\empty\empty\empty\empty 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\endinput 
+
+
