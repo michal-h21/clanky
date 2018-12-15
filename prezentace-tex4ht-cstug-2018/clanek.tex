@@ -15,11 +15,8 @@
 
 \begin{abstract}
 Publikování dokumentů vytvářených pomocí \LaTeX u jako webových stránek je
-poměrně komplikovaný úkol. Přednáška představí nástroj \nazev{TeX4ht}, který
-tento proces umožňuje. Ukážeme si možnosti konfigurace jeho výstupů, především
-kvality zobrazení matematiky, grafiky, nebo celkového designu výsledného
-dokumentu. Dalšími tématy budou kooperace s~externími programy, upravování
-výstupu pomocí skriptů, nebo jakým způsobem vytvořit podporu pro nové \LaTeX ové balíčky. 
+poměrně komplikovaný úkol. Představíme si konverzní systém \nazev{TeX4ht}, který
+tento proces umožňuje a sestavovací program \prikaz{make4ht}, který ho řídí.
 \end{abstract}
 
 \section{Úvod}
@@ -345,14 +342,14 @@ nejpokročilejší pak \nazev{4ht} soubory.
 
 Při kompilaci \TeX ového souboru pomocí \prikaz{make4ht} nebo jiného
 kompilačního skriptu se ještě před načtením samotného dokumentu načte balíček
-\prikaz{tex4ht.sty}.  Volby balíčku jsou získány z argumentů kompilačního
-skriptu. Díky tomu není třeba vkládat balíček \prikaz{tex4ht.sty} v samotném
+\prikaz{tex4ht.sty}.  Volby balíčku jsou získány z~argumentů kompilačního
+skriptu. Díky tomu není třeba vkládat balíček \prikaz{tex4ht.sty} v~samotném
 dokumentu.
 
 Mechanismus načítání souborů je upraven tak, aby se každý načítaný soubor
 registroval do \nazev{TeX4ht}. Pro některé balíčky \nazev{TeX4ht} také obsahuje
 kód, který zabraňuje jejich načítání, nebo okamžitě předefinovává některá
-makra. To je nezbytné pro balíčky, které jsou s \nazev{TeX4ht} nekompatibilní,
+makra. To je nezbytné pro balíčky, které jsou s~\nazev{TeX4ht} nekompatibilní,
 například \nazev{Fontspec}. 
 
 Po vykonání preamble dokumentu se načítají konfigurační soubory pro balíčky
@@ -367,7 +364,7 @@ soubory výstupního formátu. Ty definují obsah konfiguračních maker, háčk
 Především se do nich vkládají značky výstupního formátu, ale mohou obsahovat
 libovolné příkazy. Je možná také podmíněná konfigurace na základě voleb balíčku
 \prikaz{tex4ht.sty}. Každý konfigurační soubor výstupního formátu může testovat
-libovolnou volbu, z čehož vyplývá, že neexistuje jejich konečný seznam a pro
+libovolnou volbu, z~čehož vyplývá, že neexistuje jejich konečný seznam a pro
 každý formát existují jiné volby.
 
 \subsection{Volby balíčku tex4ht.sty}
@@ -380,14 +377,14 @@ kompilační skript. Vždy je to argument následující po názvu dokumentu:
 make4ht filename.tex "mathml,mathjax"
 \end{verbatim}
 
-Volby použité v tomto případě jsou \nazev{mathml} a \nazev{mathjax}. Další
-možností předání voleb je pomocí příkazu \verb|\Preamble| v soukromém
-konfiguračním souboru, který si ukážeme v další sekci.
+Volby použité v~tomto případě jsou \nazev{mathml} a \nazev{mathjax}. Další
+možností předání voleb je pomocí příkazu \verb|\Preamble| v~soukromém
+konfiguračním souboru, který si ukážeme v~další sekci.
 
 Jak již bylo řečeno, neexistuje konečný seznam voleb, každý výstupní formát
 může podporovat jejich libovolné množství.
 
-Můžeme si ovšem ukázat některé, které se týkají matematických výstupů v HTML.
+Můžeme si ovšem ukázat některé, které se týkají matematických výstupů v~HTML.
 Normální konfigurace pro matematická prostředí produkuje směs formátovaného
 textu a obrázků pro složitější výstupy, které nejdou snadno vytvořit pomocí HTML elementů.
 Někdy tato vlastnost nevypadá dobře. Jako alternativu lze použít obrázky pro
@@ -395,52 +392,139 @@ veškerý matematický obsah. Toho lze dosáhnout pomocí voleb \nazev{pic-m} pr
 inline matematiku a \nazev{pic-název prostředí} pro matematická prostředí,
 například \nazev{pic-align}.
 
-Normálně jsou obrázky vytvářeny ve formátu PNG. Vyšší kvality lze dosáhnout s
-využitím vektorového formátu SVG. Ten může být vynucen pomocí volby
+Normálně jsou obrázky vytvářeny ve formátu PNG. Vyšší kvality lze dosáhnout
+s~využitím vektorového formátu SVG. Ten může být vynucen pomocí volby
 \nazev{svg}.
 
-Dokumentace \nazev{TeX4ht} je poměrně spartánská. Obsáhlejší informace o
-konfiguraci příkazů lze nalézt v log souboru vytvořeném při kompilaci dokumentu
-s pomocí volby \nazev{info}.
+Dokumentace \nazev{TeX4ht} je poměrně spartánská. Obsáhlejší informace
+o~konfiguraci příkazů lze nalézt v~log souboru vytvořeném při kompilaci dokumentu
+s~pomocí volby \nazev{info}.
+
+Volby uvedené v~prvním příkladu, \nazev{mathml} a \nazev{mathjax} poskytují
+obecně nejlepší výstup matematického obsahu. Značkovací jazyk MathML umožňuje
+zakódovat matematické informace, jeho podpora ve webových prohlížečích je však
+špatná. S~využitím knihovny
+\nazev{MathJax}\footnote{\url{https://www.mathjax.org/}} je možné jej zobrazit
+ve všech moderních prohlížečích s~podporou jazyka JavaScript.
+
+Samotná volba \nazev{mathjax} bez \nazev{mathml} úplně vypne zpracování
+matematiky při kompilaci, veškerý matematický obsah zůstane v~HTML dokumentu
+jako \TeX ová makra. \nazev{MathJax} poté dokument zpracuje a vykreslí
+matematiku správným způsobem. Nevýhodou tohoto způsobu je, že \nazev{MathJax}
+nepodporuje veškeré balíčky a uživatelské příkazy. 
+
+
+\subsection{Soukromý konfigurační soubor}
+
+Pomocí soukromého konfiguračního souboru je možné vkládat vlastní obsah do konfiguračních háčků. Tento soubor má zvláštní strukturu:
+
+\begin{verbatim}
+...Definice v preable...
+\Preamble{volby pro tex4ht.sty}
+... Normální konfigurace ...
+\begin{document}
+... Konfigurace pro hlavičku HTML souboru
+\EndPreamble
+\end{verbatim}
+
+Příkazy \verb|\Preamble|, \verb|\begin{document}| a \verb|\EndPreamble| musí být v konfiguračním souboru obsaženy.
+
+Existuje několik konfiguračních příkazů. Nejdůležitějším je \verb|\Configure|,
+který nastavuje běžné konfigurace, dalšími jsou například \verb|\ConfigureEnv|
+pro nastavení prostředí, nebo \verb|\ConfigureList| pro seznamy.
+
+Příkaz \verb|\HCode| se používá pro vkládání značek výstupního formátu.
+Součástí jeho argumentu může být příkaz \verb|\Hnewline| pro vložení zalomení
+řádku. Instrukce \verb|\Css| vloží kód pro kaskádové styly do CSS souboru.
+
+
+Následující ukázka použije element \verb|<em>| pro příkaz \verb|\textit|:
+
+\begin{verbatim}
+\Configure{textit}{\HCode{<em>}\NoFonts}{\EndNoFonts\HCode{</em>}}
+\end{verbatim}
+
+Příkaz \verb|\Configure| podporuje variabilní počet argumentů, záleží na
+definici háčků, kolik argumentů je potřeba. Prvním argumentem je vždy název
+konfigurace, další argumenty poté vkládají kód do háčků. V typickém případě
+vyžaduje konfigurace dva háčky -- jeden umístí kód před začátek příkazu, druhý
+za jeho konec. Tak je tomu v případě konfigurace pro \texttt{textit}. Název
+konfigurace se může schodovat s názvem konfigurovaného příkazu, jako v tomto
+případě, ale vždy záleží na konfiguračním \nazev{4ht} souboru pro daný balíček,
+jaký název použije.
+
+
+Příkaz \verb|\NoFonts| zakáže vkládání formátovacích elementů při zpracování
+DVI souboru. \prikaz{tex4ht} vkládá automaticky tyto elementy při změně písma.
+Díky tomu je možné vytvořit základní formátování i pro nepodporované příkazy
+bez konfigurací, ovšem pro konfigurované příkazy je toto zbytečné. 
 
 
 
-témata:
-- proč?
-  - používat LaTeX na webu
-  - ne Markdown
-    - vlastní makra
-    - logické bloky dokumentu (abstrakt, atd)
-- make4ht
-  - historie a novinky
-  - extensions
-    % - common_domfilters
-    % - static_site
-  - konfigurační soubor
-- tex4ht
-  - matematika
-    - MathJax
-      - rozdíl mezi MathML a zachovaným LaTeXem (MathJax nepodporuje všechny příkazy LaTeXu)
-      - problémy s~křížovými odkazy
-    - MathJax node
-  - design
-    - ukázat rozdíl mezi holým CSS a základním typografickým resetem
-    - sidenotes
-    % - \Picture+
-  - handling chyb
-    - chybná sémantika použití příkazů
-      - vizuální výsledek v~PDF je v~pořádku - nedá se říct, že je to chyba
-        % - $\xrightarrow{\sim}$ - chceme docílit vlnky nad šipkou (jaké je správné řešení?)
-        - https://tex.stackexchange.com/q/461445/2891
-    - při běhu LaTeXu 
-      - konflikty balíčků
-        - třeba balíček minitoc
-          - https://tex.stackexchange.com/questions/461284/minilot-and-minilof-with-tex4ht
-    - při běhu tex4ht
-      - podpora fontů (4ht soubory)
-    - příklad:
-      - rozsekání znaků kvůli htf fontům
-        % - ukázat common_domfilters v .make4ht
+Komplikovanou problematikou jsou odstavce. \nazev{TeX4ht} je někdy vkládá na
+nevhodná místa. Týká se to především konfigurací prostředí, která mohou
+obsahovat několik odstavců a celý svůj obsah umísťují do jednoho elementu. Může
+se stát, že počáteční značka odstavce je umístěn před začátkem tohoto elementu,
+správně by ovšem měl následovat až po něm. Pro tento případ existují příkazy
+\verb|\IgnorePar|, který zabrání vložení značky pro následující odstavec, a
+\verb|\EndP|, který vloží zavírací značku pro předešlý odstavec. Existuje více
+příkazů pro práci s odstavci, ale tyto jsou nejdůležitější.
+
+V následujícím příkladu použijeme hypotetické prostředí \texttt{rightaligned},
+které by mělo být umístěno v elementu \verb|<article>|. 
+
+\begin{verbatim}
+\ConfigureEnv{rightaligned}
+{\HCode{<section class="right">}}
+{\HCode{</section>}}{}{}
+\end{verbatim}
+
+Příkaz \verb|\ConfigureEnv| očekává pět parametrů, prvním je název
+konfigurovaného prostředí, druhým je kód vložený na začátku prostředí a třetím
+kód vložený na jeho konci. Zbylé dva argumenty se používají pouze pokud je
+konfigurované prostředí založeno na seznamu. HTML kód vytvořený touto konfigurací může vypadat následovně:
+
+\begin{verbatim}
+<p class="indent" >   <section class="right">
+\end{verbatim}
+
+Správná konfigurace je poněkud komplikovanější:
+
+
+\begin{verbatim}
+\ConfigureEnv{rightaligned}
+{\ifvmode\IgnorePar\fi\EndP\HCode{<section class="right">}\par}
+{\ifvmode\IgnorePar\fi\EndP\HCode{</section>}}{}{}
+\Css{.right{text-align:right;}}
+\end{verbatim}
+
+V tomto případě řídíme vkládání značek pro odstavce sami a výsledek je v pořádku:
+
+
+\begin{verbatim}
+<section class="right">
+<!--l. 9--><p class="indent" >
+\end{verbatim}
+
+V konfiguracích můžeme také vyžádat konverzi části dokumentu na obrázek. Toho
+se dá docílit pomocí příkazů \verb|\Picture*|, respektive \verb|\Picture+|.
+Rozdíl mezi nimi je ten, že první zpracovává svůj obsah jako vertikální box. V
+každém případě je se obsah mezi těmito příkazy a ukončovacím příkazem
+\verb|\EndPicture| převede na obrázek.
+Těchto příkazů lze využít například pro konverzi složitější matematiky nebo diagramů,
+ale čistě technicky podporují veškerý obsah, který dokáže zpracovat použitý
+konvertor z DVI do obrazových souborů, typicky \nazev{Dvipng} nebo
+\nazev{Dvisvgm}.
+
+
+\begin{verbatim}
+\ConfigureEnv{topicture}{\Picture*{}}{\EndPicture}{}{}
+\end{verbatim}
+
+\section{Závěr}
+
+
+
 
 \printbibliography
 \begin{summary}
