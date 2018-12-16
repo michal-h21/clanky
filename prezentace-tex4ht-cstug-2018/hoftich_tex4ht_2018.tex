@@ -8,9 +8,9 @@
 \usepackage{microtype}
 
 \begin{document}
-\title{Publikování z~\LaTeX u na web}
+\title{Publikování z~\LaTeX u na web pomocí TeX4ht}
 \author{Michal Hoftich}
-\EnglishTitle{\LaTeX\ to Web Publishing}
+\EnglishTitle{\LaTeX\ to Web Publishing using TeX4ht}
 \maketitle
 
 \begin{abstract}
@@ -55,9 +55,10 @@ Jak do tohoto schématu zapadá \prikaz{make4ht}? Protože se celý konverzní p
 skládá z~několika na sebe navazujících kroků, vyžívají se pro kompilaci
 systémem \nazev{TeX4ht} skripty, které tento proces ulehčují. Existuje jich
 celá řada, liší se v~podporovaném výstupním formátu a použitém \TeX ovém enginu
-a formátu. Nejznámější z~nich je \nazev{htlatex}, který využívá pdf\LaTeX\ a
-produkuje výstup ve formátu HTML. Skripty zajišťují načtení balíčku s~makry
-\prikaz{tex4ht.sty}, není tudíž třeba vkládat je v~konvertovaném dokumentu.
+a formátu. Nejznámější z~nich je \nazev{htlatex}, který využívá engine pdf\TeX\
+s formátem \LaTeX a produkuje výstup ve formátu HTML. Skripty zajišťují načtení
+balíčku s~makry \prikaz{tex4ht.sty} bez nutnosti jeho použití
+v~konvertovaném dokumentu.
 
 Tyto skripty jsou ovšem neflexibilní, každé jejich spuštění provede
 trojnásobnou kompilaci dokumentu \TeX em. To zajistí správnou strukturu
@@ -80,13 +81,13 @@ rychlý náhled na jeho současnou podobu.
 
 Původně byl \prikaz{make4ht} součástí systému \nazev{TeX4ebook}, kde zajišťoval
 podporu pro sestavovací skripty, postupně se z~něj však oddělil a v~současné
-době nahradil staré skripty používané pro konverzi systémem \nazev{TeX4ht}. 
+době plně nahradil staré skripty používané pro konverzi systémem \nazev{TeX4ht}. 
 Kromě podpory pro sestavovací skripty také umožňuje snadný výběr \TeX ového
 engine použitého pro kompilaci, volbu výstupního formátu, podporu pro kódování
 Unicode ve výstupních souborech a další vlastnosti.
 
 V~současné době je podporován pouze \LaTeX, podpora pro Plain\TeX\ je
-komplikovanější a Con\TeX v současné době podporován není. V~následujícím textu
+komplikovanější a Con\TeX podporován není. V~následujícím textu
 se zaměříme pouze na \LaTeX.
 
 \subsection{Volby \prikaz{make4ht} pro příkazovou řádku}
@@ -104,7 +105,9 @@ zapojené v~kompilaci. Ve většině případů naštěstí není třeba této m
 využívat, většinu vlastností, které poskytují \prikaz{tex4ht} a \prikaz{t4ht}
 lze vyžádat pomocí přepínačů pro \prikaz{make4ht}.
 
-Všechny přepínače, které \prikaz{make4ht} podporuje mají krátkou a dlouhou verzi. Krátké přepínače lze navíc spojovat dohromady. Následující dva příkazy jsou totožné:
+Všechny přepínače, které \prikaz{make4ht} podporuje mají krátkou a dlouhou
+verzi. Krátké přepínače lze navíc spojovat dohromady. Následující dva příkazy
+jsou totožné:
 
 \begin{verbatim}
 make4ht --lua --utf8 --mode draft clanek.tex
@@ -131,20 +134,22 @@ Existují ještě další přepínače, ale tyto jsou nejužitečnější pro b�
 \subsection{Výstupní formáty a rozšíření}
 
 \nazev{TeX4ht} podporuje širokou škálu formátů založených na XML, od XHTML,
-před ODT až po DocBook a TEI. Většina těchto formátů však není v~současné době
-podporována, i když konverze stále do jisté míry funguje. Uživatelské podněty
-však získáváme prakticky pouze pro HTML a ODT, které je podporováno textovými
-procesory jako je LibreOffice nebo MS Word. V~budoucnu se situace samozřejmě
-může změnit, pokud bude zájem i o~další formáty.
+před ODT až po DocBook a TEI. Zájem uživatelů je však zaměřen prakticky pouze
+na varianty HTML a OpenDocument Format, který 
+je podporován textovými procesory jako je LibreOffice nebo MS Word.
 
 Přepínač \prepinac{format} tedy podporuje pouze následující formáty: html5,
 xhtml a odt (je třeba využít malá písmena). Přednastaveným formátem je HTML5.
+Ostatní formáty, jako je DocBook, lze vybrat pomocí volby pro \prikaz{tex4ht.sty}:
 
-Je zde také možné vybrat rozšíření. Rozšíření umožňují upravit kompilaci
-podobným způsobem jako sestavovací skripty. Mohou například opravit známé,
-jiným způsobem obtížně opravitelné chyby ve výsledných souborech nebo jinak
-ovlivnit kompilaci.
+\begin{verbatim}
+make4ht filename.tex "docbook"
+\end{verbatim}
 
+
+
+V přepínači formát lze také načíst rozšíření.  Rozšíření umožňují ovlivnit kompilaci
+bez nutnosti použít sestavovací skript. 
 Seznam využitých rozšíření lze zapsat za název formátu, zapínají se pomocí
 znaku plus, pomocí znaku mínus lze rozšíření zakázat\footnote{Rozšíření lze
   zapnout i ze sestavovacího skriptu, takové rozšíření je poté možné vypnout
@@ -179,7 +184,7 @@ Dostupná jsou následující rozšíření:
     například pro tvorbu blogu.
 \end{description}
 
-Rozšíření je možné dále konfigurovat. Také jsme se dotkli problematiky filtrů.
+Rozšíření je možné dále konfigurovat.
 Tím se dostáváme ke konfiguračnímu souboru a sestavovacím skriptům.
 
 \subsection{Konfigurační soubor pro \prikaz{make4ht}}
@@ -252,7 +257,7 @@ meta:
 \end{verbatim}
 
 
-Hlavička dokumentu uzavřená mezi párem \texttt{---} obsahuje proměnné ve
+Hlavička dokumentu uzavřená mezi dvojicí \verb|---| obsahuje proměnné ve
 formátu YAML extrahované z~HTML souboru, ze kterého zůstal pouze základní text.
 Statický generátor poté může vytvořit stránku na základě šablony a proměnných
 v~hlavičce. 
@@ -282,7 +287,7 @@ Test {\itshape háčků}
 \end{document}
 \end{verbatim}
 
-Kvůli známé chybě bude vytvořen HTML soubor, kde každý znak s~diakritikou bude umístěn v~samostatném elementu:
+Kvůli známé chybě při zpracování DVI souboru příkazem \prikaz{tex4ht} bude vytvořen HTML soubor, kde každý znak s~diakritikou bude umístěn v~samostatném elementu:
 
 \begin{verbatim}
 <!--l. 4--><p class="noindent" >Test <span 
@@ -301,10 +306,12 @@ Následující sestavovací soubor toto napraví pomocí vestavěného DOM filtr
 local domfilter = require("make4ht-domfilter")
 
 local function domsample(dom)
+  -- následující příkaz projde 
+  -- všechny elementy <p>
   for _, par in ipairs(dom:query_selector("p")) do
+    -- nastavit atribut "class"
     par:set_attribute("class", "mypar")
   end
-
   return dom
 end
 
@@ -350,9 +357,9 @@ Mechanismus načítání souborů je upraven tak, aby se každý načítaný sou
 registroval do \nazev{TeX4ht}. Pro některé balíčky \nazev{TeX4ht} také obsahuje
 kód, který zabraňuje jejich načítání, nebo okamžitě předefinovává některá
 makra. To je nezbytné pro balíčky, které jsou s~\nazev{TeX4ht} nekompatibilní,
-například \nazev{Fontspec}. 
+jako je například \nazev{Fontspec}. 
 
-Po vykonání preamble dokumentu se načítají konfigurační soubory pro balíčky
+Po vykonání \nazev{preamble} dokumentu se načítají konfigurační soubory pro balíčky
 detekované při jejím zpracování. Tyto soubory mají název \texttt{jméno souboru
 bez přípony + .4ht}. Jejich hlavní funkcí je vkládat konfigurovatelná makra,
 takzvané háčky, do příkazů poskytovaných balíčkem. Obecně je lepší makra
@@ -384,7 +391,7 @@ konfiguračním souboru, který si ukážeme v~další sekci.
 Jak již bylo řečeno, neexistuje konečný seznam voleb, každý výstupní formát
 může podporovat jejich libovolné množství.
 
-Můžeme si ovšem ukázat některé, které se týkají matematických výstupů v~HTML.
+Můžeme si ovšem ukázat některé volby, které se týkají matematických výstupů v~HTML.
 Normální konfigurace pro matematická prostředí produkuje směs formátovaného
 textu a obrázků pro složitější výstupy, které nejdou snadno vytvořit pomocí HTML elementů.
 Někdy tato vlastnost nevypadá dobře. Jako alternativu lze použít obrázky pro
@@ -411,12 +418,13 @@ Samotná volba \nazev{mathjax} bez \nazev{mathml} úplně vypne zpracování
 matematiky při kompilaci, veškerý matematický obsah zůstane v~HTML dokumentu
 jako \TeX ová makra. \nazev{MathJax} poté dokument zpracuje a vykreslí
 matematiku správným způsobem. Nevýhodou tohoto způsobu je, že \nazev{MathJax}
-nepodporuje veškeré balíčky a uživatelské příkazy. 
+nepodporuje všechny balíčky a uživatelské příkazy. 
 
 
 \subsection{Soukromý konfigurační soubor}
 
-Pomocí soukromého konfiguračního souboru je možné vkládat vlastní obsah do konfiguračních háčků. Tento soubor má zvláštní strukturu:
+Pomocí soukromého konfiguračního souboru je možné vkládat vlastní obsah do
+konfiguračních háčků. Tento soubor má zvláštní strukturu:
 
 \begin{verbatim}
 ...Definice v preable...
@@ -449,7 +457,7 @@ definici háčků, kolik argumentů je potřeba. Prvním argumentem je vždy ná
 konfigurace, další argumenty poté vkládají kód do háčků. V typickém případě
 vyžaduje konfigurace dva háčky -- jeden umístí kód před začátek příkazu, druhý
 za jeho konec. Tak je tomu v případě konfigurace pro \texttt{textit}. Název
-konfigurace se může schodovat s názvem konfigurovaného příkazu, jako v tomto
+konfigurace se může shodovat s názvem konfigurovaného příkazu, jako v tomto
 případě, ale vždy záleží na konfiguračním \nazev{4ht} souboru pro daný balíček,
 jaký název použije.
 
@@ -482,11 +490,19 @@ které by mělo být umístěno v elementu \verb|<article>|.
 Příkaz \verb|\ConfigureEnv| očekává pět parametrů, prvním je název
 konfigurovaného prostředí, druhým je kód vložený na začátku prostředí a třetím
 kód vložený na jeho konci. Zbylé dva argumenty se používají pouze pokud je
-konfigurované prostředí založeno na seznamu. HTML kód vytvořený touto konfigurací může vypadat následovně:
+konfigurované prostředí založeno na seznamu, ve většině případů mohou zůstat prázdné. 
+HTML kód vytvořený touto konfigurací může vypadat následovně:
 
 \begin{verbatim}
 <p class="indent" >   <section class="right">
+...
+</p>
 \end{verbatim}
+
+Tento kód je nevalidní, protože ukončovací značka pro element \verb|<p>| je
+umístěna na špatné úrovni zanoření. Nevalidní kód může způsobit přerušení běhu
+DOM filtrů a jiných nástrojů, které mohou upravovat výsledné soubory, je tudíž
+třeba podobným situacím předcházet.
 
 Správná konfigurace je poněkud komplikovanější:
 
@@ -495,7 +511,6 @@ Správná konfigurace je poněkud komplikovanější:
 \ConfigureEnv{rightaligned}
 {\ifvmode\IgnorePar\fi\EndP\HCode{<section class="right">}\par}
 {\ifvmode\IgnorePar\fi\EndP\HCode{</section>}}{}{}
-\Css{.right{text-align:right;}}
 \end{verbatim}
 
 V tomto případě řídíme vkládání značek pro odstavce sami a výsledek je v pořádku:
@@ -521,13 +536,25 @@ konvertor z DVI do obrazových souborů, typicky \nazev{Dvipng} nebo
 \ConfigureEnv{topicture}{\Picture*{}}{\EndPicture}{}{}
 \end{verbatim}
 
+
 \section{Závěr}
+
+Možnosti konfigurace \nazev{TeX4ht} jsou rozsáhlé, v předešlém textu jsme se
+dotkli pouze základů. Vynechali jsme také ukázky, jakým způsobem lze přidat
+konfiguraci pro nový \LaTeX ový balíček. Tato témata by vydala na rozsáhlé
+samostatné články. V současné době probíhá za finanční podpory poskytnuté
+\nazev{Českoskovenským sdružením uživatelů \TeX u} tvorba nové dokumentace pro
+\nazev{TeX4ht}, kde budou tato témata probrána do hloubky.
 
 
 
 
 \printbibliography
 \begin{summary}
+
+  The article gives overview of the current state of development of TeX4ht,
+  \LaTeX\ to XML convertor. It introduces \prikaz{make4ht}, a build system for
+  TeX4ht as well as basic ways how to configure TeX4ht.
 
 \end{summary}
 
