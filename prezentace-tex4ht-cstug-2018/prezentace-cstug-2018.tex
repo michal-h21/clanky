@@ -24,7 +24,7 @@
   Ústřední knihovna PedF UK
 }
 
-\date{Přednáška pro CSTUG 2015}
+\date{Přednáška pro CSTUG 2018}
 
 \begin{document}
 
@@ -36,7 +36,7 @@
 \end{frame}
 
 
-\section{Sestavovací program make4ht}
+\section{Konverzní systém tex4ht}
 
 
 \begin{frame}
@@ -60,7 +60,7 @@
 
 \begin{frame}
 
-  \frametitle{Základní popis systému}
+  \frametitle{Základní popis systému TeX4ht}
   \begin{itemize}
     \item systém se skládá z množství kompilačních skriptů, které se ale liší
       jen v přednastavených hodnotách
@@ -68,8 +68,9 @@
   \item v současné době byl plně nahrazen \texttt{make4ht}
 \end{itemize}
 \end{frame}
-\begin{frame}
 
+
+\begin{frame}
   \frametitle{Tři fáze kompilace}
   \begin{itemize}
     \item Kompilace dokumentu TeXem s nahraným souborem tex4ht.sty
@@ -77,6 +78,7 @@
     \item Zpracování .lg souboru programem t4ht
 \end{itemize}
 \end{frame}
+
 \begin{frame}
   \frametitle{Kompilace dokumentu TeXem s nahraným souborem tex4ht.sty}
   \begin{itemize}
@@ -86,6 +88,7 @@
         výstupním formátu
   \end{itemize}
 \end{frame}
+
 \begin{frame}
   \frametitle{Zpracování dvi souboru programem tex4ht}
   \begin{itemize}
@@ -101,6 +104,7 @@
     \item   zápis .idv souboru obsahující stránky pro konverzi na obrázky
   \end{itemize}
 \end{frame}
+
 \begin{frame}
   \frametitle{Zpracování .lg souboru programem t4ht}
   \begin{itemize}
@@ -111,6 +115,7 @@
     \item   kopírování souborů do cílového adresáře
   \end{itemize}
 \end{frame}
+
 \begin{frame}[fragile]
   \frametitle{Tradiční kompilační skripty}
   \begin{itemize}
@@ -125,12 +130,25 @@ htlatex jmenosouboru.tex "xhtml,charset=utf-8"
 \end{verbatim}
      \end{priklad}
 \end{frame}
-\begin{frame}[fragile]
-  \frametitle{Co je make4ht?}
+
+\section{Sestavovací program make4ht}
+\begin{frame}
+  \frametitle{Problémy, které make4ht řeší} 
   \begin{itemize}
-    \item Sestavovací systém v jazyce Lua
-    \item Snadnější základní konfigurace pomocí přepínačů na terminálu
-    \item Obecné použití
+    \item složité předávání parametrů pro htlatex a ostatní skripty
+    \item pevně nastavené pořadí volání jednotlivých kroků kompilace
+      \begin{itemize}
+        \item TeX je vždy volán třikrát
+      \end{itemize}
+    \item podpora pro nástroje jako je \texttt{bibtex}, \texttt{xindy} a podobně
+    \item  snadná změna parametrů konverze obrázků
+    \item funkční kopírování souborů do výstupního adresáře
+    \item zpracování výstupních souborů filtrovacími funkcemi v jazyce Lua, nebo externími
+      programy
+  \end{itemize}
+\end{frame}
+\begin{frame}[fragile]
+  \frametitle{Obecné použití}
       \begin{priklad}
         \small
 \begin{verbatim}
@@ -139,18 +157,20 @@ make4ht [přepínače pro make4ht] soubor.tex \
 "přepínače pro t4ht" "přepínače pro TeX"
 \end{verbatim}
       \end{priklad}
-    \item Výstup HTML souboru v kódování UTF-8
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Výstup v kódování  UTF8}
       \begin{priklad}
 \begin{verbatim}
 make4ht -u soubor.tex
 \end{verbatim}
 \end{priklad}
 
-  \end{itemize}
 \end{frame}
 
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Přepínače}
 \begin{description}
   \item[\prepinac{utf8 (-u)}] výstup v kódování UTF-8.
@@ -190,7 +210,7 @@ make4ht -f html5+tidy simple-example.tex
     dokumentu.
   \item[tidy] vyčistí HTML soubor pomocí příkazu \texttt{tidy}.
   \item[dvisvgm\_hashes] efektivní generování obrázků pomocí příkazu
-    \prikaz{dvisvgm}. 
+    \texttt{dvisvgm}. 
   \item[common\_filters a common\_domfilters] vyčistění dokumentu pomocí filtrů. 
   \item[mathjaxnode] konverze matematického kódu ve formátu MathML do
     speciálního HTML za využití projektu \texttt{MathJax Node
@@ -250,10 +270,78 @@ meta:
 \subsection{Sestavovací skripty}
 \begin{frame}[fragile]
 
-\frametitle{Sestavovací skripty}
+\frametitle{Ukázkový dokument}
+\begin{priklad}
+\begin{verbatim}
+\documentclass{article}
+\begin{document}
+Test {\itshape háčků}
+\end{document}
+\end{verbatim}
+\end{priklad}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Výsledný HTML kód}
+\begin{priklad}
+\begin{verbatim}
+<!--l. 4--><p class="noindent" >Test <span 
+class="rm-lmri-10">h</span><span 
+class="rm-lmri-10">á</span><span 
+class="rm-lmri-10">čk</span><span 
+class="rm-lmri-10">ů</span> </p> 
+\end{verbatim}
+\end{priklad}
+
 \end{frame}
 
 
+\begin{frame}[fragile]
+  \frametitle{Sestavovací skript}
+  \begin{priklad}
+\begin{verbatim}
+local domfilter = require("make4ht-domfilter")
+local function domsample(dom)
+  for _, par in ipairs(dom:query_selector("p")) do
+    par:set_attribute("class", "mypar")
+  end
+  return dom
+end
+local process = domfilter({
+  "joincharacters", 
+  domsample})
+Make:match("html$", process)
+\end{verbatim}
+  \end{priklad}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Upravený HTML kód}
+  \begin{priklad}
+\begin{verbatim}
+<!-- l. 3 --><p class='mypar'>
+Test <span class='rm-lmri-10'>háčků</span> 
+</p> 
+\end{verbatim}
+  \end{priklad}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Komplikovanější sestavovací soubor}
+  \begin{priklad}
+\begin{verbatim}
+Make:add("biber","biber ${input}")
+Make:htlatex {}
+Make:biber {}
+Make:htlatex {}
+Make:image("png$",                                                          
+"dvipng -bg Transparent -T tight -o ${output}"..
+"-pp ${page} ${source}")
+\end{verbatim}
+  \end{priklad}
+\end{frame}
+
+\section{Konfigurace tex4ht}
 \begin{frame}
   \frametitle{Princip TeXové části tex4ht}
   \begin{itemize}
@@ -267,245 +355,60 @@ meta:
     \end{pozor}
 \end{itemize}
 \end{frame}
+
 \begin{frame}
   \frametitle{Kdy je třeba vkládat háčky?}
   \begin{itemize}
-\item konfgurace je důležitá hlavně pro příkazy se složitější strukturou nebo
+\item konfigurace je důležitá hlavně pro příkazy se složitější strukturou nebo
       logické bloky (nadpisy, tabulky, seznamy apod.)
     \item  pokud makra staví na základních prvcích, pro které už existuje
       podpora, nemusí být třeba přidávat pro ně jejich vlastní podporu
   \end{itemize}
 \end{frame}
+
 \begin{frame}
   \frametitle{Konfigurace háčků}
   \begin{itemize}
+    \item soubory výstupního formátu mohou definovat volby, které ovlivňují konfiguraci háčků
     \item konfigurace probíhá příkazem \texttt{\textbackslash Configure}
 
     \item po vložení háčků se nahrají jejich konfigurace v závislosti na
       výstupním formátu
-  \item další konfigurace je možné vložit do .cfg souboru
+    \item další konfigurace je možné vložit do .cfg souboru, který se načítá pomocí volby \texttt{-c} příkazu \texttt{make4ht}
+
 \end{itemize}
 \end{frame}
 
-\section{Úvod do tex4ebook}
-
-\begin{frame}
-  \frametitle{tex4ebook}
+\begin{frame}[fragile]
+  \frametitle{Volby balíčku tex4ht.sty}
   \begin{itemize}
-  \item  \url{https://github.com/michal-h21/tex4ebook}
-  \item   staví na tex4ht a přidává:
-  \item   podporu pro ePUBová metadata 
-    \begin{itemize}
-  \item    obsah
-  \item    obálka
-  \item    OPF soubor
-\end{itemize}
-  \item   pro každou kapitolu nebo sekci je vytvořený samostatný soubor
-  \item   podporu build souborů pro make4ht
-\end{itemize}
-\end{frame}
-\begin{frame}
-  \frametitle{make4ht} 
-  \begin{itemize}
-    \item   \url{https://github.com/michal-h21/make4ht}
-    \item build systém pro tex4ht, který řeší základní problémy:
-    \item složité předávání parametrů pro htlatex a ostatní skripty
-    \item pevně nastavené pořadí volání jednotlivých kroků kompilace
-      \begin{itemize}
-        \item TeX je vždy volán třikrát
-      \end{itemize}
-    \item podpora pro nástroje jako je \texttt{bibtex}, \texttt{xindy} a podobně
-    \item  snadná změna parametrů konverze obrázků
-    \item funkční kopírování souborů do výstupního adresáře
-    \item zpracování výstupních souborů filtrovacími funkcemi v jazyce Lua, nebo externími
-      programy
+    \item mohou být předány pomocí argumentů pro tex4ht
+    \item nebo v .cfg souboru
   \end{itemize}
-\end{frame}
-
-\section{Příklady}
-\begin{frame}[fragile]
-  \frametitle{Základní kostra dokumentu v češtině}
-  \begin{verbatim}
-    \documentclass{article}
-    \usepackage[T1]{fontenc}
-    \usepackage[utf8]{inputenc}
-    \usepackage[czech]{babel}
-    \title{Základní dokument v češtině}
-    \author{Michal Hoftich}
-    \begin{document}
-    \maketitle
-
-    Příliš žluťoučký kůň úpěl ďábelské ódy
-  \end{document}
+  \begin{priklad}
+\begin{verbatim}
+make4ht filename.tex "mathml,mathjax"
 \end{verbatim}
-\end{frame}
-\begin{frame}[fragile]
-  \frametitle{Kompilace}
-  \begin{block}{Základní postup}
-    \begin{verbatim}
-      tex4ebook basic
-    \end{verbatim}
-  \end{block}
-  \begin{block}{Formát ePUB 3}
-    \begin{verbatim}
-      tex4ebook -f epub3 basic
-    \end{verbatim}
-  \end{block}
-  \begin{block}{Zrychlená kompilace}
-    \begin{verbatim}
-      tex4ebook -m draft basic
-    \end{verbatim}
-  \end{block}
-\end{frame}
-\begin{frame}[fragile]
-  \frametitle{Výsledek}
-  \begin{verbatim}
-    <div class="maketitle">
-    <h2 class="titleHead">Základní dokument v češtině
-    </h2><div class="author" ><span 
-    class="ecrm-1200">Michal Hoftich</span></div><br />
-    <div class="date" ><span 
-    class="ecrm-1200">1.</span><span 
-    class="ecrm-1200"> </span><span 
-    class="ecrm-1200">července 2015</span></div>
-    </div>
-    <!--l. 10--><p class="indent" >   
-    Příliš žluťoučký kůň úpěl ďábelské ódy </p>      
-  \end{verbatim}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Základní vlastnosti písem jsou zachovány}
-  \begin{verbatim}
-    \documentclass{article}
-    \usepackage[T1]{fontenc}
-    \usepackage[utf8]{inputenc}
-    \usepackage[czech]{babel}
-    \begin{document}
-    {\huge \texttt{tex4ht} umí zachovat
-      \small základní {\bfseries formát}
-      písem}
-  \end{document}
-\end{verbatim}
+\end{priklad}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Základní vlastnosti písem jsou zachovány}
-  \myfig{examples/sizes.png}{Velikost a řez písma jsou zachovány}
+  \frametitle{Některé dostupné volby}
+\begin{itemize}
+  \item fn-in
+  \item pic-m, pic-align
+  \item svg
+  \item info
+  \item mathml
+  \item mathjax
+\end{itemize}
 \end{frame}
+
 
 \begin{frame}[fragile]
-  \frametitle{Někdy mohou nastat problémy}
-\begin{verbatim}
-\documentclass{article}
-\usepackage{fontspec}
-%\usepackage[czech]{babel}
-\title{Základní dokument v češtině}
-\author{Michal Hoftich}
-\begin{document}
-\maketitle
-
-Příliš žluťoučký kůň úpěl ďábelské ódy
-\end{document}
-\end{verbatim}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Někdy mohou nastat problémy}
-  \begin{block}{Kompilace}
-\begin{verbatim}
-tex4ebook -m draft -l fontspec.tex 
-   "new-accents"
-\end{verbatim}
-  \end{block}
-  \begin{block}{A její výsledek}
-\begin{verbatim}
---- error --- Can't find/open file 
-`"file:lmroman12-regular:script=latn;
-+trep;+tlig;".tfm'
-Make4ht: Fatal error. Command tex4ht 
-returned exit code 256
-\end{verbatim}
-  \end{block}
-\end{frame}
-\begin{frame}
-  \frametitle{Řešení balíčků, které působí pád programu tex4ht}
+  \frametitle{Soukromý konfigurační soubor}
   \begin{itemize}
-    \item je třeba zamezit, aby se vůbec načetly
-    \item tři možná řešení
-      \begin{enumerate}
-        \item použít rozdílné šablony pro preamble dokumentu, samotný text vkládat pomocí \texttt{\textbackslash include}
-        \item použít podmínku detekující tex4ht
-        \item alternativní loader balíčků
-      \end{enumerate}
-  \end{itemize}
-\end{frame}
-\begin{frame}[fragile]
-  \frametitle{Detekce tex4ht v preamble}
-\begin{verbatim}
- \documentclass{article}
- \ifdefined\HCode
- \usepackage[T1]{fontenc}
- \usepackage[utf8]{luainputenc}
- \else
- \usepackage{fontspec}
- \fi
- %\usepackage[czech]{babel}
- \title{Základní dokument v češtině}
- ...
-\end{verbatim}
-\end{frame}
-
-\begin{frame}[fragile]
- \frametitle{Alternativní loader}
-\begin{verbatim}
- \documentclass{article}
- \usepackage{alternative4ht}
- \altusepackage{fontspec}
-  \setmainfont{TeX Gyre Termes}
-  \newfontfamily\greekfont{Linux Libertine O}
-  ...
-\end{verbatim}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Základní konfigurace}
-  \begin{verbatim}
-\documentclass{article}
-...
-\usepackage{biblatex}
-\addbibresource{xampl.bib}
-...
-\tableofcontents
-\section{Úvod}
-Příliš žluťoučký kůň \textit{úpěl} 
-\textbf{ďábelské ódy} \parencite{article-full}
-\section{Další kapitola}
-Nějaká matematika $\sqrt{a^{2} + b^{2}}$
-\section{Literatura}
-\printbibliography
-  \end{verbatim}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Pár problémů}
-  \begin{block}{Chybné převedení diakritiky}
-    \begin{verbatim}
-<p class="noindent" >Příliš žluťoučký kůň <span 
-class="ecti-1000">úp</span><span 
-class="ecti-1000">ěl </span><span 
-class="ecbx-1000">ď</span><span 
-class="ecbx-1000">ábelsk</span><span 
-class="ecbx-1000">é </span><span 
-class="ecbx-1000">ódy </span>
-    \end{verbatim}
-  \end{block}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Konfigurační soubory}
-  \begin{itemize}
-    \item umožňují vkládání konfigurací pro háčky a CSS instrukce
+    \item umožňuje vkládání konfigurací pro háčky a CSS instrukce
     \item základní struktura
       \begin{verbatim}
 % zde můžeme vkládat balíčky
@@ -517,384 +420,210 @@ class="ecbx-1000">ódy </span>
       \end{verbatim}
   \end{itemize}
 \end{frame}
+
+
+
 \begin{frame}[fragile]
-  \frametitle{Konfigurační soubor pro náš příklad}
+  \frametitle{Užitečné příkazy}
+  \begin{itemize} 
+  \item \verb|\Configure|, \verb|\ConfigureEnv|, \verb|\ConfigureList|
+  \item \verb|\HCode|, \verb|\Css|, \verb|\Hnewline|
+  \item \verb|\EndP|, \verb|\IgnorePar|
+  \item \verb|\Picture+|, \verb|\Picture*|
+  \item \verb|\NoFonts|
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Ukázka základní konfigurace}
+  \begin{priklad}
+\begin{verbatim}
+\Configure{textit}{\HCode{<em>}\NoFonts}
+{\EndNoFonts\HCode{</em>}}
+\end{verbatim}
+  \end{priklad}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Problematika odstavců}
+  \begin{priklad}
+\begin{verbatim}
+\ConfigureEnv{rightaligned}
+{\HCode{<section class="right">}}
+{\HCode{</section>}}{}{}
+\end{verbatim}
+\end{priklad}
+Výsledný HTML kód je chybný
+\begin{priklad}
+\begin{verbatim}
+<p class="indent" ><section class="right">
+\end{verbatim}
+\end{priklad}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Správné řešení}
+  \begin{priklad}
+\begin{verbatim}
+\ConfigureEnv{rightaligned}
+{\ifvmode\IgnorePar\fi\EndP%
+\HCode{<section class="right">}\par}
+{\ifvmode\IgnorePar\fi\EndP%
+\HCode{</section>}}{}{}
+\end{verbatim}
+  \end{priklad}
+  HTML kód
+
   \begin{verbatim}
+<section class="right">
+<!--l. 9--><p class="indent" >
+  \end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Obrázky}
+  \begin{priklad}
+\begin{verbatim}
+\ConfigureEnv{topicture}{\Picture*{}}
+{\EndPicture}{}{}
+\end{verbatim}
+\end{priklad}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Kompletní konfigurační soubor}
+  \begin{priklad}
+    \small
+    \begin{verbatim}
 \Preamble{xhtml}
-\Configure{textbf}{\NoFonts\HCode{<strong>}}
-{\HCode{</strong>}\EndNoFonts}
-\Configure{textit}{\NoFonts\HCode{<em>}}
-{\HCode{</em>}\EndNoFonts}
+\Configure{textit}{\HCode{<em>}\NoFonts}
+{\EndNoFonts\HCode{</em>}}
+\ConfigureEnv{rightaligned}
+{\ifvmode\IgnorePar\fi\EndP
+\HCode{<section class="right">}\par}
+{\ifvmode\IgnorePar\fi\EndP
+\HCode{</section>}}{}{}
+\ConfigureEnv{topicture}
+{\Picture*{}}{\EndPicture}{}{}
+\Css{.right{text-align:right;display:block;}}
 \begin{document}
 \EndPreamble
   \end{verbatim}
+  \end{priklad}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Diakritika je již v pořádku}
+\frametitle{Reálný příklad}
+\begin{verbatim}
+\Preamble{xhtml,mathml,2,sec-filename,fn-in,fonts}
+% external stylesheet
+\Configure{AddCss}{style.css}
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Konfigurace mini obsahu na jednotlivých stránkách}
+  \small
   \begin{verbatim}
-<p class="noindent" >Příliš žluťoučký kůň 
-<em>úpěl</em> <strong>ďábelské ódy</strong> 
+\Configure{crosslinks+}{%
+  \bgroup
+  \Configure{tableofcontents}
+  {\IgnorePar\EndP
+  \HCode{<nav class="TOC">}\IgnorePar}
+  {\HCode{\Hnewline}}
+  {\IgnorePar\HCode{</nav>\Hnewline}\ShowPar}{}{}%
+  \TableOfContents[chapter,section,subsection]
+  \egroup
+  \ifvmode\IgnorePar\fi\EndP%
+  \HCode{<article class="main-content">\Hnewline
+  <nav class="crosslinks-top">}}
+  {\HCode{</nav>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP%
+  \HCode{<nav class="crosslinks-bottom">}}
+  {\HCode{</nav>}}{}{}
   \end{verbatim}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Můžeme přidat nějaké kaskádové styly}
+  \frametitle{Další nastavení}
   \begin{verbatim}
-\Preamble{xhtml}
-\Configure{textbf}{\NoFonts\HCode{<strong>}}
-{\HCode{</strong>}\EndNoFonts}
-\Configure{textit}{\NoFonts\HCode{<em>}}
-{\HCode{</em>}\EndNoFonts}
-\Css{h3{color:blue;}}
+% uzavřít <article>, který byl otevřen v 
+% \Configure{crosslinks+}
+\Configure{@/BODY}
+{\ifvmode\IgnorePar\fi\EndP\HCode{</article>}}
+
+% Ukázat odkazy pouze na předešlou, 
+% hlavní a násladující stránku
+\Configure{crosslinks*}{prev}{up}{next}{}
 \begin{document}
 \EndPreamble
-  \end{verbatim}
+\end{verbatim}
 \end{frame}
+
+\section{Přidání podpory pro nové balíčky}
+
 \begin{frame}
-  \frametitle{Výsledek s aplikovaným CSS stylem}
-  \myfig{examples/bluesection.png}{Modrý nadpis}
-\end{frame}
-\begin{frame}
-  \frametitle{Komplikovanější design}
-  Zkusme přidat kompletní styl pro responzivní design a fonty
+  \frametitle{Základní postup}
   \begin{itemize}
-    \item responzivní styl Scale.css (\url{https://github.com/viljamis/Scale})
-    \item font EB Garamond
+    \item vytvořit soubor pojmenovaný \textit{název balíčku + .4ht}
+    \item konfigurovat balíček v \texttt{4ht} souboru výstupního formátu
   \end{itemize}
-  Pro usnadnění práce si vytvoříme pomocné balíčky
 \end{frame}
+
+
 \begin{frame}[fragile]
-  \frametitle{Pro vkládání souborů include4ht.sty}
-\begin{verbatim}
-\newcommand\AddFile[1]{\special{t4ht+@File: #1}}%
-\newcommand\AddCss[1]{%
-\AddFile{#1}%
-\Configure{@HEAD}{%
-\HCode{<link rel="stylesheet" type="text/css" 
-href="#1" />}}
-}
-\end{verbatim}
-\end{frame}
-\begin{frame}[fragile]
-  \frametitle{Pro vkládání fontů addfont4ht.sty}
+  \frametitle{Ukázkový balíček \texttt{custom.sty}}
   \begin{verbatim}
-\RequirePackage{include4ht}
-\newcommand\AddFontFace[4]{%
-\Css{@font-face {
-  font-family: #1;
-  src: local("#2"),
-  url('#3');
-  #4
-}}
-\AddFile{#3}}
-\edef\CurrentFontFamily{rmfamily}
-\newcommand\SetFontFamily[1]{%
-\edef\CurrentFontFamily{#1}}
-  \end{verbatim}
-\end{frame}
-\begin{frame}[fragile]
-  \frametitle{Pro vkládání fontů addfont4ht.sty}
-\begin{verbatim}
-\newcommand\NormalFont[2]{
- \AddFontFace{\CurrentFontFamily}{#1}{#2}
-  {font-weight: normal;font-style: normal;}}
-\newcommand\BoldFont[2]{
-  \AddFontFace{\CurrentFontFamily}{#1}{#2}
-  {font-weight: bold;font-style: normal;}}
-\newcommand\ItalicFont[2]{
-  \AddFontFace{\CurrentFontFamily}{#1}{#2}
-  {font-weight: normal;font-style: italic;}}
-\end{verbatim}
-\end{frame}
-\begin{frame}[fragile]
-  \frametitle{A konfigurační soubor}
-\begin{verbatim}
-\RequirePackage{include4ht}
-\RequirePackage{addfont4ht}
-\Preamble{xhtml}
-\AddCss{scale.css}
-...
-\NormalFont{EBGaramond}{EBGaramond12-Regular.woff}
-\BoldFont{EBGaramond}{EBGaramond12-Italic.woff}
-\ItalicFont{EBGaramond}{EBGaramond12-Italic.woff}
-\Configure{@HEAD}{\HCode{<style type='text/css' >
-    \Hnewline body{font-family:rmfamily, 
-      "EBGaramond", sans-serif;}\Hnewline
-    </style>}}
-\EndPreamble
-\end{verbatim}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Musíme kompilovat do ePUB 3}
-\begin{verbatim}
-tex4ebook -f epub3 -c epub3.cfg -m draft basic.tex
-\end{verbatim}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Výsledek vložení fontů a responzivního CSS}
-  \myfig{examples/scale.png}{}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Build soubor pro make4ht, pokus.mk4}
-\begin{verbatim}
-Make:add("biber","biber ${input}")
-Make:htlatex {}
-Make:biber {}
-Make:htlatex {}
-Make:image("png$",                                                          
-"dvipng -bg Transparent -T tight -o ${output}"..
-"-pp ${page} ${source}")
-\end{verbatim}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Přidáme volbu pro build soubor}
-  \begin{verbatim}
-tex4ebook -f epub3 -c epub3.cfg -m draft 
- -e pokus.mk4 basic.tex
+\ProvidesPackage{custom}
+\newcommand\custom[1]{\bgroup\itshape#1\egroup}
+\endinput
   \end{verbatim}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Matematika s naším build souborem}
-  \myfig[width=0.4\textwidth]{examples/badmath.png}{Dalo by se hrát s konfiguračními volbami, ale lepší je použít mathml}
-  \begin{pozor}
-    Scale.css upravuje nastavení obrázků a úplně rozhodí inline matematiku. Proto v ukázce není použit
-  \end{pozor}
-\end{frame}
-
 \begin{frame}[fragile]
-  \frametitle{Jak nastavit mathml?}
+  \frametitle{Vložení háčků v souboru \texttt{custom.4ht}}
   \begin{verbatim}
-tex4ebook -c epub.cfg -f epub3 -m draft 
- -e pokus.mk4 basic mathml
+\NewConfigure{custom}{2}
+\pend:defI\custom{\a:custom}
+\append:defI\custom{\b:custom}
+\Hinput{custom}
   \end{verbatim}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Matematika poté vypadá mnohem lépe}
-  \begin{block}{}
-    \includegraphics[width=150pt]{examples/scalemathml.png}
-  \end{block}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Jak vložit obálku?}
-  \begin{itemize}
-    \item Máme dvě možnosti:
-      \begin{enumerate}
-        \item použít příkaz \texttt{\textbackslash coverimage}
-          \begin{itemize}
-            \item to vyžaduje explicitní vložení balíčku tex4ebook do dokumentu
-            \item obálka se zobrazí v dokumentu
-          \end{itemize}
-        \item použít příkaz \texttt{\textbackslash CoverMetadata} v konfiguračním souboru
-          \begin{itemize}
-            \item výhodou je, že nemusíte upravovat dokument
-            \item obálka se zobrazí pouze ve čtecí aplikaci
-          \end{itemize}
-      \end{enumerate}
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Zpracování výstupních souborů}
-  \begin{itemize}
-    \item výstupní soubory můžeme zpracovat externími příkazy, nebo funkcemi v jazyce Lua
-    \item efektivní zpracování umožňují filtry
-  \end{itemize}
-\end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Příklad pro využití filtrů}
+  \frametitle{Vlastní výstupní formát \texttt{myoutput.4ht}}
   \begin{verbatim}
-\documentclass{article}
-...
-\begin{document}
-Co dělat v případě, že se 
-{\bfseries nám nelíbí výstup?}
-\hrule
-
-Použijeme filtry!
-  \end{document}
-\end{verbatim}
+\exit:ifnot{custom} 
+\ConfigureHinput{custom} 
+\Configure{custom}
+{\HCode{<span class="custom">}\NoFonts}
+{\EndNoFonts\HCode{</span>}}
+\endinput\empty\empty\empty\empty\empty\empty 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\endinput 
+  \end{verbatim}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Normální výstup má samozřejmě chybnou diakritiku}
-\begin{verbatim}
-<p class="noindent">Co dělat v případě, že se 
-<span class="ecbx-1000">n</span><span 
-class="ecbx-1000">ám nel</span><span 
-class="ecbx-1000">íb</span><span 
-class="ecbx-1000">í v</span><span 
-class="ecbx-1000">ýstup?</span>________________________
-</p> 
-<p class="indent">    Použijeme filtry!
-\end{verbatim}
+  \frametitle{Definice vlastního formátu \texttt{tex4ht.usr}}
+  \begin{verbatim}
+\Configure{myoutput}{% 
+   \Hinclude[*]{html4.4ht}%
+   \Hinclude[*]{unicode.4ht}%
+   \Hinclude[*]{html5.4ht}%
+   \Hinclude[*]{myoutput.4ht}% 
+} 
+  \end{verbatim}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Build soubor s filtry, pokus.mk4}
-\begin{verbatim}
-local filter = require "make4ht-filter"
-local process = filter{"cleanspan", "hruletohr"}
-Make:htlatex()
-Make:htlatex()
-Make:match("html$",process)
-Make:match("html$",
-"tidy -m -utf8 -asxhtml -q -i ${filename}")
-\end{verbatim}
+  \frametitle{Kompilace vlastního formátu}
+  \begin{verbatim}
+make4ht -um draft sample.tex myoutput
+  \end{verbatim}
 \end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Vyčištěné HTML}
-\begin{verbatim}
-<body>
-<p class="noindent">Co dělat v případě, že se 
-<span class= "ecbx-1000">nám nelíbí výstup?
-</span>
-</p>
-<hr class="hrule" />
-
-<p class="indent">Použijeme filtry!</p>
-</body>
-\end{verbatim}
-\end{frame}
-
-\begin{frame}
-  \frametitle{EDUPUB}
-  \begin{itemize}
-    \item profil pro ePUB 3 určený pro vzdělávací materiály
-    \item \url{http://www.idpf.org/epub/profiles/edu/spec/}
-    \item přidává sémantická metadata 
-  \end{itemize}
-\end{frame} 
-
-\begin{frame}
-  \frametitle{Příklad konfigurace vlastního balíčku: EDUPUB}
-  \begin{itemize}
-    \item vytvoříme balíček pro vkládání učitelských poznámek
-    \item poznámky se vypíšou pouze učitelům
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Jak toho docílit?}
-  \begin{itemize}
-    \item balíček bude mít volitelný argument \texttt{teacher}
-    \item učitelské poznámky se vypíšou pouze pokud je balíček vložen s tímto argumentem
-    \item dva řídící soubory obsahující kompletní preamble, vkládají TeXový 
-      soubor, který je pro učitele i studenty stejný
-  \end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Řídící soubor pro učitele: teacher.tex}
-\begin{verbatim}
-\documentclass{article}
-...
-\usepackage[teacher]{edupub}
-\begin{document}
-\include{text}
-\end{document}
-\end{verbatim}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Řídící soubor pro studenty: student.tex}
-\begin{verbatim}
-\documentclass{article}
-...
-\usepackage[]{edupub}
-\begin{document}
-\include{text}
-\end{document}
-\end{verbatim}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{TeXový soubor text.tex}
-\begin{verbatim}
-\newcommand\odpoved[1]{\\ \teacherinfo{#1}}
-\begin{enumerate}
-\item Jak se jmenuje náš největší had?
-\odpoved{Užovka stromová}
-\end{enumerate}
-\end{verbatim}
-\end{frame}
-
-
-\begin{frame}[fragile]
-  \frametitle{balíček edupub.sty}
-\begin{verbatim}
-\ProvidesPackage{edupub}
-\RequirePackage{kvoptions}
-\RequirePackage{etoolbox}
-\newbool{teacher}
-\boolfalse{teacher}
-\newcommand\teacherinfo[1]{}
-\DeclareVoidOption{teacher}{%
-  \renewcommand\teacherinfo[1]{%
-    \edupub@print@teacherinfo{##1}}
-  \booltrue{teacher}}
-\newcommand\edupub@print@teacherinfo[1]{#1}
-\ProcessKeyvalOptions*
-\end{verbatim}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{konfigurace pro balíček edupub, edupub.4ht}
-\begin{verbatim}
-\ifbool{teacher}{%
-  \Configure{OpfMetadata}
-  {\HCode{<dc:type>teacher-edition</dc:type>}}
-}{}%
-\end{verbatim}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{konfigurace pro balíček edupub, edupub.4ht}
-\begin{verbatim}
-\NewConfigure{teacherinfo}{2}
-
-\let\old:teacherinfo\edupub@print@teacherinfo
-
-\renewcommand\edupub@print@teacherinfo[1]{
-  \a:teacherinfo
-  \old:teacherinfo{#1}
-  \b:teacherinfo
-}
-\Configure{teacherinfo}
-{\HCode{<span epub:type="answer">}}
-{\HCode{</span>}}
-\end{verbatim}
-\end{frame}
-
-\begin{frame}[fragile]
-\frametitle{A výsledek?}
-\begin{block}{student}
-\begin{verbatim}
-<li   class="enumerate" id="x1-3x1">
-Jak se jmenuje náš největší had?<br 
-class="newline" /></li>
-\end{verbatim}
-\end{block}
-\begin{block}{učitel}
-\begin{verbatim}
-<li    class="enumerate" id="x1-3x1">
-Jak se jmenuje náš největší had?<br 
-class="newline" /> 
-<span epub:type="answer">Užovka stromová </span> 
-</li>
-\end{verbatim}
-\end{block}
-\end{frame}
-
 
 \begin{frame}
 \frametitle{To je vše}
