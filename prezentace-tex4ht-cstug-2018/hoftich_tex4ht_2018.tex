@@ -56,7 +56,7 @@ skládá z~několika na sebe navazujících kroků, vyžívají se pro kompilaci
 systémem \nazev{TeX4ht} skripty, které tento proces ulehčují. Existuje jich
 celá řada, liší se v~podporovaném výstupním formátu a použitém \TeX ovém enginu
 a formátu. Nejznámější z~nich je \nazev{htlatex}, který využívá engine pdf\TeX\
-s~formátem \LaTeX a produkuje výstup ve formátu HTML. Skripty zajišťují načtení
+s~formátem \LaTeX{} a produkuje výstup ve formátu HTML. Skripty zajišťují načtení
 balíčku s~makry \prikaz{tex4ht.sty} bez nutnosti jeho použití
 v~konvertovaném dokumentu.
 
@@ -87,17 +87,20 @@ engine použitého pro kompilaci, volbu výstupního formátu, podporu pro kódo
 Unicode ve výstupních souborech a další vlastnosti.
 
 V~současné době je podporován pouze \LaTeX, podpora pro Plain\TeX\ je
-komplikovanější a Con\TeX podporován není. V~následujícím textu
+komplikovanější a Con\TeX{} t podporován není. V~následujícím textu
 se zaměříme pouze na \LaTeX.
 
 \subsection{Volby \prikaz{make4ht} pro příkazovou řádku}
 
 \prikaz{make4ht} podporuje řadu přepínačů a voleb, které ovlivňují průběh kompilace a zpracování výstupních souborů. \prikaz{make4ht} může být spuštěn tímto způsobem:
 
+\begingroup
+\small
 \begin{verbatim}
 make4ht [přepínače pro make4ht] soubor.tex "volby pro tex4ht.sty" \
 "přepínače pro tex4ht" "přepínače pro t4ht" "přepínače pro TeX"
 \end{verbatim}
+\endgroup
 
 Tento komplikovaný způsob vychází z~fungování \prikaz{htlatex} a ostatních
 starých skriptů, které řešily nutnost předávání voleb pro všechny komponenty
@@ -114,7 +117,7 @@ make4ht --lua --utf8 --mode draft clanek.tex
 make4ht -lum draft clanek.tex
 \end{verbatim}
 
-Tento příkaz využije Lua\LaTeX pro kompilaci, která proběhne pouze jednou díky
+Tento příkaz využije Lua\LaTeX{} pro kompilaci, která proběhne pouze jednou díky
 využití \nazev{draft} módu a výsledný dokument bude v~textovém kódování UTF-8.
 Volby pro přepínače jsou od nich odděleny mezerou.
 
@@ -153,8 +156,8 @@ bez nutnosti použít sestavovací skript.
 Seznam využitých rozšíření lze zapsat za název formátu, zapínají se pomocí
 znaku plus, pomocí znaku mínus lze rozšíření zakázat\footnote{Rozšíření lze
   zapnout i ze sestavovacího skriptu, takové rozšíření je poté možné vypnout
-z~příkazové řádky.}. Následující příkaz využije příkaz \prikaz{tidy} pro
-vyčistění vygenerovaného souboru ve formátu HTML5:
+z~příkazové řádky.}. Následující příkaz využije příkaz \prikaz{HTML Tidy} pro
+opravení některých běžných chyb ve vygenerovaném HTML souboru:
 
 \begin{verbatim}
 make4ht -f html5+tidy simple-example.tex
@@ -274,8 +277,8 @@ souboru, ale více zaměřené na konkrétní kompilovaný dokument. Příklad
 sestavovacího skriptu byl představen v~předešlém článku \parencite[s.
 95]{hoftich:16}, ukážeme si zde tedy pouze novou vlastnost, kterou jsou DOM
 filtry. Ty využívají možností knihovny LuaXML \parencite{luaxml}, která
-umožňuje zpracovávat XML soubory pomocí \nazev{Document Object Model (DOM)}
-rozhraní. Díky tomu lze snadno procházet elementy, upravovat je, vytvářet, nebo
+umožňuje zpracovávat XML soubory pomocí rozhraní \nazev{Document Object Model (DOM)}.
+Díky tomu lze snadno procházet elementy, upravovat je, vytvářet, nebo
 odstraňovat.
 
 Využití DOM filtrů si ukážeme na následujícím příkladu určeném pro Lua\LaTeX: 
@@ -287,7 +290,9 @@ Test {\itshape háčků}
 \end{document}
 \end{verbatim}
 
-Kvůli známé chybě při zpracování DVI souboru příkazem \prikaz{tex4ht} bude vytvořen HTML soubor, kde každý znak s~diakritikou bude umístěn v~samostatném elementu:
+Kvůli známé chybě při zpracování DVI souboru příkazem \prikaz{tex4ht} bude
+vytvořen HTML soubor, kde každý znak s~diakritikou bude umístěn v~samostatném
+elementu:
 
 \begin{verbatim}
 <!--l. 4--><p class="noindent" >Test <span 
