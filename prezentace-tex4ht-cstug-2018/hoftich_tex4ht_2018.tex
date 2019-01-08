@@ -87,7 +87,7 @@ engine použitého pro kompilaci, volbu výstupního formátu, podporu pro kódo
 Unicode ve výstupních souborech a další vlastnosti.
 
 V~současné době je podporován pouze \LaTeX, podpora pro Plain\TeX\ je
-komplikovanější a Con\TeX{} t podporován není. V~následujícím textu
+komplikovanější a Con\TeX{}t podporován není. V~následujícím textu
 se zaměříme pouze na \LaTeX.
 
 \subsection{Volby \prikaz{make4ht} pro příkazovou řádku}
@@ -108,7 +108,7 @@ zapojené v~kompilaci. Ve většině případů naštěstí není třeba této m
 využívat, většinu vlastností, které poskytují \prikaz{tex4ht} a \prikaz{t4ht}
 lze vyžádat pomocí přepínačů pro \prikaz{make4ht}.
 
-Všechny přepínače, které \prikaz{make4ht} podporuje mají krátkou a dlouhou
+Všechny přepínače, které \prikaz{make4ht} podporuje, mají krátkou a dlouhou
 verzi. Krátké přepínače lze navíc spojovat dohromady. Následující dva příkazy
 jsou totožné:
 
@@ -118,10 +118,10 @@ make4ht -lum draft clanek.tex
 \end{verbatim}
 
 Tento příkaz využije Lua\LaTeX{} pro kompilaci, která proběhne pouze jednou díky
-využití \nazev{draft} módu a výsledný dokument bude v~textovém kódování UTF-8.
+využití \nazev{draft} módu, a výsledný dokument bude v~textovém kódování UTF-8.
 Volby pro přepínače jsou od nich odděleny mezerou.
 
-Kromě přepínačů \prepinac{lua}, \prepinac{utf-8} a \prepinac{mode} existuje ještě řada dalších užitečných přepínačů:
+Kromě přepínačů \prepinac{lua}, \prepinac{utf8} a \prepinac{mode} existuje ještě řada dalších užitečných přepínačů:
 
 \begin{description}
   \item[\prepinac{config (-c)}] konfigurační soubor pro \nazev{TeX4ht}. Umožňuje uživatelsky změnit značky vkládané do výstupních souborů.
@@ -137,7 +137,7 @@ Existují ještě další přepínače, ale tyto jsou nejužitečnější pro b�
 \subsection{Výstupní formáty a rozšíření}
 
 \nazev{TeX4ht} podporuje širokou škálu formátů založených na XML, od XHTML,
-před ODT až po DocBook a TEI. Zájem uživatelů je však zaměřen prakticky pouze
+přes ODT až po DocBook a TEI. Zájem uživatelů je však zaměřen prakticky pouze
 na varianty HTML a OpenDocument Format, který 
 je podporován textovými procesory jako je LibreOffice nebo MS Word.
 
@@ -151,7 +151,7 @@ make4ht filename.tex "docbook"
 
 
 
-V~přepínači formát lze také načíst rozšíření.  Rozšíření umožňují ovlivnit kompilaci
+V~přepínači \prepinac{format} lze také načíst rozšíření.  Rozšíření umožňují ovlivnit kompilaci
 bez nutnosti použít sestavovací skript. 
 Seznam využitých rozšíření lze zapsat za název formátu, zapínají se pomocí
 znaku plus, pomocí znaku mínus lze rozšíření zakázat\footnote{Rozšíření lze
@@ -166,22 +166,23 @@ make4ht -f html5+tidy simple-example.tex
 Dostupná jsou následující rozšíření:
 
 \begin{description}
-  \item[latexmk\_build] využije příkaz \prikaz{latexmk} pro sestavení
+  \item[\texttt{latexmk\_build}] využije příkaz \prikaz{latexmk} pro sestavení
     dokumentu. Ten se postará o~volání externích příkazů, například pro tvorbu
     seznamu literatury.
-  \item[tidy] vyčistí HTML soubor pomocí příkazu \prikaz{tidy}.
-  \item[dvisvgm\_hashes] efektivní generování obrázků pomocí příkazu
+  \item[\texttt{tidy}] vyčistí HTML soubor pomocí příkazu \prikaz{tidy}.
+  \item[\texttt{dvisvgm\_hashes}] efektivní generování obrázků pomocí příkazu
     \prikaz{dvisvgm}. Dokáže využít více procesorových jader a vytváří pouze
     obrázky, které byly změněny nebo vytvořeny od poslední kompilace. Tím
     dochází ke znatelnému zrychlení kompilace.
-  \item[common\_filters a common\_domfilters] vyčistění dokumentu pomocí filtrů. Filtrům se budeme věnovat dále v~textu.
-  \item[mathjaxnode] konverze matematického kódu ve formátu MathML do
+  \item[\texttt{common\_filters} {\normalfont a} \texttt{common\_domfilters}]
+    vyčistění dokumentu pomocí filtrů. Filtrům se budeme věnovat dále v~textu.
+  \item[\texttt{mathjaxnode}] konverze matematického kódu ve formátu MathML do
     speciálního HTML za využití projektu \nazev{MathJax Node
     Page}\footnote{\url{https://github.com/pkra/mathjax-node-page/}}. Díky tomu
     lze zobrazit kvalitně matematiku i ve webových prohlížečích bez podpory
     MathML, bez nutnosti využít JavaScript.
     % příklad https://www.kodymirus.cz/samples/mathjaxnode/maths.html
-  \item[staticsite]  vytvoří dokument použitelný pro generátory statických
+  \item[\texttt{staticsite}]  vytvoří dokument použitelný pro generátory statických
     stránek, jako je například
     \nazev{Jekyll}\footnote{\url{https://jekyllrb.com/}}. Ty jsou využitelné
     například pro tvorbu blogu.
@@ -214,7 +215,7 @@ filter_settings "staticsite" {
 Make:enable_extension("common_domfilters")
 if mode=="publish" then
   Make:enable_extension("staticsite")
-  Make:htlatex()
+  Make:htlatex {}
 end
 
 \end{verbatim}
@@ -227,8 +228,8 @@ kterém lze nastavit volby daného filtru. Oproti běžným konvencím příkaz�
 v~jazyce Lua zde nevyužíváme uvozovky jako u~běžných funkcí!
 
 Dalším použitým příkazem je \verb|Make:enable_extension|, který povolí
-rozšíření. V~tomto případě je rozšíření \nazev{common\_domfilters} použito pro
-každou kompilaci, ovšem rozšíření \nazev{staticsite} pouze v~módu
+rozšíření. V~tomto případě je rozšíření \texttt{common\_domfilters} použito pro
+každou kompilaci, ovšem rozšíření \texttt{staticsite} pouze v~módu
 \nazev{publish}, čehož je dosaženo podmínkou \verb|mode=="publish"|.
 
 Příkaz \verb|Make:htlatex {}| vynutí jednu kompilaci \LaTeX em. 
@@ -278,7 +279,7 @@ sestavovacího skriptu byl představen v~předešlém článku \parencite[s.
 95]{hoftich:16}, ukážeme si zde tedy pouze novou vlastnost, kterou jsou DOM
 filtry. Ty využívají možností knihovny LuaXML \parencite{luaxml}, která
 umožňuje zpracovávat XML soubory pomocí rozhraní \nazev{Document Object Model (DOM)}.
-Díky tomu lze snadno procházet elementy, upravovat je, vytvářet, nebo
+Díky tomu lze snadno procházet elementy, upravovat je, vytvářet nebo
 odstraňovat.
 
 Využití DOM filtrů si ukážeme na příkladu určeném pro Lua\LaTeX: 
@@ -379,7 +380,7 @@ libovolné příkazy. Je možná také podmíněná konfigurace na základě vol
 libovolnou volbu, z~čehož vyplývá, že neexistuje jejich konečný seznam a pro
 každý formát existují jiné volby.
 
-\subsection{Volby balíčku tex4ht.sty}
+\subsection{Volby balíčku \texttt{tex4ht.sty}}
 
 Protože se nedoporučuje vkládat balíček \prikaz{tex4ht.sty} přímo do dokumentu,
 je možné předat mu volby jiným způsobem. Nejjednodušším je pomocí argumentu pro
