@@ -1,0 +1,12 @@
+local domfilter = require "make4ht-domfilter"
+
+local function domsample(dom)
+  for _, par in ipairs(dom:query_selector("p")) do
+    par:set_attribute("class", "mypar")
+  end
+
+  return dom
+end
+
+local process = domfilter {"joincharacters", domsample}
+Make:match("html$", process)
