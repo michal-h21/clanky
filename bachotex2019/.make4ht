@@ -1,0 +1,9 @@
+
+if mode=="blog" then
+  Make:enable_extension("staticsite")
+  filter_settings "staticsite" {
+    site_root = "web"
+  }
+  Make:htlatex {}
+
+end
