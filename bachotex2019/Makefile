@@ -10,6 +10,10 @@ handout.pdf: handout.tex  ${common_tex}
 	$(latex) $<
 
 handout.html: handout.tex ${common_tex}
+	make4ht -ulm draft $<
+
+blog:
+	make4ht -ulm blog handout.tex
 
 
 ${presentation}.pdf: ${presentation}.tex ${common_tex}
