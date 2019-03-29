@@ -13,6 +13,7 @@ handout.html: handout.tex ${common_tex}
 	make4ht -ulm draft $<
 
 blog:
+	rm handout.published
 	make4ht -ulm blog handout.tex
 
 
