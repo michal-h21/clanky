@@ -15,15 +15,16 @@
 
 \section{Introduction}
 \texfourht\ is a system for conversion of \TeX\ documents to various output
-formats, most notably several variants of \HTML, or \term{OpenDocument
-Format}, supported by word processors such as Microsof Word or LibreOffice
+formats. Most notably \HTML, or \term{OpenDocument Format}, supported by word processors such as Microsof Word or LibreOffice
 Writer. 
 
 
 
-The conversion process is started by a package \packagename{tex4ht}. It loads special 
-configuration files for packages supported by \texfourht. These configuration files may fix clashes between the configured package and \texfourht, but most notably the package commands
-can be patched to insert special marks, so called hooks. These hooks
+The package \packagename{tex4ht} starts the conversion process. It loads special 
+configuration files for packages supported by \texfourht. These configuration
+files serve may fix clashes between the configured package and \texfourht, but most
+notably the package commands
+can be patched to insert special marks, so-called hooks. These hooks
 are then populated with tags in the selected output format. 
 
 
