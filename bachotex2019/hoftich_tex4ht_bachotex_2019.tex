@@ -8,12 +8,17 @@
 % \usepackage{microtype}
 \newcommand\texfourht{\term{\TeX4ht}}
 \newcommand\texfourhtcmd{\command{tex4ht}}
+\newcommand\tfourhtcmd{\command{t4ht}}
+\newcommand\makefourht{\command{make4ht}}
 % \newcommand\DVI{\acro{DVI}}
+\newcommand\extension[1]{\texttt{.#1}}
+% make4ht extensions
+\newcommand\mkextension[1]{\texttt{#1}}
+\newcommand\switch[1]{\texttt{-\/-#1}}
 
 \newcommand\nazev[1]{#1}
 \newcommand\parencite[1]{#1}
 \newcommand\prikaz[1]{\texttt{#1}}
-\newcommand\prepinac[1]{\texttt{-\/-#1}}
 
 \author{Michal Hoftich}
 \title{\texfourht: LaTeX to Web publishing}
@@ -30,18 +35,37 @@
 \section{Overview of the conversion process}
 \texfourht\ is a system for conversion of \TeX\ documents to various output
 formats. Most notably \HTML, or \term{OpenDocument Format}, supported by word processors such as Microsof Word or LibreOffice
-Writer. 
+Writer. Overview of the system is depicted in the figure \ref{fig:overview}.
 
 
+The package \packagename{tex4ht} starts the conversion process. The document
+preamble is loaded as usual, but it keeps track of all loaded files. 
+It loads special configuration files for the
+used packages supported by \texfourht after the begin of the document.
+These configuration with are named as the configured file with a
+\extension{4ht} extension.  They can fix clashes between the configured package
+and \texfourht, but most notably the package commands can be patched to insert
+special marks to the \DVI\ file, so-called
+hooks. 
 
-The package \packagename{tex4ht} starts the conversion process. It loads special 
-configuration files for packages supported by \texfourht. These configuration
-files serve may fix clashes between the configured package and \texfourht, but most
-notably the package commands can be patched to insert special marks to the \DVI\ file, so-called
-hooks. These hooks are then populated with tags in the selected output format. 
+After the package configuration, another type of \extension{4ht} files are loaded.
+They populate inserted hooks with tags in the selected output format. In the
+last step before processing of the document contents, a \extension{cfg}
+provided by the user can configure the hooks with custom tags. Compilation of
+the document then continue as usual, resulting in a special \DVI\ file.
 
 The generated \DVI\ file is then processed with the \texfourhtcmd\ command.
+This command creates output files, converts various input encoding to UTF-8,
+and creates two auxiliary files: \extension{.idv} file is a special \DVI\ file that contains
+pages to be converted to images. These can be the contents of the \LaTeX\ picture
+environment or complex mathematics. The other file with the \extension{lg}
+file contains list of output files, CSS instructions, and instructions for
+compiling individual pages in the  \extension{idv} file to images.
 
+The last step in the compilation chain is the \tfourhtcmd.
+It process the \extension{lg} file and extracts the \acro{CSS} instructions,
+converts the images in the \extension{idv} file and can call various external
+commands.
 
 
 \begin{figure*}[hbt!]
@@ -50,190 +74,198 @@ The generated \DVI\ file is then processed with the \texfourhtcmd\ command.
 \label{fig:overview}
 \end{figure*}
 
+\section{Supporting scripts}
 
-Tento článek navazuje na předchozí příspěvek autora ve \nazev{Zpravodaji}
-\parencite{hoftich:16}, který byl zaměřený na problematiku tvorby
-elektronických knih, ovšem byly v~něm také
-představeny postupy využívané konverzním systémem \nazev{TeX4ht} pro konverzi
-z~\TeX u do výstupních formátů a nastíněna problematika samotné konverze z~\TeX u
-do formátů založených na značkovacím jazyce XML. 
-Nyní se zaměříme na některé nové vlastnosti sestavovacího programu pro \nazev{TeX4ht} jménem
-\prikaz{make4ht} a pokročilejší možnosti konfigurace podoby výstupních souborů.
+Because the entire conversion process consists of several consecutive steps,
+we use scripts to make this process easier. The \texfourht\ distribution
+contains several of such scripts. They differ in the supported output format, \TeX\ engine used 
+or options passed to the underlying commands.
+The most commonly used script  is \command{htlatex}, which uses the \PDF\TeX\ engine with
+\LaTeX\ and produces the \HTML\ output. 
 
-Připomeňme si však některé základní informace. \nazev{TeX4ht} je konverzní
-systém který je založený na vkládání instrukcí výstupního formátu přímo při
-překladu dokumentu \TeX em. Výsledkem kompilace je DVI soubor, který je
-následně zpracován příkazem \prikaz{tex4ht}. Ten vytvoří výsledné XML soubory a
-speciální soubory s~příponami \nazev{.idv} a \nazev{.lg}.
-První z~nich obsahuje DVI kód, ze kterého mají být vytvořeny obrázky
-(v~základním nastavení například matematická prostředí). Druhý je řídící soubor
-pro poslední příkaz, \prikaz{t4ht}. Ten je využíván pro konverzi obrázků
-z~\nazev{.idv} souboru, volání externích příkazů, nebo vytvoření hlavního CSS
-souboru.
+Each of the scripts loads the \texfourht\ package without need to specify it in
+the document and options from the command line are passed to the package as well to
+\texfourhtcmd\ and \tfourhtcmd commands.
 
-V~předchozím odstavci jsme použili výraz \nazev{TeX4ht} ve dvou různých
-významech. Jednak jako název celého konverzního systému, jednak jako jednu
-z~částí tohoto systému, která zpracovává DVI soubor. Existuje ještě další součást
-systému s~tímto názvem, balíček \TeX ových maker \prikaz{tex4ht.sty}, který
-zajišťuje vkládání XML značek do výstupního dokumentu.
-
-\section{Sestavovací program \prikaz{make4ht}}
-
-Jak do tohoto schématu zapadá \prikaz{make4ht}? Protože se celý konverzní proces
-skládá z~několika na sebe navazujících kroků, vyžívají se pro kompilaci
-systémem \nazev{TeX4ht} skripty, které tento proces ulehčují. Existuje jich
-celá řada, liší se v~podporovaném výstupním formátu a použitém \TeX ovém enginu
-a formátu. Nejznámější z~nich je \nazev{htlatex}, který využívá engine pdf\TeX\
-s~formátem \LaTeX{} a produkuje výstup ve formátu HTML. Skripty zajišťují načtení
-balíčku s~makry \prikaz{tex4ht.sty} bez nutnosti jeho použití
-v~konvertovaném dokumentu.
-
-Tyto skripty jsou ovšem neflexibilní, každé jejich spuštění provede
-trojnásobnou kompilaci dokumentu \TeX em. To zajistí správnou strukturu
-hypertextových odkazů a tabulek, ty totiž vyžadují několikanásobnou kompilaci
-pro svojí správnou funkci. V~následujících krocích je dokument zpracován
-\prikaz{tex4ht} a \prikaz{t4ht}. Pokud dokument obsahuje například seznam
-literatury nebo zkratek, které jsou vytvářeny externími programy, je třeba
-zavolat nejdříve \prikaz{htlatex}, poté požadovaný program a poté opět
-\prikaz{htlatex}. V~případě větších dokumentů může být čas potřebný pro
-kompilaci tímto způsobem poměrně dlouhý.
-
-\prikaz{make4ht} umožňuje tvorbu sestavovacích skriptů v~jazyce \nazev{Lua}, ve
-kterých lze volat externí příkazy podle potřeby. S~pomocí takzvaných
-\nazev{módů} lze ovlivnit pořadí kompilace pomocí přepínačů přímo z~příkazové
-řádky. Například základní skript používaný \prikaz{make4ht} podporuje
-\nazev{draft} mód, který spustí pouze jednu kompilaci dokumentu, místo
-obvyklých tří. Toho se dá využít pro zrychlení kompilace v~případě, kdy se
-v~dokumentu od poslední kompilace nezměnily křížové odkazy a pouze chceme získat
-rychlý náhled na jeho současnou podobu.
-
-Původně byl \prikaz{make4ht} součástí systému \nazev{TeX4ebook}, kde zajišťoval
-podporu pro sestavovací skripty, postupně se z~něj však oddělil a v~současné
-době plně nahradil staré skripty používané pro konverzi systémem \nazev{TeX4ht}. 
-Kromě podpory pro sestavovací skripty také umožňuje snadný výběr \TeX ového
-engine použitého pro kompilaci, volbu výstupního formátu, podporu pro kódování
-Unicode ve výstupních souborech a další vlastnosti.
-
-V~současné době je podporován pouze \LaTeX, podpora pro Plain\TeX\ je
-komplikovanější a Con\TeX{}t podporován není. V~následujícím textu
-se zaměříme pouze na \LaTeX.
-
-\subsection{Volby \prikaz{make4ht} pro příkazovou řádku}
-
-\prikaz{make4ht} podporuje řadu přepínačů a voleb, které ovlivňují průběh kompilace a zpracování výstupních souborů. \prikaz{make4ht} může být spuštěn tímto způsobem:
-
-\begingroup
-\small
-\begin{verbatim}
-make4ht [přepínače pro make4ht] soubor.tex "volby pro tex4ht.sty" \
-"přepínače pro tex4ht" "přepínače pro t4ht" "přepínače pro TeX"
-\end{verbatim}
-\endgroup
-
-Tento komplikovaný způsob vychází z~fungování \prikaz{htlatex} a ostatních
-starých skriptů, které řešily nutnost předávání voleb pro všechny komponenty
-zapojené v~kompilaci. Ve většině případů naštěstí není třeba této možnosti
-využívat, většinu vlastností, které poskytují \prikaz{tex4ht} a \prikaz{t4ht}
-lze vyžádat pomocí přepínačů pro \prikaz{make4ht}.
-
-Všechny přepínače, které \prikaz{make4ht} podporuje, mají krátkou a dlouhou
-verzi. Krátké přepínače lze navíc spojovat dohromady. Následující dva příkazy
-jsou totožné:
+For example the following command can be used to request the output in the
+\acro{XHTML} format in the \acro{UTF-8} encoding:
 
 \begin{verbatim}
-make4ht --lua --utf8 --mode draft clanek.tex
-make4ht -lum draft clanek.tex
+htlatex filename.tex \
+"xhtml,charset=utf-8"\
+"-utf8 -cunihtf"
 \end{verbatim}
 
-Tento příkaz využije Lua\LaTeX{} pro kompilaci, která proběhne pouze jednou díky
-využití \nazev{draft} módu, a výsledný dokument bude v~textovém kódování UTF-8.
-Volby pro přepínače jsou od nich odděleny mezerou.
+However, these scripts are inflexible, each time they execute a three-time
+compilation of the \TeX\  document. This will ensure the correct structure of
+hypertext links and tables, as they require multiple compilations to
+function properly. In the following steps, the document is processed by
+\texfourhtcmd\ and \tfourhtcmd. 
 
-Kromě přepínačů \prepinac{lua}, \prepinac{utf8} a \prepinac{mode} existuje ještě řada dalších užitečných přepínačů:
+For example, if the document contains a bibliography or
+glossary that are created by external programs, it is necessary to first call
+\command{htlatex}, then the desired program, and then \command{htlatex} again.
+In the case of larger documents, compilation time in this way may be relatively
+long.
+
+The option passing to the underlying commands is also quite difficult.
+
+New build scripts had been created for these reasons. First project that
+attempted to simplify the \texfourht\ compilation process was
+\command{tex4ebook}. It added support for e-books, in particular in
+\term{ePub}, \term{ePub3} and \term{mobi} formats. It added support for use of
+common command line switches and build files written in the \term{Lua} language.
+
+The main difference between \command{tex4ebook} and \texfourht\ is the third compilation
+step. The \tfourhtcmd\ command is used only to create a CSS file. 
+Image conversion and execution of the external commands is controlled by the
+\command{tex4ebook} itself. In addition, thanks to the build file support, it
+is possible to execute commands between individual \TeX\ compilations. For
+example, to execute an index processor or \command{bibtex}
+after the first compilation.
+
+The library that added the build support provided 
+features useful also for other output formats than e-books. It
+was extracted as a standalone tool and the \command{make4ht} build system is now a
+recommended tool for the \texfourht\ use.
+
+
+\section{\command{make4ht} build system}
+
+\makefourht\ enables creation of build scripts in the Lua language. 
+It supports the execution of arbitrary commands during the conversion,
+post-processing of the generated files or setting command for the image
+conversion.
+Using using so-called modes, it is possible to 
+influence the order of compilation using switches directly from the   command
+line. For example, the basic script used by \makefourht\ supports the draft mode, which
+only runs one compilation of the document instead of the usual three. This can
+be used to significantly  speed up of the  compilation. 
+
+Currently, only \LaTeX\ is supported, Plain\TeX\ support  is possible, but it is
+more complicated and \ConTeXt\ is not supported at all. In the following we
+will focus only on \LaTeX.
+
+make4ht supports a number of switches and options that affect the progress of compiling and processing of the output files.
+make4ht can be launched as follows:
+
+\bgroup\small
+\begin{verbatim}
+make4ht [switches for make4ht] file.tex \
+"options for tex4ht.sty" "switches for tex4ht"\
+"switches for t4ht" "switches for TeX" 
+\end{verbatim}
+\egroup
+
+
+This complicated list comes from  the way \command{htlatex} is  functioning, 
+as it needs passing options for all components involved in
+compilation. In most cases, fortunately, there is no need to use all options.
+Most of the properties that \texfourhtcmd\ and \tfourhtcmd\ provide can be requested using the
+\makefourht\ switches.
+
+\subsection{\makefourht\ command line switches}
+
+All command line switches \makefourht\ supports have a short and long version. In
+addition, short switches can be combined together. The following two commands
+are identical:
+
+
+\bgroup\small
+\begin{verbatim}
+make4ht --lua --utf8 --mode draft filename.tex
+make4ht -lum draft filename.tex
+\end{verbatim}
+\egroup
+
+This command uses Lua\LaTeX\ for the compilation, which will be executed only one
+once thanks to the draft mode. The resulting document will be in \acro{UTF-8}
+text encoding. The default output format used by \makefourht\ is \HTML5. \command{htlatex} on the other hand uses \HTML4.
+
+In addition to the \switch{lua} , \switch{utf8}, and \switch{mode} switches, there are a number of other useful switches:
+
 
 \begin{description}
-  \item[\prepinac{config (-c)}] konfigurační soubor pro \nazev{TeX4ht}. Umožňuje uživatelsky změnit značky vkládané do výstupních souborů.
-  \item[\prepinac{build-file (-e)}] sestavovací soubor.
-  \item[\prepinac{output-dir (-d)}] adresář, do kterého budou zkopírovány výstupní soubory.
-  \item[\prepinac{shell-escape (-s)}] použije volbu \verb|--shell-escape| pro \LaTeX, bude tedy možné spouštět z~něj externí příkazy.
-  \item[\prepinac{xetex (-x)}] dokument bude kompilován pomocí Xe\LaTeX u.
-  \item[\prepinac{format (-f)}] volba výstupního formátu a rozšíření.
+  \item[\switch{config (-c)}] configuration file for \texfourht. Allows user to change tags inserted into output files.
+  \item[\switch{build-file (-e)}] select a build file.
+  \item[\switch{output-dir (-d)}] the directory where the output files will be copied.
+  \item[\switch{shell-escape (-s)}] will use the \texttt{-shell-\/escape} option for \LaTeX, enabling execution of the external commands.
+  \item[\switch{xetex (-x)}] the document will be compiled using Xe\LaTeX.
+  \item[\switch{format (-f)}] select an output format.
 \end{description}
 
-Existují ještě další přepínače, ale tyto jsou nejužitečnější pro běžné využití.
+There are other switches, but these are most useful for a common use.
 
-\subsection{Výstupní formáty a rozšíření}
 
-\nazev{TeX4ht} podporuje širokou škálu formátů založených na XML, od XHTML,
-přes ODT až po DocBook a TEI. Zájem uživatelů je však zaměřen prakticky pouze
-na varianty HTML a OpenDocument Format, který 
-je podporován textovými procesory jako je LibreOffice nebo MS Word.
+\subsection{Output formats and extensions}
 
-Přepínač \prepinac{format} tedy podporuje pouze následující formáty: html5,
-xhtml a odt (je třeba využít malá písmena). Přednastaveným formátem je HTML5.
-Ostatní formáty, jako je DocBook, lze vybrat pomocí volby pro \prikaz{tex4ht.sty}:
+\texfourht\ supports a wide range of \XML-based formats, from \acro{XHTML}, through \acro{ODT} to
+\acro{DocBook} and \acro{TEI}. 
+
+The \switch{format} switch supports the following formats: \command{html5}, \command{xhtml}, \command{odt}, \command{tei} and \command{docbook} (it is necessary to use the lowercase letters). 
+The default format is \command{html5}. Formats can be selected also using the \packagename{tex4ht} option:
 
 \begin{verbatim}
 make4ht filename.tex "docbook"
 \end{verbatim}
 
+The positive feature of the \switch{format} is that it can fix some common issues for the particular formats. 
+It can also load extensions. Extensions allow us to influence the compilation
+without having to use a build script. The list of extensions to be used can be
+written after the format name. They can be  enabled using the plus character,
+disabled with the minus character disabled\footnote{Extensions can also be
+enabled from the \makefourht\ configuration file, it can be useful to be able
+to disable them from  the command line.}. The following command uses the \HTML
+Tidy command to fix some common errors in the generated \HTML\ file:
 
-
-V~přepínači \prepinac{format} lze také načíst rozšíření.  Rozšíření umožňují ovlivnit kompilaci
-bez nutnosti použít sestavovací skript. 
-Seznam využitých rozšíření lze zapsat za název formátu, zapínají se pomocí
-znaku plus, pomocí znaku mínus lze rozšíření zakázat\footnote{Rozšíření lze
-  zapnout i ze sestavovacího skriptu, takové rozšíření je poté možné vypnout
-z~příkazové řádky.}. Následující příkaz využije příkaz \prikaz{HTML Tidy} pro
-opravení některých běžných chyb ve vygenerovaném HTML souboru:
 
 \begin{verbatim}
 make4ht -f html5+tidy simple-example.tex
 \end{verbatim}
 
-Dostupná jsou následující rozšíření:
+The following extensions are available:
+
+ 
 
 \begin{description}
-  \item[\texttt{latexmk\_build}] využije příkaz \prikaz{latexmk} pro sestavení
-    dokumentu. Ten se postará o~volání externích příkazů, například pro tvorbu
-    seznamu literatury.
-  \item[\texttt{tidy}] vyčistí HTML soubor pomocí příkazu \prikaz{tidy}.
-  \item[\texttt{dvisvgm\_hashes}] efektivní generování obrázků pomocí příkazu
-    \prikaz{dvisvgm}. Dokáže využít více procesorových jader a vytváří pouze
-    obrázky, které byly změněny nebo vytvořeny od poslední kompilace. Tím
-    dochází ke znatelnému zrychlení kompilace.
-  \item[\texttt{common\_filters} {\normalfont a} \texttt{common\_domfilters}]
-    vyčistění dokumentu pomocí filtrů. Filtrům se budeme věnovat dále v~textu.
-  \item[\texttt{mathjaxnode}] konverze matematického kódu ve formátu MathML do
-    speciálního HTML za využití projektu \nazev{MathJax Node
-    Page}\footnote{\url{https://github.com/pkra/mathjax-node-page/}}. Díky tomu
-    lze zobrazit kvalitně matematiku i ve webových prohlížečích bez podpory
-    MathML, bez nutnosti využít JavaScript.
-    % příklad https://www.kodymirus.cz/samples/mathjaxnode/maths.html
-  \item[\texttt{staticsite}]  vytvoří dokument použitelný pro generátory statických
-    stránek, jako je například
-    \nazev{Jekyll}\footnote{\url{https://jekyllrb.com/}}. Ty jsou využitelné
-    například pro tvorbu blogu.
+  \item[latexmk\_build] uses the \command{latexmk} command to build a document. It will take care of the  calling of external commands. For example, it can be used to create a bibliography.
+
+  \item[tidy] cleans the HTML file with the tidy command.
+
+  \item[dvisvgm\_hashes] efficient generation of images using the dvisvgm command. It can use multiple processor cores and only creates images that have been changed or created since the last compilation. This makes the compilation noticeably faster.  
+
+  \item[common\_filters and common\_domfilters]
+clean the document using filters. The filters will be discussed later in the  text.
+
+\item[mathjaxnode] convert \MathML\ math code into special \HTML\ using
+  \term{MathJax Node Page}\footnote{\url{https://github.com/pkra/mathjax-node-page/}}.
+  It produces mathematics that can be viewed in web browsers without \MathML
+    support. The rendering of the result doesn't need JavaScript, which results in much faster display of the document compared  to the regular MathJax.
+
+\item[staticsite] creates a document that can be used for static page generators such as \term{Jekyll}\footnote{\url{https://jekyllrb.com/}}. These are useful for creating a blog or similar more complex website.
 \end{description}
+    
 
-Rozšíření je možné dále konfigurovat.
-Tím se dostáváme ke konfiguračnímu souboru a sestavovacím skriptům.
+Extensions can be further configured. This brings us to the configuration file and build scripts. 
 
-\subsection{Konfigurační soubor pro \prikaz{make4ht}}
 
-\prikaz{make4ht} podporuje sestavovací skripty v~jazyce Lua. Jejich pomocí je
-možné volat externí příkazy v~průběhu kompilace, předávat jim parametry,
-používat filtry na výstupní soubory, ovlivňovat konverzi obrázků nebo
-konfigurovat rozšíření.
 
-Konfigurační soubor \texttt{.make4ht} je speciální sestavovací skript, který je
-načítaný automaticky a měl by obsahovat pouze obecné konfigurace. Oproti tomu
-normální sestavovací soubory mohou obsahovat konfigurace platné pro daný
-dokument. Konfigurační soubor může být umístěný v~adresáři s~dokumentem, nebo
-v~jeho nadřazených adresářích. To je užitečné například pokud bychom tvořili
-blog, kde každý dokument je umístěný ve vlastním adresáři. V~nadřazeném
-adresáři může být umístěný konfigurační soubor, který zajistí správné
-zpracování. Zde je drobný příklad:
+\subsection{Configuration file for make4ht}
+
+\makefourht\ supports build scripts in the  Lua language. They can be used to
+call external commands, pass parameters to executed command, apply filters to
+the output files, affect image conversion, or configure extensions.
+
+The \extension{make4ht} configuration file is a special build script that is loaded
+automatically and should contain only general configurations shared between documents. In contrast,
+normal build files may contain configurations useful only for the current document. The
+configuration file can be located in the  directory of the current   document or in  its
+parent directories. 
+
+This can be useful, for example, for maintaining a blog.
+Each document is located in its own directory. In the parent directory
+can be located a configuration file to ensure proper processing. Here's a small
+example: 
 
 \begin{verbatim}
 filter_settings "staticsite" {
@@ -248,32 +280,28 @@ end
 
 \end{verbatim}
 
-Tento konfigurační soubor nastavuje volbu \texttt{site\_root} pro rozšíření
-\nazev{staticsite} pomocí příkazu \verb|filter_settings|. Pomocí tohoto příkazu
-lze nastavit volby pro filtry, ale také rozšíření. Název filtru nebo rozšíření
-je oddělený od příkazu mezerou, poté následuje další mezerou oddělené pole, ve
-kterém lze nastavit volby daného filtru. Oproti běžným konvencím příkazů
-v~jazyce Lua zde nevyužíváme uvozovky jako u~běžných funkcí!
+This configuration file sets the option \verb|site_root| for the \mkextension{staticsite} extension using the \verb|filter_settings| command. 
+This command can be used to set options for filters but also for extensions.
+The name of the filter or extension is separated from the command by a space,
+followed by another space-separated field, where options can be set.
 
-Dalším použitým příkazem je \verb|Make:enable_extension|, který povolí
-rozšíření. V~tomto případě je rozšíření \texttt{common\_domfilters} použito pro
-každou kompilaci, ovšem rozšíření \texttt{staticsite} pouze v~módu
-\nazev{publish}, čehož je dosaženo podmínkou \verb|mode=="publish"|.
+Another used command is \verb|Make:enable_extension|, which enables the
+extension. In this case the \verb|common_domfilters| extension is used in every
+compilation, but the \mkextension{staticsite} extension is used only in the  \term{publish}
+mode. In this mode it is also necessary to use the \verb|Make:htlatex{}| to
+require at least one \LaTeX\ compilation.
 
-Příkaz \verb|Make:htlatex {}| vynutí jednu kompilaci \LaTeX em. 
+Now it is possible to run \makefourht\ in the publish mode:
 
-Nyní lze spustit \prikaz{make4ht} v~módu \nazev{publish}: 
 
 \begin{verbatim}
 make4ht -um publish simple-example.tex
 \end{verbatim}
 
-Bude vytvořen adresář \nazev{publish}, pokud již neexistuje, do kterého budou
-zkopírovány HTML a CSS soubory ve formátu \textit{datum publikace-originální
-název}. Statické generátory většinou očekávají názvy souborů v~tomto formátu,
-čímž se zajistí chronologické řazení stránek.
+The \texttt{output} directory will be created if it does not already exist. \HTML\ and \CSS\ files will be copied here. The static site generator must be configured to look up for files here and it needs to be executed manually, the extension doesn't do that. 
 
-Výsledný HTML soubor může mít následující podobu:
+The resulting HTML file may take the following form: 
+
 
 \begin{verbatim}
 ---
@@ -288,29 +316,26 @@ meta:
 <p>Sample document</p>
 \end{verbatim}
 
+The document header enclosed between the two \verb|---| contains variables in the \acro{YAML}
+format extracted from   \HTML file. Only the contents of the document body
+remains in the document, old header is stripped off. The
+static generator can then create a page based on the template and the variables
+in the \acro{YAML}  header.
 
-Hlavička dokumentu uzavřená mezi dvojicí \verb|---| obsahuje proměnné ve
-formátu YAML extrahované z~HTML souboru, ze kterého zůstal pouze základní text.
-Statický generátor poté může vytvořit stránku na základě šablony a proměnných
-v~hlavičce. 
-
-Toto byl pouze základní příklad, filtry a rozšíření mají mnohem širší možnosti
-nastavení, všechny volby jsou popsány v~dokumentaci \prikaz{make4ht} \parencite{make4ht}.
-
-
-\subsection{Sestavovací skripty}
+This was just a basic example, filters and extensions have much wider configurable options, all of which are described in the \makefourht\  documentation\footnote{\url{https://ctan.org/pkg/make4ht}}.
 
 
-V~sestavovacích skriptech můžeme využívat stejné postupy jako v~konfiguračním
-souboru, ale více zaměřené na konkrétní kompilovaný dokument. Příklad
-sestavovacího skriptu byl představen v~předešlém článku \parencite[s.
-95]{hoftich:16}, ukážeme si zde tedy pouze novou vlastnost, kterou jsou DOM
-filtry. Ty využívají možností knihovny LuaXML \parencite{luaxml}, která
-umožňuje zpracovávat XML soubory pomocí rozhraní \nazev{Document Object Model (DOM)}.
-Díky tomu lze snadno procházet elementy, upravovat je, vytvářet nebo
-odstraňovat.
+\subsection{Build files}
 
-Využití DOM filtrů si ukážeme na příkladu určeném pro Lua\LaTeX: 
+In the compilation scripts it is possible to use the same procedures as in   the configuration
+file, but more focused on the particular compiled document. 
+The following code shows use of the DOM filters. These take advantage of the
+\term{LuaXML}\footnote{\url{https://ctan.org/pkg/luaxml}} library. It allows to process XML files
+using the Document Object Model (DOM) interface . This makes it easy to
+navigate, edit, create or delete elements.
+
+The use of DOM filters is shown on the following example for Lua\LaTeX:
+
 
 \begin{verbatim}
 \documentclass{article}
@@ -319,52 +344,65 @@ Test {\itshape háčků}
 \end{document}
 \end{verbatim}
 
-Kvůli známé chybě při zpracování DVI souboru příkazem \prikaz{tex4ht} bude
-vytvořen HTML soubor, kde každý znak s~diakritikou bude umístěn v~samostatném
-elementu:
+
+Because of the known error in processing the \DVI\ file with the \texfourhtcmd\ command, 
+each accented character 
+in the generated \HTML\ file 
+will be placed in  a separate \verb|<span>| element:
+
 
 \begin{verbatim}
-<!--l. 4--><p class="noindent" >Test <span 
-class="rm-lmri-10">h</span><span 
+<!--l. 4--><p class="noindent" >Test 
+<span class="rm-lmri-10">h</span><span 
 class="rm-lmri-10">á</span><span 
 class="rm-lmri-10">čk</span><span 
 class="rm-lmri-10">ů</span> </p> 
 \end{verbatim}
 
-
-Následující sestavovací soubor toto napraví pomocí vestavěného DOM filtru
-\nazev{joincharacters}. Navíc změníme atribut \nazev{class} všech elementů
-\verb|<p>| na hodnotu \nazev{mypar}, abychom si ukázali práci s~DOM rozhraním:
+The following build file removes this by using the built-in \mkextension{joincharacters} DOM
+filter. In addition, it changes the value of class attribute for all \verb|<p>| elements to
+\term{mypar}, just to show how to work with the  DOM Interface:
 
 \begin{verbatim}
-local domfilter = require("make4ht-domfilter")
+local domfilter = 
+  require("make4ht-domfilter")
 
 local function domsample(dom)
-  -- následující příkaz projde 
-  -- všechny elementy <p>
-  for _, par in ipairs(dom:query_selector("p")) do
-    -- nastavit atribut "class"
+  -- the following code will process
+  -- all <p> elements
+  for _, par in 
+    ipairs(dom:query_selector("p")) do
+    -- set the "class" attribute
     par:set_attribute("class", "mypar")
   end
   return dom
 end
 
-local process = domfilter({"joincharacters", domsample})
+local process = domfilter({
+  "joincharacters", 
+  domsample
+})
 Make:match("html$", process)
 \end{verbatim}
 
+The script uses the standard Lua \texttt{require} function to  load the
+\texttt{make4ht-domfilter} library. This creates a \texttt{domfilter} function that takes a list
+of DOM filters to execute as a parameter. 
 
-Skript využívá standardní funkci jazyka Lua \verb|require| k~načtení knihovny
-\verb|make4ht-domfilter|. To vytvoří funkci \verb|domfilter|, která má jako
-parametr seznam DOM filtrů, které se mají vykonat. Každé volání funkce \verb|domfilter|
-vytvoří další funkci, která může být využita jako parametr pro funkci
-\verb|Make:match|. Parametry v~poli mohou být buď název existujícího DOM
-filtru, nebo funkce definovaná v~sestavovacím souboru. 
-Funkce \verb|process| bude spuštěna na každém souboru jehož název končí na
-\verb|html|.
+Each call to the \texttt{domfilter} function
+creates another function with a chain of filters specified in a table. 
+Parameters in the   fields can be either the name of an existing DOM
+filter, or a function defined in the file. 
 
-Výsledný HTML soubor nyní neobsahuje nadbytečné elementy \verb|<span>| a
-element \verb|<p>| má hodnotu atribut \nazev{class} nastavenu na \nazev{mypar}:
+The filter chain can be then used in the \texttt{Make:match}
+function. It takes a filename pattern to match files for which the filters
+should be executed, and the filter chain.
+
+
+The \texttt{process} function will run
+on each file whose filename ends with \texttt{html} in this case.
+
+The resulting \HTML\ file does not contain the extra \verb|<span>| elements and the \verb|<p>| element has a class attribute value of \texttt{mypar}:
 
 \begin{verbatim}
 <!-- l. 3 --><p class='mypar'>
@@ -372,87 +410,123 @@ Test <span class='rm-lmri-10'>háčků</span>
 </p> 
 \end{verbatim}
 
+More complex build file with external commands execution or configuration of the image generation may look as follows:
 
-\section{Konfigurace TeX4ht}
+\begin{verbatim}
+Make:add("biber", "biber ${input}")
+Make:htlatex {}
+Make:biber {}
+Make:htlatex {}
+Make:image("png$")
+"dvipng -bg Transparent -T tight "..
+-o ${output} "-pp ${page} ${source}")
+Make:match("html$")
+"tidy -m -utf8 -asxhtml -q -i ${filename}")
+\end{verbatim}
 
-Od \prikaz{make4ht} nyní přejděme ke konfiguraci \nazev{TeX4ht} jako takového.
-Značky výstupního formátu vkládané do dokumentu jsou plně konfigurovatelné
-pomocí několika mechanismů. Nejjednodušší je využití voleb balíčku
-\prikaz{tex4ht.sty}, větší možnosti nastavení nabízí konfigurační soubor a
-nejpokročilejší pak \nazev{4ht} soubory.
 
-Při kompilaci \TeX ového souboru pomocí \prikaz{make4ht} nebo jiného
-kompilačního skriptu se ještě před načtením samotného dokumentu načte balíček
-\prikaz{tex4ht.sty}.  Volby balíčku jsou získány z~argumentů kompilačního
-skriptu. Díky tomu není třeba vkládat balíček \prikaz{tex4ht.sty} v~samotném
-dokumentu.
+The \verb|make:add| command may be used to add a new command, like
+\texttt{biber} in this case. The second parameter is a formatting string, which
+may contain \verb|${variable name}| templates, which are replaced by parameters
+set by \makefourht. The \verb|${input}| will be replaced with the input file name for example.
 
-Mechanismus načítání souborů je upraven tak, aby se každý načítaný soubor
-registroval do \nazev{TeX4ht}. Pro některé balíčky \nazev{TeX4ht} také obsahuje
-kód, který zabraňuje jejich načítání, nebo okamžitě předefinovává některá
-makra. To je nezbytné pro balíčky, které jsou s~\nazev{TeX4ht} nekompatibilní,
-jako je například \nazev{Fontspec}. 
+The added command can be then used using the \verb|Make:command name {}|
+command. Additional variables may be set in the table passed as the argument.
 
-Po vykonání \nazev{preamble} dokumentu se načítají konfigurační soubory pro balíčky
-detekované při jejím zpracování. Tyto soubory mají název \texttt{jméno souboru
-bez přípony + .4ht}. Jejich hlavní funkcí je vkládat konfigurovatelná makra,
-takzvané háčky, do příkazů poskytovaných balíčkem. Obecně je lepší makra
-nepředefinovávat, ale pouze záplatovat pomocí příkazů, které pro tento účel
-\nazev{TeX4ht} poskytuje.
+The \texttt{Make:htlatex} command is built-in and requires one execution of \LaTeX\ with active \texfourht.
 
-Po zpracování konfiguračních souborů pro balíčky se načítají konfigurační
-soubory výstupního formátu. Ty definují obsah konfiguračních maker, háčků.
-Především se do nich vkládají značky výstupního formátu, ale mohou obsahovat
-libovolné příkazy. Je možná také podmíněná konfigurace na základě voleb balíčku
-\prikaz{tex4ht.sty}. Každý konfigurační soubor výstupního formátu může testovat
-libovolnou volbu, z~čehož vyplývá, že neexistuje jejich konečný seznam a pro
-každý formát existují jiné volby.
+The \texttt{Make:image} command configures the image conversion. Three
+variables are available, \texttt{page} contains the page number of the image in
+the \DVI\ file, \texttt{output} is the name of the output image, and \texttt{source} is
+the name of the \extension{idv} file.
 
-\subsection{Volby balíčku \texttt{tex4ht.sty}}
+The use of the \texttt{Make:match} command had been shown in the previous
+example, but it may also contain string with the command to be executed. The
+\texttt{filename} variable contains filename of the currently processed
+generated file.
 
-Protože se nedoporučuje vkládat balíček \prikaz{tex4ht.sty} přímo do dokumentu,
-je možné předat mu volby jiným způsobem. Nejjednodušším je pomocí argumentu pro
-kompilační skript. Vždy je to argument následující po názvu dokumentu:
+
+
+
+\section{\texfourht\ configuration}
+
+
+Output format tags embedded in a document are fully configurable using several
+mechanisms. The easiest way to use the \packagename{tex4ht} package options, more advanced choice is
+to use a custom configuration file and the most powerful  option is to use the  \extension{4ht} files.
+
+When a \TeX\ file is compiled using \makefourht\ or another compilation script, the
+\packagename{tex4ht} package is loaded before the document itself. Package
+options are obtained from the  compilation script arguments. As a result, it is not necessary
+to insert the \packagename{tex4ht} package in the  document itself.
+
+The file loading mechanism is modified to register each loaded file with
+\texfourht. For some packages, \texfourht\ also contains code that prevents it from
+loading, or to immediately override some macros. This is necessary for packages
+that are incompatible with   \texfourht, such as \texttt{Fontspec}.
+
+After execution of  the document preamble, the configuration files for the packages
+detected during processing are loaded. These files are named as a filename of the configured package
+without the extension plus the  \extension{4ht} extension. Their main function is to insert configurable
+macros, called hooks, into the commands provided by the package. In general, it
+is better not to redefine macros, only to patch them with the commands
+TeX4ht provides for this purpose is enough in most cases.
+
+Output format configuration files are loaded after the package configuration
+files are processed. These define the contents of configuration macros, or hooks as we call them.
+Not only the output format tags are inserted here, they can contain
+any valid \TeX\ commands. 
+
+\subsection{\packagename{tex4ht} options}
+
+Many configurations are conditional, they are executed only in the presence of some options 
+for \packagename{tex4ht} package.
+Each output format configuration file can test any option, which means that there is no final list of possible options and 
+each output format can support different set of options.
+
+Because it is not recommended to put the \packagename{tex4ht} package directly into the document, it is possible to pass the options in other ways. 
+The easiest way is to use the compilation script argument. It is always the argument following the document name:
 
 \begin{verbatim}
 make4ht filename.tex "mathml,mathjax"
 \end{verbatim}
 
-Volby použité v~tomto případě jsou \nazev{mathml} a \nazev{mathjax}. Další
-možností předání voleb je předání pomocí příkazu \verb|\Preamble| v~soukromém
-konfiguračním souboru, který si ukážeme v~další sekci.
+Options used in this case are \texttt{mathml} and \texttt{mathjax}. 
 
-Jak již bylo řečeno, neexistuje konečný seznam voleb, každý výstupní formát
-může podporovat jejich libovolné množství.
+Another option is to pass the \cs{Preamble}  command  the private configuration file, which we'll show in the  next section.
 
-Můžeme si ovšem ukázat některé volby, které se týkají matematických výstupů v~HTML.
-Normální konfigurace pro matematická prostředí produkuje směs formátovaného
-textu a obrázků pro složitější výstupy, které nejdou snadno vytvořit pomocí HTML elementů.
-Někdy tato vlastnost nevypadá dobře. Jako alternativu lze použít obrázky pro
-veškerý matematický obsah. Toho lze dosáhnout pomocí voleb \nazev{pic-m} pro
-inline matematiku a \nazev{pic-název prostředí} pro matematická prostředí,
-například \nazev{pic-align}.
+As already mentioned, there is no final list of options, each output format can support any number of them.
 
-Normálně jsou obrázky vytvářeny ve formátu PNG. Vyšší kvality lze dosáhnout
-s~využitím vektorového formátu SVG. Ten může být vynucen pomocí volby
-\nazev{svg}.
+However, we can show some choices regarding mathematical outputs in  \HTML.
+Normal configuration for mathematical environments produces a blend of rich
+text and images for more complex outputs, if that cannot be easily created with
+HTML elements. Often this output doesn't look good. As an alternative,
+it is possible to use images for all math content. This can be achieved by using the \texttt{pic-m}
+options for inline mathematics and \texttt{pic-\meta{environment name}} for mathematical
+environments. For example, the  \texttt{pic-align} option will require pictures for all \texttt{align} environments.
 
-Dokumentace \nazev{TeX4ht} je poměrně spartánská. Obsáhlejší informace
-o~konfiguraci příkazů lze nalézt v~log souboru vytvořeném při kompilaci dokumentu
-s~pomocí volby \nazev{info}.
+By default, images are created in the \acro{PNG} format. Higher quality can be
+achieved using the \acro{SVG} vector format. This can be enforced using the
+\texttt{svg} option.
 
-Volby uvedené v~prvním příkladu, \nazev{mathml} a \nazev{mathjax} poskytují
-obecně nejlepší výstup matematického obsahu. Značkovací jazyk MathML umožňuje
-zakódovat matematické informace, jeho podpora ve webových prohlížečích je však
-špatná. S~využitím knihovny
-\nazev{MathJax}\footnote{\url{https://www.mathjax.org/}} je možné jej zobrazit
-ve všech moderních prohlížečích s~podporou jazyka JavaScript.
+\texfourht\ documentation is quite spartan. More comprehensive information
+about the available configurations can be found in the  \extension{log} file after the compilation 
+of a document using the \texttt{info} option.
 
-Samotná volba \nazev{mathjax} bez \nazev{mathml} úplně vypne zpracování
-matematiky při kompilaci, veškerý matematický obsah zůstane v~HTML dokumentu
-jako \TeX ová makra. \nazev{MathJax} poté dokument zpracuje a vykreslí
-matematiku správným způsobem. Nevýhodou tohoto způsobu je, že \nazev{MathJax}
-nepodporuje všechny balíčky a uživatelské příkazy. 
+Options listed  in the example above, \texttt{mathml} and \texttt{mathjax},
+provide the best mathematical content output in. The \MathML\ markup language, requested by the first option,
+encodes the mathematical information, but its support in Web browsers
+is poor. The second option requests the \term{MathJax} library, which can render the \MathML\ output in all
+browsers with the  JavaScript support.
+
+\texttt{mathjax} option used without \texttt{mathml} completely turns off
+compilation of math, all math content remains in the \HTML\ document as raw
+\LaTeX\ macros. \term{MathJax} then processes the document and renders the math in the
+correct way. The disadvantage of this method is that MathJax does not support
+all packages and user commands, it needs a special configuration in these
+cases. Sometimes it is not even possible to emulate more complex macros.
+
+
 
 
 \subsection{Soukromý konfigurační soubor}
@@ -614,14 +688,14 @@ budou témata tohoto článku probrána do větší hloubky, spolu s~konkrétní
 příklady užití. 
 
 
-\printbibliography
-\begin{summary}
+% \printbibliography
+% \begin{summary}
 
-  The article gives overview of the current state of development of TeX4ht,
-  \LaTeX\ to XML convertor. It introduces \prikaz{make4ht}, a build system for
-  TeX4ht as well as basic ways how to configure TeX4ht.
+%   The article gives overview of the current state of development of TeX4ht,
+%   \LaTeX\ to XML convertor. It introduces \prikaz{make4ht}, a build system for
+%   TeX4ht as well as basic ways how to configure TeX4ht.
 
-\end{summary}
+% \end{summary}
 
 
 \end{document}
