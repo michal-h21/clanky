@@ -419,8 +419,8 @@ Make:biber {}
 Make:htlatex {}
 Make:image("png$")
 "dvipng -bg Transparent -T tight "..
--o ${output} "-pp ${page} ${source}")
-Make:match("html$")
+"-o ${output} "-pp ${page} ${source}")
+Make:match("html$",
 "tidy -m -utf8 -asxhtml -q -i ${filename}")
 \end{verbatim}
 
