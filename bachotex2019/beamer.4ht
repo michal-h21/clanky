@@ -1,0 +1,6 @@
+\let\Hy@EveryPageAnchor\relax
+\def\pgf@trimright@final{0pt}
+\def\pgf@trimleft@final{0pt}
+\let\origEndP\EndP
+\AtBeginDocument{\def\EndP{\let\EndP\origEndP}\SaveEndP}
+\endinput
