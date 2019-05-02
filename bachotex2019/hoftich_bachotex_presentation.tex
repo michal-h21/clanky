@@ -1,6 +1,19 @@
 \documentclass[ignorenonframetext]{beamer}
 \usetheme{metropolis}
 \usepackage{fontspec}
+\usepackage{hyperref}
+
+\newtheorem{priklad}{Example}
+\newtheorem{pozor}{Alert!}
+\addtobeamertemplate{block begin}{\setlength\abovedisplayskip{0pt}}{}
+\addtobeamertemplate{block end}{\vspace*{-1em}}{}
+\newcommand\prepinac[1]{\texttt{-\/-#1}}
+
+
+\newcommand\myfig[3][width=.9\textwidth]{%
+  \figure\includegraphics[#1]{#2}%
+  \caption{#3}%
+\endfigure}
 
 \input{bio}
 \begin{document}
@@ -11,10 +24,11 @@
 \begin{frame}
 \tableofcontents
 \end{frame}
+% the slide input didn't work
+% see https://tex.stackexchange.com/a/29355/2891
+\mode<all>
 \input{presentation-text}
-
-\begin{frame}[standout]
-  pokus
-\end{frame}
+\mode*
+% \input{outline}
 
 \end{document}
