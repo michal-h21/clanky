@@ -10,7 +10,7 @@ handout.pdf: handout.tex  ${common_tex}
 	$(latex) $<
 
 handout.html: handout.tex ${common_tex}
-	make4ht -ulm draft $<
+	make4ht -ulm draft -c hej.cfg $<
 
 blog:
 	rm handout.published
