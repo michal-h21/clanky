@@ -5,6 +5,614 @@
 - sub/superscripts - https://tex.stackexchange.com/q/482081/2891
 - fonts - htf fonts, Fontspec
 
+
 \begin{frame}
-  Testing frame in the article mode
+  \frametitle{Contents}
+  \tableofcontents
+\end{frame}
+
+
+
+\begin{frame}
+  \frametitle{Popular \TeX\ to HTML convertors}
+  \begin{itemize}
+    \item Pandoc
+    \item LaTeXML
+    \item LaTeX2HTML
+    \item Lwarp
+  \end{itemize}
+\end{frame}
+
+\section{tex4ht conversion system}
+
+
+\begin{frame}
+  \frametitle{tex4ht history}
+  \begin{itemize}
+    \item \url{https://www.tug.org/tex4ht/}
+    \item original author Eitan Gurari (1947--2009)
+    \item created in the mid nineties
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+
+  \frametitle{Scripts}
+  \begin{itemize}
+    \item high number of compilation scripts
+    \item the basic script was \texttt{htlatex} 
+    \item the difference between the scripts is just in used options
+    \item superseded by \texttt{make4ht}
+\end{itemize}
+\end{frame}
+
+
+% \begin{frame}
+%   \frametitle{Three phase compilation}
+%   \begin{itemize}
+%     \item the document is compiled by \TeX\ with \texttt{tex4ht.sty} package autoloaded
+%     \item processing of the \texttt{DVI} file by the \texttt{tex4ht} command
+%     \item processing of the \texttt{.lg} file by the \texttt{t4ht} command
+% \end{itemize}
+% \end{frame}
+
+\begin{frame}
+  \frametitle{Overview of the compilation}
+  \ifdefined\HCode
+      \includegraphics[width=600px]{img/tex4ht_process}
+  \else
+      \includegraphics[width=\textwidth]{img/tex4ht_process}
+  \fi
+\end{frame}
+
+\begin{frame}
+  \frametitle{compilation by \TeX\ with \texttt{tex4ht.sty} package autoloaded}
+  \begin{itemize}
+    \item loading of configuration \texttt{.4ht} files for supported packages
+    \item command patching to 
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Zpracování dvi souboru programem tex4ht}
+  \begin{itemize}
+    \item   zápis výstupních souborů
+    \item   konverze znakových sad
+      \begin{itemize} 
+        \item  poměrně komplikovaný proces, potřebujeme
+          doplňkové soubory pro fonty obsahující unicode entity nebo ASCII
+          znaky pro jednotlivé znaky písma
+  \end{itemize}
+    \item   zachovává základní styly písem, podporuje jakákoli makra měnící vzhled písma
+    \item   příprava .lg souboru
+    \item   zápis .idv souboru obsahující stránky pro konverzi na obrázky
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Zpracování .lg souboru programem t4ht}
+  \begin{itemize}
+    \item   výstup do CSS souboru
+    \item   konverze vložených obrázků z .dvi do výstupního formátu
+    \item   zpracování výstupních souborů externími programy 
+    (\texttt{xslt}, \texttt{tidy}, \texttt{xmllint}, \texttt{xtpipes})
+    \item   kopírování souborů do cílového adresáře
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Tradiční kompilační skripty}
+  \begin{itemize}
+    \item parametry pro každý jednotlivý krok se předávají kompilačnímu skriptu v závorkách
+    \item základní forma pro dokument ve formátu utf8
+  \end{itemize}
+      \begin{priklad}
+        \small 
+\begin{verbatim}
+htlatex jmenosouboru.tex "xhtml,charset=utf-8" 
+" -cmozhtf -utf8"
+\end{verbatim}
+     \end{priklad}
+\end{frame}
+
+\section{Sestavovací program make4ht}
+\begin{frame}
+  \frametitle{Problémy, které make4ht řeší} 
+  \begin{itemize}
+    \item složité předávání parametrů pro htlatex a ostatní skripty
+    \item pevně nastavené pořadí volání jednotlivých kroků kompilace
+      \begin{itemize}
+        \item TeX je vždy volán třikrát
+      \end{itemize}
+    \item podpora pro nástroje jako je \texttt{bibtex}, \texttt{xindy} a podobně
+    \item  snadná změna parametrů konverze obrázků
+    \item funkční kopírování souborů do výstupního adresáře
+    \item zpracování výstupních souborů filtrovacími funkcemi v jazyce Lua, nebo externími
+      programy
+  \end{itemize}
+\end{frame}
+\begin{frame}[fragile]
+  \frametitle{Obecné použití}
+      \begin{priklad}
+        \small
+\begin{verbatim}
+make4ht [přepínače pro make4ht] soubor.tex \ 
+"volby pro tex4ht.sty" "přepínače pro tex4ht" \
+"přepínače pro t4ht" "přepínače pro TeX"
+\end{verbatim}
+      \end{priklad}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Výstup v kódování  UTF8}
+      \begin{priklad}
+\begin{verbatim}
+make4ht -u soubor.tex
+\end{verbatim}
+\end{priklad}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Přepínače}
+\begin{description}
+  \item[\prepinac{utf8 (-u)}] výstup v kódování UTF-8.
+  \item[\prepinac{mode (-m)}] volba módu kompilace.
+  \item[\prepinac{lua (-l)}] dokument bude kompilován pomocí Lua\LaTeX u.
+  \item[\prepinac{config (-c)}] konfigurační soubor pro \texttt{TeX4ht}. 
+  \item[\prepinac{build-file (-e)}] sestavovací soubor.
+  \item[\prepinac{output-dir (-d)}] adresář, do kterého budou zkopírovány výstupní soubory.
+  \item[\prepinac{shell-escape (-s)}] použije volbu \verb|--shell-escape| pro \LaTeX
+  \item[\prepinac{xetex (-x)}] dokument bude kompilován pomocí Xe\LaTeX u.
+  \item[\prepinac{format (-f)}] volba výstupního formátu a rozšíření.
+\end{description}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Podporované formáty}
+  \begin{itemize}
+    \item html5
+    \item xhtml
+    \item odt
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Rozšíření}
+  \begin{priklad}
+\begin{verbatim}
+make4ht -f html5+tidy simple-example.tex
+\end{verbatim}
+\end{priklad}
+\end{frame}
+\begin{frame}
+  \frametitle{Podporovaná rozšíření}
+\begin{description}
+  \item[latexmk\_build] využije příkaz \texttt{latexmk} pro sestavení
+    dokumentu.
+  \item[tidy] vyčistí HTML soubor pomocí příkazu \texttt{tidy}.
+  \item[dvisvgm\_hashes] efektivní generování obrázků pomocí příkazu
+    \texttt{dvisvgm}. 
+  \item[common\_filters a common\_domfilters] vyčistění dokumentu pomocí filtrů. 
+  \item[mathjaxnode] konverze matematického kódu ve formátu MathML do
+    speciálního HTML za využití projektu \texttt{MathJax Node
+    Page}. Příklad \url{https://www.kodymirus.cz/samples/mathjaxnode/maths.html}
+  \item[staticsite]  vytvoří dokument použitelný pro generátory statických
+    stránek.
+\end{description}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Konfigurační soubor .make4ht}
+  \begin{priklad}
+\begin{verbatim}
+filter_settings "staticsite" {
+  site_root = "output" 
+}
+
+Make:enable_extension("common_domfilters")
+if mode=="publish" then
+  Make:enable_extension("staticsite")
+  Make:htlatex()
+end
+\end{verbatim}
+\end{priklad}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \frametitle{Kompilace}
+
+  \begin{priklad}
+\begin{verbatim}
+make4ht -um publish simple-example.tex
+\end{verbatim}
+\end{priklad}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Výsledný HTML soubor}
+  \begin{priklad}
+\begin{verbatim}
+---
+time: 1544811015
+date: '2018-12-14 18:10:47'
+title: 'sample'
+styles:
+- '2018-12-14-simple-example.css'
+meta:
+- charset: 'utf-8'
+---
+<p>Sample document</p>
+\end{verbatim}
+\end{priklad}
+\end{frame}
+
+\subsection{Sestavovací skripty}
+\begin{frame}[fragile]
+
+\frametitle{Ukázkový dokument}
+\begin{priklad}
+\begin{verbatim}
+\documentclass{article}
+\begin{document}
+Test {\itshape háčků}
+\end{document}
+\end{verbatim}
+\end{priklad}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Výsledný HTML kód}
+\begin{priklad}
+\begin{verbatim}
+<!--l. 4--><p class="noindent" >Test <span 
+class="rm-lmri-10">h</span><span 
+class="rm-lmri-10">á</span><span 
+class="rm-lmri-10">čk</span><span 
+class="rm-lmri-10">ů</span> </p> 
+\end{verbatim}
+\end{priklad}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Sestavovací skript}
+  \begin{priklad}
+\begin{verbatim}
+local domfilter = require("make4ht-domfilter")
+local function domsample(dom)
+  for _, par in ipairs(dom:query_selector("p")) do
+    par:set_attribute("class", "mypar")
+  end
+  return dom
+end
+local process = domfilter({
+  "joincharacters", 
+  domsample})
+Make:match("html$", process)
+\end{verbatim}
+  \end{priklad}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Upravený HTML kód}
+  \begin{priklad}
+\begin{verbatim}
+<!-- l. 3 --><p class='mypar'>
+Test <span class='rm-lmri-10'>háčků</span> 
+</p> 
+\end{verbatim}
+  \end{priklad}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Komplikovanější sestavovací soubor}
+  \begin{priklad}
+\begin{verbatim}
+Make:add("biber","biber ${input}")
+Make:htlatex {}
+Make:biber {}
+Make:htlatex {}
+Make:image("png$",                                                          
+"dvipng -bg Transparent -T tight -o ${output}"..
+"-pp ${page} ${source}")
+\end{verbatim}
+  \end{priklad}
+\end{frame}
+
+\section{Konfigurace tex4ht}
+\begin{frame}
+  \frametitle{Princip TeXové části tex4ht}
+  \begin{itemize}
+    \item soubor tex4ht.sty se nahrává ještě před načtením dokumentu, jeho
+      nahrávání si dále řídí sám
+  \item po zpracování preamble a nahrání všech balíčků se spouští .4ht soubory
+    s vkládáním háčků pro dané balíčky, pokud existují
+    \begin{pozor}<2>
+      Protože se příkazy redefinují až na začátku dokumentu, příkazy
+      volané v preamble dokumentu nejsou ještě redefinované
+    \end{pozor}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Kdy je třeba vkládat háčky?}
+  \begin{itemize}
+\item konfigurace je důležitá hlavně pro příkazy se složitější strukturou nebo
+      logické bloky (nadpisy, tabulky, seznamy apod.)
+    \item  pokud makra staví na základních prvcích, pro které už existuje
+      podpora, nemusí být třeba přidávat pro ně jejich vlastní podporu
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Konfigurace háčků}
+  \begin{itemize}
+    \item soubory výstupního formátu mohou definovat volby, které ovlivňují konfiguraci háčků
+    \item konfigurace probíhá příkazem \texttt{\textbackslash Configure}
+
+    \item po vložení háčků se nahrají jejich konfigurace v závislosti na
+      výstupním formátu
+    \item další konfigurace je možné vložit do .cfg souboru, který se načítá pomocí volby \texttt{-c} příkazu \texttt{make4ht}
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Volby balíčku tex4ht.sty}
+  \begin{itemize}
+    \item mohou být předány pomocí argumentů pro tex4ht
+    \item nebo v .cfg souboru
+  \end{itemize}
+  \begin{priklad}
+\begin{verbatim}
+make4ht filename.tex "mathml,mathjax"
+\end{verbatim}
+\end{priklad}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Některé dostupné volby}
+\begin{itemize}
+  \item fn-in
+  \item pic-m, pic-align
+  \item svg
+  \item info
+  \item mathml
+  \item mathjax
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Soukromý konfigurační soubor}
+  \begin{itemize}
+    \item umožňuje vkládání konfigurací pro háčky a CSS instrukce
+    \item základní struktura
+      \begin{verbatim}
+% zde můžeme vkládat balíčky
+\Preamble{xhtml,volby pro tex4ht.sty}
+...
+\begin{document}
+...
+\EndPreamble
+      \end{verbatim}
+  \end{itemize}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Užitečné příkazy}
+  \begin{itemize} 
+  \item \verb|\Configure|, \verb|\ConfigureEnv|, \verb|\ConfigureList|
+  \item \verb|\HCode|, \verb|\Css|, \verb|\Hnewline|
+  \item \verb|\EndP|, \verb|\IgnorePar|
+  \item \verb|\Picture+|, \verb|\Picture*|
+  \item \verb|\NoFonts|
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Ukázka základní konfigurace}
+  \begin{priklad}
+\begin{verbatim}
+\Configure{textit}{\HCode{<em>}\NoFonts}
+{\EndNoFonts\HCode{</em>}}
+\end{verbatim}
+  \end{priklad}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Problematika odstavců}
+  \begin{priklad}
+\begin{verbatim}
+\ConfigureEnv{rightaligned}
+{\HCode{<section class="right">}}
+{\HCode{</section>}}{}{}
+\end{verbatim}
+\end{priklad}
+Výsledný HTML kód je chybný
+\begin{priklad}
+\begin{verbatim}
+<p class="indent" ><section class="right">
+\end{verbatim}
+\end{priklad}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Správné řešení}
+  \begin{priklad}
+\begin{verbatim}
+\ConfigureEnv{rightaligned}
+{\ifvmode\IgnorePar\fi\EndP%
+\HCode{<section class="right">}\par}
+{\ifvmode\IgnorePar\fi\EndP%
+\HCode{</section>}}{}{}
+\end{verbatim}
+  \end{priklad}
+  HTML kód
+
+  \begin{verbatim}
+<section class="right">
+<!--l. 9--><p class="indent" >
+  \end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Obrázky}
+  \begin{priklad}
+\begin{verbatim}
+\ConfigureEnv{topicture}{\Picture*{}}
+{\EndPicture}{}{}
+\end{verbatim}
+\end{priklad}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Kompletní konfigurační soubor}
+  \begin{priklad}
+    \small
+    \begin{verbatim}
+\Preamble{xhtml}
+\Configure{textit}{\HCode{<em>}\NoFonts}
+{\EndNoFonts\HCode{</em>}}
+\ConfigureEnv{rightaligned}
+{\ifvmode\IgnorePar\fi\EndP
+\HCode{<section class="right">}\par}
+{\ifvmode\IgnorePar\fi\EndP
+\HCode{</section>}}{}{}
+\ConfigureEnv{topicture}
+{\Picture*{}}{\EndPicture}{}{}
+\Css{.right{text-align:right;display:block;}}
+\begin{document}
+\EndPreamble
+  \end{verbatim}
+  \end{priklad}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Reálný příklad}
+\begin{verbatim}
+\Preamble{xhtml,mathml,2,sec-filename,fn-in,fonts}
+% external stylesheet
+\Configure{AddCss}{style.css}
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Konfigurace mini obsahu na jednotlivých stránkách}
+  \small
+  \begin{verbatim}
+\Configure{crosslinks+}{%
+  \bgroup
+  \Configure{tableofcontents}
+  {\IgnorePar\EndP
+  \HCode{<nav class="TOC">}\IgnorePar}
+  {\HCode{\Hnewline}}
+  {\IgnorePar\HCode{</nav>\Hnewline}\ShowPar}{}{}%
+  \TableOfContents[chapter,section,subsection]
+  \egroup
+  \ifvmode\IgnorePar\fi\EndP%
+  \HCode{<article class="main-content">\Hnewline
+  <nav class="crosslinks-top">}}
+  {\HCode{</nav>\Hnewline}}
+{\ifvmode\IgnorePar\fi\EndP%
+  \HCode{<nav class="crosslinks-bottom">}}
+  {\HCode{</nav>}}{}{}
+  \end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Další nastavení}
+  \begin{verbatim}
+% uzavřít <article>, který byl otevřen v 
+% \Configure{crosslinks+}
+\Configure{@/BODY}
+{\ifvmode\IgnorePar\fi\EndP\HCode{</article>}}
+
+% Ukázat odkazy pouze na předešlou, 
+% hlavní a násladující stránku
+\Configure{crosslinks*}{prev}{up}{next}{}
+\begin{document}
+\EndPreamble
+\end{verbatim}
+\end{frame}
+
+\section{Přidání podpory pro nové balíčky}
+
+\begin{frame}
+  \frametitle{Základní postup}
+  \begin{itemize}
+    \item vytvořit soubor pojmenovaný \textit{název balíčku + .4ht}
+    \item konfigurovat balíček v \texttt{4ht} souboru výstupního formátu
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Ukázkový balíček \texttt{custom.sty}}
+  \begin{verbatim}
+\ProvidesPackage{custom}
+\newcommand\custom[1]{\bgroup\itshape#1\egroup}
+\endinput
+  \end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Vložení háčků v souboru \texttt{custom.4ht}}
+  \begin{verbatim}
+\NewConfigure{custom}{2}
+\pend:defI\custom{\a:custom}
+\append:defI\custom{\b:custom}
+\Hinput{custom}
+  \end{verbatim}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Vlastní výstupní formát \texttt{myoutput.4ht}}
+  \begin{verbatim}
+\exit:ifnot{custom} 
+\ConfigureHinput{custom} 
+\Configure{custom}
+{\HCode{<span class="custom">}\NoFonts}
+{\EndNoFonts\HCode{</span>}}
+\endinput\empty\empty\empty\empty\empty\empty 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\endinput 
+  \end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Definice vlastního formátu \texttt{tex4ht.usr}}
+  \begin{verbatim}
+\Configure{myoutput}{% 
+   \Hinclude[*]{html4.4ht}%
+   \Hinclude[*]{unicode.4ht}%
+   \Hinclude[*]{html5.4ht}%
+   \Hinclude[*]{myoutput.4ht}% 
+} 
+  \end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Kompilace vlastního formátu}
+  \begin{verbatim}
+make4ht -um draft sample.tex myoutput
+  \end{verbatim}
+\end{frame}
+
+\begin{frame}
+\frametitle{To je vše}
+\begin{block}{}
+Děkuji za pozornost
+\end{block}
 \end{frame}
