@@ -32,7 +32,7 @@ class Imports():
         replacement = ""
         url = match.group(1)
         if url:
-            print("Import CSS", url)
+            # print("Import CSS", url)
             newurl = urljoin(self.url, url)
             csstext = UrlCache("data").get(newurl)
             # csstext = requests.get(newurl)
@@ -55,16 +55,16 @@ class Imports():
 class CleanHtml:
     def __init__(self, url):
         self.url = url
-        print("Download ", url)
+        # print("Download ", url)
         page_content = requests.get(url).content
-        print("Parse DOM")
+        # print("Parse DOM")
         self.dom = BeautifulSoup(page_content,features="lxml")
-        print("Parse CSS")
+        # print("Parse CSS")
         self.css = self.get_css(self.dom, self.url)
         # use full urls for images
-        print("Resolve images")
+        # print("Resolve images")
         self.resolve_images()
-        print("Remove javascript")
+        # print("Remove javascript")
         self.remove_javascript()
         self.template = """
         <!DOCTYPE html>
@@ -90,7 +90,7 @@ class CleanHtml:
         for link in dom.select('link[rel="stylesheet"]'):
             src = link.get("href")
             linkurl = urljoin(baseurl, src)
-            print("Process CSS", linkurl)
+            # print("Process CSS", linkurl)
             # csstext = requests.get(linkurl)
             csstext = UrlCache("data").get(linkurl)
             # style = cssutils.parseUrl(linkurl, encoding="utf-8", validate=False)
@@ -99,7 +99,7 @@ class CleanHtml:
             csschunks.append(newcss)
             # print(style.cssText)
         for style in dom.select('style[type="text/css"]'):
-            print("Process CSS chunk")
+            # print("Process CSS chunk")
             csschunks.append(str(style))
             # remove the style elements so they don't interfere with luaxml
             style.decompose()
@@ -115,6 +115,7 @@ class CleanHtml:
             # img.set(src=urljoin(self.url, url)
     # hash images url for caching purposes
     def hash_images(self):
+        # I don't think it does anything
         if self.image_hashes:
             for img in self.dom.select("img"):
                 print(img)
@@ -128,11 +129,12 @@ class CleanHtml:
 url = sys.argv[1]
 clean = CleanHtml(url)
 # clean.hash_images()
-# print(clean.get_clean())
+print(clean.get_clean())
 
 # soup = BeautifulSoup(requests.get(url).content,features="lxml")
 
-# get_css(soup, url)
+# css = clean.get_css(soup, url)
+# print(css)
 
 # css = cssutils.parseUrl(url)
 
