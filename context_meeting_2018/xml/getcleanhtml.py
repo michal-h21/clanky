@@ -72,11 +72,6 @@ class CleanHtml:
         <head>
         <meta charset="utf-8" />
         <title>{}</title>
-        <style type="text/css">
-        <![CDATA[
-        {}
-        ]]>
-        </style>
         </head>
         <body>
         {}
@@ -110,7 +105,7 @@ class CleanHtml:
             script.decompose()
     def resolve_images(self):
         for img in self.dom.select("img"):
-            img.src = urljoin(self.url, img.get("src"))
+            img["src"] = urljoin(self.url, img.get("src"))
             # url = img.get("src")
             # img.set(src=urljoin(self.url, url)
     # hash images url for caching purposes
@@ -121,7 +116,7 @@ class CleanHtml:
                 print(img)
     def get_clean(self):
         doc = Document(self.dom.prettify(formatter="xml"))
-        return self.template.format(doc.title(), self.css, doc.summary(html_partial=True))
+        return self.template.format(doc.title(),  doc.summary(html_partial=True))
 
 
 
