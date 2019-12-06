@@ -62,13 +62,34 @@ local functions = {
   tbody = function(x)
     context(x())
   end,
+  b = function(x)
+    context.bold(x)
+  end,
+  i = function(x)
+    context.italic(x)
+  end,
+  em = function(x)
+    context.italic(x)
+  end,
   strong = function(x)
     context.bold(x)
   end,
   div = function(x)
     context(x())
   end,
+  tt = function(x)
+    context.bgroup()
+    context.tt(x)
+    context.egroup()
+  end,
+  code = function(x)
+    context.bgroup()
+    context.tt(x)
+    context.egroup()
+  end,
   img = function(x, el)
+    local url = el:get_attribute("src")
+    context.externalfigure {url}
   end,
   pre = function(x, el)
     -- don't process contents of the pre element, just get the text
@@ -95,6 +116,7 @@ function process_children(el, cssobj)
   
   local text_style = function(t)
     t = t:gsub("^%s+", " "):gsub("%s+$", " ")
+    t = t:gsub("\\", "\\textbackslash{}")
     context(t)
   end
   current_function(function()
