@@ -68,6 +68,14 @@ local functions = {
   div = function(x)
     context(x())
   end,
+  img = function(x, el)
+  end,
+  pre = function(x, el)
+    -- don't process contents of the pre element, just get the text
+    local content = el:get_text()
+    buffers.assign("pre", content)
+    context.typebuffer {"pre"}
+  end,
   article = function(x)
     context(x())
   end,
@@ -78,6 +86,7 @@ local functions = {
     -- context.footnote(url)
   end
 }
+
 
 function process_children(el, cssobj)
   -- local style = cssobj
