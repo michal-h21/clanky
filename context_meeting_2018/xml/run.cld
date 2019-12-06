@@ -1,0 +1,10 @@
+local html = require "htmlprocess"
+
+context.starttext()
+local f = io.open("faq.html", "r")
+local content = f:read("*all")
+f:close()
+context "ahoj"
+html.process(content)
+-- context(arg[1])
+context.stoptext()
