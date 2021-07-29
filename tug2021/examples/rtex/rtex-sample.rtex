@@ -1,3 +1,4 @@
+%% https://github.com/yihui/knitr-examples/blob/master/005-latex.Rtex
 \documentclass{article}
 \usepackage{graphicx}
 %% for inline R code: if the inline code is not correctly parsed, you will see a message
