@@ -1,0 +1,2 @@
+#/bin/sh
+make4ht -m draft -a debug -f html5+preprocess_input rtex-sample.rtex "svg"
