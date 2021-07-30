@@ -1,0 +1,16 @@
+\newcommand\hello[1]{%
+  \AtBeginDocument{%
+    \typeout{*******************}
+    \typeout{Hello: #1}
+  }
+}
+\:CheckOption{ooffice}\if:Option
+\hello{ooffice}
+\fi
+
+\:CheckOption{docbook}\if:Option
+\hello{docbook}
+\fi
+\:CheckOption{html5}\if:Option
+\hello{html5}
+\fi
