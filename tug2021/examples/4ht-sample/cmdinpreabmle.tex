@@ -1,0 +1,74 @@
+\documentclass[11pt]{article}
+\newlength{\outerbordwidth}
+\pagestyle{empty}
+\raggedbottom
+\raggedright
+\usepackage[svgnames]{xcolor}
+\usepackage{framed}
+\usepackage{tocloft}
+\usepackage{enumitem}
+\usepackage{textcomp}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+%-----------------------------------------------------------
+\setlength{\outerbordwidth}{3pt}  
+\definecolor{shadecolor}{gray}{0.75}  
+\definecolor{shadecolorB}{gray}{0.93}  
+%-----------------------------------------------------------
+\setlength{\evensidemargin}{-0.25in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\oddsidemargin}{-0.25in}
+\setlength{\tabcolsep}{0in}
+\setlength{\textheight}{9.5in}
+\setlength{\textwidth}{7in}
+\setlength{\topmargin}{-0.3in}
+\setlength{\topskip}{0in}
+\setlength{\voffset}{0.1in}
+%-----------------------------------------------------------
+\newcommand{\resitem}[1]{\item #1 \vspace{-4pt}}
+\newcommand{\resheading}[1]{%
+  \parbox{\textwidth}{\setlength{\FrameSep}{\outerbordwidth}%
+    \begin{shaded}%
+\setlength{\fboxsep}{0pt}\framebox[\textwidth][l]{\setlength{\fboxsep}{4pt}\fcolorbox{shadecolorB}{shadecolorB}{\textbf{\sffamily{\mbox{~}\makebox[6.762in][l]{\large #1} \vphantom{p\^{E}}}}}}%
+    \end{shaded}%
+  }\vspace{-11pt}%
+}
+\newcommand{\school}[4]{\vspace{1.5mm}
+  \textbf{#1} \hfill #2 \textit{#3} \hfill \textit{#4} \vspace{1.5mm}
+}
+
+% extra environment for education, as you want to get rid of the bullet
+\newenvironment{education}{\begin{itemize}[leftmargin=*]}{\end{itemize}}
+%-----------------------------------------------------------
+\begin{document}
+\begin{tabular*}{7in}{l@{\extracolsep{\fill}}r}
+    \textbf{\Large Name} & \textbf{June, 2021} \\ Address & \textit{\href{mailto:}{Email}}
+\end{tabular*}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\resheading{Education}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{education} 
+       \item[]
+            \school
+            {University Name}
+            {City, Country\\}
+            {BSc - Physics}
+            {2010 - 2014}
+      \begin{itemize}
+        \item lipsum
+      \end{itemize}
+\end{education}
+
+
+          
+    
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\resheading{Technical Skills}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+          \begin{itemize}
+            \item C++, Python
+            \item \LaTeX
+          \end{itemize}
+\end{document}
