@@ -1,0 +1,446 @@
+\documentclass{beamer}
+\usetheme{metropolis}           % Use metropolis theme
+\title{\TeX4ht configurations}
+\date{\today}
+\author{Michal Hoftich}
+\institute{Charles University, Faculty of Education, Library}
+\begin{document}
+  \maketitle
+  \begin{frame}
+  \tableofcontents
+  \end{frame}
+  \section{Introduction}
+  \begin{frame}
+   \frametitle{Basic Information}
+    \begin{itemize}
+      \item \TeX4ht converts \LaTeX\ files to HTML, ODT, Docbook, Tei and other formats
+      \item It uses \LaTeX\ itself for the conversion, so it supports custom commands and most 
+        packages.
+      \item It supports basic features, like font sizes, weights and style out of the box, but if
+        we want to support more advanced features, like sections, footnotes, tables or images, 
+        we must provide configuration files.
+      \item As any \LaTeX\ package can redefine \LaTeX\ core or other package's code, conflicts can 
+        happen.
+    \end{itemize}
+
+  \end{frame}
+  \section{Process Overview}
+  \begin{frame}[fragile]
+   \frametitle{\LaTeX to DVI}
+    \begin{itemize}
+      \item \TeX4ht code is loaded using the \verb|tex4ht.sty| package. 
+      \item It loads all configuration files
+        for the supported packages and inserts XML tags. 
+      \item Tags are passed in \verb|\special| commands to the DVI file.
+    \end{itemize}
+  \end{frame}
+  \begin{frame}[fragile]
+   \frametitle{The \texttt{tex4ht} command}
+    \begin{itemize}
+      \item The DVI file is processed by the \verb|tex4ht| command, that produces XHML or HTML files and 
+        two special files:
+        \begin{itemize}
+      \item The \verb|.lg| file contains instructions for CSS or generated picture file names.
+      \item The \verb|.idv| file is special version of the DVI file that contains only parts of the original DVI file 
+        that should be transformed to pictures.
+    \end{itemize}
+    \end{itemize}
+  \end{frame}
+  \begin{frame}[fragile]
+    \frametitle{The \texttt{t4ht} command}
+   \begin{itemize}
+     \item It creates the CSS file and creates pictures.
+   \end{itemize}
+  \end{frame}
+  \section{make4ht}
+  \begin{frame}
+    \frametitle{Conversion scripts}
+    \begin{itemize}
+      \item \TeX4ht provided several scripts to make the conversion easier, but they were obsoleted by two tools:
+        \begin{itemize}
+      \item tex4ebook converts \LaTeX\ to Epub and Mobi formats.
+      \item make4ht converts to all other supported formats.
+    \end{itemize}
+  \item both have similar features and options.
+
+    \end{itemize}
+  \end{frame}
+
+\begin{frame}
+    \frametitle{make4th and tex4ebook features}
+    \begin{itemize}
+      \item Unicode output by default.
+      \item It is possible to select Lua\LaTeX or Xe\LaTeX for the compilation.
+      \item Easy selection of the output format.
+      \item Configurable level of terminal output.
+      \item Extension support.
+      \item Post-processing of the generated files.
+      \item Lua build file support.
+    \end{itemize}
+  \end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Basic usage}
+    \begin{verbatim}
+$ make4ht [options] filename.tex "[tex4ht options]"
+  \end{verbatim}
+  or 
+  \begin{verbatim}
+$ tex4ebook [options] filename.tex \
+"[tex4ht options]"
+  \end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Engine selection}
+Compile file using Lua\LaTeX:
+\begin{verbatim}
+$ make4ht -l filename.tex
+\end{verbatim}
+Compile file using Xe\LaTeX:
+\begin{verbatim}
+$ make4ht -x filename.tex
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Select output format}
+Convert to ODT:
+\begin{verbatim}
+$ make4ht -f odt filename.tex
+\end{verbatim}
+
+Convert to HTML 5 (default):
+
+\begin{verbatim}
+$ make4ht -f html5 filename.tex
+\end{verbatim}
+
+Convert to Epub 3:
+
+\begin{verbatim}
+$ tex4ebook -f epub3 filename.tex
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Modes}
+  make4th compiles \TeX\ file three times by default. To make the compilation faster, use the \texttt{draft} mode:
+
+\begin{verbatim}
+$ make4ht -m draft filename.tex
+\end{verbatim}
+
+To clean all temporary files, as well as generated XML files and pictures, use:
+\begin{verbatim}
+$ make4ht -m clean filename.tex
+\end{verbatim}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Terminal output}
+  make4ht hides most of the terminal output by default. It only shows errors and warnings. To show all
+  messages, use:
+\begin{verbatim}
+$ make4ht -a debug filename.tex
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Extensions}
+Extensions can be enabled and disabled using the following syntax:
+\begin{verbatim}
+# enable extension
+$ make4ht -f html5+<extension_name> filename.tex
+# disable extension
+$ make4ht -f html5-<extension_name> filename.tex
+\end{verbatim}
+One extension \verb|common_domfilters|, is used by default. It fixes common issues in the generated HTML and XML files.
+To disable it, use:
+
+\begin{verbatim}
+$ make4ht -f html5-common_domfilters filename.tex
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Extensions (continued)}
+
+To compile RTeX documents (you need Knitr installed):
+
+\begin{verbatim}
+$ make4ht -f html5+preprocess_input filename.rtex
+\end{verbatim}
+
+
+List of supported extensions can be found in the make4ht documentation.
+
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Build files}
+\begin{itemize}
+  \item Build files can be used to change the compilation sequence.
+  \item They can define post-processing filters (Lua functions on external commands).
+  \item It is also possible to specify command for the picture generation (like \texttt{dvisvgm} or \texttt{dvipng}).
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Sample build file}
+\begin{verbatim}
+-- support the fast draft mode
+if mode=="draft" then
+  Make:htlatex{}
+else
+  Make:htlatex{}
+  -- create index page using the xindex command
+  Make:xindex {}
+  Make:htlatex{}
+  Make:htlatex{}
+end
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Use build file}
+  \begin{itemize}
+    \item The previous sample file can be used to support index in the HTML file.
+    \item The \texttt{mode} variable holds value of the \texttt{-m} option.
+    \item Commands are executed using \verb|Make:command_name{options}|.
+  \end{itemize}
+
+  To pass the build file to make4ht use:
+
+\begin{verbatim}
+$ make4ht -e build.lua filename.tex
+\end{verbatim}
+\end{frame}
+
+\section{\TeX4ht configuration}
+
+\begin{frame}[fragile]
+  \frametitle{\TeX4ht options}
+\TeX4ht is highly configurable. The easiest way how to change it's features is using options. They can be 
+required using:
+\begin{verbatim}
+$ make4ht filename.tex "option1,option2,..."
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Useful options}
+Each output format has different set of options. Some useful options for HTML include:
+
+\begin{description}
+  \item[fn-in] put footnotes at the bottom of the current page instead of standalone pages.
+  \item[svg] create SVG pictures.
+  \item[2] put each section to a separate HTML page.
+  \item[sec-filenames] name HTML files for sections according to the section title.
+  \item[info] output description of the basic configurations to the .log file.
+\end{description}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Configuration files}
+  \begin{itemize}
+    \item Configuration files can pass the options.
+    \item They can contain the CSS code.
+    \item They can be used to configure the XML tags.
+  \end{itemize}
+  They can be required using:
+\begin{verbatim}
+$ make4ht -c config.cfg filename.tex
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Basic structure of the configuration file}
+\begin{verbatim}
+\Preamble{xhtml,options}
+% early configurations
+\begin{document}
+% configurations that should appear 
+% after \begin{document}
+\EndPreamble
+\end{verbatim}
+\begin{itemize}
+  \item \verb|\Preamble| can pass the options. \texttt{xhtml} option needs to be alway first, even if no other option is used.
+  \item \TeX4ht redefines all commands after the document preamble, but some code may be executed later. This can be overriden
+    by configurations put after the \verb|\begin{document}|.
+  \end{itemize}
+\end{frame}
+\begin{frame}[fragile]
+  \frametitle{Sample configuration file}
+The following configuration file can be used to create HTML files
+where sections are in separate files named after the secton titles,
+with footnotes at the end of the each file where they appear.
+
+CSS is used to set the maximum width of the page.
+
+\begin{verbatim}
+\Preamble{xhtml,2,sec-filename,fn-in}
+\Css{body{max-width:60ch;margin:1em auto;}}
+\begin{document}
+\EndPreamble
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Require external CSS file}
+In this example we use the LaTeX.css style to change the document appearance completely:
+
+\begin{verbatim}
+\Preamble{xhtml,2,sec-filename,fn-in}
+\Configure{@HEAD}{
+  \HCode{
+    <link rel="stylesheet" 
+    href="https://latex.now.sh/style.css">
+    \Hnewline
+  }
+}
+\begin{document}
+\EndPreamble
+\end{verbatim}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Commands useful in the configuration files}
+\begin{itemize}
+  \item The \verb|\Configure| command is used to insert code to hooks that were declared 
+    by configuration files for used packages and \LaTeX\ core.
+  \item The \verb|\HCode| command is used to insert XML tags.
+  \item The \verb|\Css| command is used for shorter CSS code.
+  \item The \verb|\Hnewline| command is used to output a line break to the XML file.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Math appearance}
+  By default, math output is mixture of HTML elements and pictures. It doesn't look well.
+  It is better to use the SVG graphics for pictures and require pictorial math also for inline math:
+\begin{verbatim}
+$ make4ht filename.tex "pic-m,svg"
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Faster SVG math}
+You can use the \verb|dvisvgm_hashes| extension for faster compilation of documents that produce
+lot of images. It can use multiple processes and compiles only pictures that changed from the 
+previous run:
+
+\begin{verbatim}
+$ make4ht -f html5+dvisvgm_hashes filename.tex \ 
+"svg,pic-m"
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{MathML}
+  MathML is a better solution than pictures in general. The downside is that it doesn't work in all web browsers:
+\begin{verbatim}
+make4ht filename.tex "mathml"
+\end{verbatim}
+
+You can use the MathJax library to require MatML support in all browsers:
+
+\begin{verbatim}
+make4ht filename.tex "mathml,mathjax"
+\end{verbatim}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{MathJax output}
+You can also let MathJax to completely handle math:
+
+\begin{verbatim}
+make4ht filename.tex "mathjax"
+\end{verbatim}
+
+\TeX4ht doesn't expand math contents in this case, so you will need to pass definitions of custom commands to MathJax.
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Pass configuration to MathJax}
+
+\begin{verbatim}
+\Preamble{xhtml,mathjax}
+\Configure{MathJaxConfig}{{
+    tex: {
+      \detokenize{%
+      macros: {
+        mycmd: "\\sin{a}"
+      }
+  }
+}
+}}
+\begin{document}
+\EndPreamble
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Images}
+  \TeX4ht needs to know image dimensions to correctly set them in the HTML file. It uses a .xbb file for that. It can be created using:
+
+\begin{verbatim}
+ebb -x imagename.jpg
+\end{verbatim}
+\end{frame}
+
+\section{Troubleshooting}
+\begin{frame}[fragile]
+\frametitle{Package conflicts}
+\begin{itemize}
+  \item \TeX4ht needs to redefine lot of internal \LaTeX\ commands, as well as commands from various packages. It may sometimes lead to 
+    package clashes, if other packages redefine the same commands.
+  \item Some packages don't work well with \TeX4ht, because they require the PDF mode for example.
+  \item It is ideal to run \TeX4ht after you add any new package, to find if it fails.
+  \item Please let us know about conflicts at \TeX4ht mailing list, issue tracker, or at TeX.sx (use the \textit{tex4ht} tag).
+\end{itemize}
+\end{frame}
+\begin{frame}[fragile]
+  \frametitle{First aid for the package conflict}
+  We want to avoid need to any changes in your \TeX\ documents for the \TeX4ht support, but it is sometimes the easiest way how to 
+  handle the package conflict.
+
+Use the \verb|\ifdefined\HCode| command to detect \TeX4ht, and avoid loading of the conflicting packages using that:
+
+\begin{verbatim}
+\documentclass{article}
+...
+\ifdefined\HCode
+\usepackage{graphicx}
+\else
+\usepackage[pdftex]{graphicx}
+\fi
+...
+\end{verbatim}
+
+\end{frame}
+
+
+\begin{frame}
+   \frametitle{Links}
+     \TeX4ht homepage \\ \url{tug.org/tex4ht/}\\
+     New \TeX4ht documentation \\ \url{www.kodymirus.cz/tex4ht-doc/tex4ht-doc.html}\\
+     \TeX4ht options\\
+     \url{https://www.kodymirus.cz/tex4ht-doc/texfourhtOptions.html}\\
+     Make4ht documentation \\ \url{www.kodymirus.cz/make4ht/make4ht-doc.html}\\
+     Issue tracker\\
+     \url{puszcza.gnu.org.ua/bugs/?group=tex4ht}\\
+
+\end{frame}
+  % \begin{frame}[]{}
+  % \end{frame}
+\end{document}
