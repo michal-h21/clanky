@@ -29,8 +29,8 @@ zdrojový kód, ale modifikují tok řetězců nebo tokenů při zpracování do
 \TeX em. Jedná se o \textsc{encxvlna} pro Enc\TeX\ a X\raisebox{\myminus.5ex}{Ǝ}\kern\myminus.3ex Vlna pro \hologo{XeTeX}.
 % Nedaří se mi použít záporné hodnoty pro \raisebox, je znak '-' aktivní?
 
-Protože \hologo{LuaTeX} nabízí snadné zpracování datových struktur \TeX u 
-(boxy, nódy, fonty, apod.), jeví se jako logický krok využití těchto možností
+Protože \hologo{LuaTeX} umožňuje modifikaci interních struktur \TeX u 
+(boxy, nódy, fonty, a pod.), jeví se jako logický krok využití těchto možností
 k vytvoření nové verze \verb|vlny|, která by využívala těchto schopností. 
 
 Jako odpověď na otázku možnosti automatického vkládání nezalomitelných mezer 
@@ -40,6 +40,9 @@ Patrick Gundlach předvedl řešení využívající nódy zpracovávající cal
 \url{http://www.ctan.org/pkg/impnattypo}} a také moje řešení z něho vychází.
 
 \section{Callbacky a nódy v \hologo{LuaTeX}u}
+
+
+
 
 Callbacky jsou funkce, které jsou volány při různých událostech v průběhu
 zpracování dokumentu. Velkou skupinou callbacků jsou callbacky zpracovávající 
