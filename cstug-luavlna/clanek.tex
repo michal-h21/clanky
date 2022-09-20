@@ -9,10 +9,10 @@
 \preventsingledebugon
 
 \begin{document}
-\title{\texttt{luavlna}: \texttt{vlna} pro formáty \hologo{LuaTeX}u}
-\EnglishTitle{\texttt{luavlna}: \texttt{vlna} for \hologo{LuaTeX} formats}
+\title{\texttt{luavlna}: \texttt{vlna} pro formáty Lua\TeX u}
+\EnglishTitle{\texttt{luavlna}: \texttt{vlna} for Lua\TeX\ formats}
 \author{Michal Hoftich}
-\maketitle
+% \maketitle
 \begin{abstract}
 Sem přijde abstrakt
 \end{abstract}
@@ -27,10 +27,10 @@ Klasickým nástrojem je program \verb|vlna|, který provádí nahrazení přím
 úrovni zdrojového kódu. Později vznikly další projekty, které nemodifikují přímo
 zdrojový kód, ale modifikují tok řetězců nebo tokenů při zpracování dokumentu 
 \TeX em. Jedná se o \textsc{encxvlna} pro Enc\TeX\ a X\raisebox{\myminus.5ex}{Ǝ}\kern\myminus.3ex Vlna pro \hologo{XeTeX}.
-% Nedaří se mi použít záporné hodnoty pro \raisebox, je znak '-' aktivní?
 
-Protože \hologo{LuaTeX} umožňuje modifikaci interních struktur \TeX u 
-(boxy, nódy, fonty, a pod.), jeví se jako logický krok využití těchto možností
+\hologo{LuaTeX} umožňuje měnit 
+modifikaci interních struktur \TeX u 
+(boxy, nódy, fonty, a pod.),  krok využití těchto možností
 k vytvoření nové verze \verb|vlny|, která by využívala těchto schopností. 
 
 Jako odpověď na otázku možnosti automatického vkládání nezalomitelných mezer 
