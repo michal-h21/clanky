@@ -1,0 +1,147 @@
+% This template file is public domain.
+%
+% TUGboat class documentation is at:
+%   http://mirrors.ctan.org/macros/latex/contrib/tugboat/ltubguid.pdf
+% or
+%   texdoc tugboat
+
+\documentclass{ltugboat}
+
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage[hidelinks,pdfa]{hyperref}
+
+%%% Start of metadata %%%
+
+\title{What's new in \TeX4ht}
+
+% repeat info for each author; comment out items that don't apply.
+\author{Michal Hoftich}
+\address{Magdaleny Rettigové 4 \\ Prague, 110 00\\ Czechia}
+\netaddress{michal.h21@gmail.com}
+\personalURL{https://www.kodymirus.cz/}
+%\ORCID{0}
+% To receive a physical copy of the TUGboat issue, please include the
+% mailing address we should use, as a comment if you prefer it not be printed.
+
+% The preferred mailing address is: Bellušova 1829, Prague 5, 155 00
+
+%%% End of metadata %%%
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Please write an abstract. Please use only standard \LaTeX\ and \TUB\
+macros in the abstract, not article-specific abbreviations or other
+macros; that helps us make the web pages. Please avoid bibliography
+references in the abstract.
+\end{abstract}
+
+\section{Introduction}
+
+This is an example article for \TUB, linked from
+\url{https://tug.org/TUGboat/location.html}.
+
+\section{Basic packages and hyperlinks}
+
+The standard \texttt{graphicx} and \texttt{xcolor} packages work fine
+for image and color handling, respectively, as does the
+\texttt{hyperref} package for active urls. \TUB\ is produced using
+\acro{PDF} files exclusively, but conversion from \DVI\ is fine and supported.
+
+Please do \emph{not} hide hyperlinks via \cs{href}, as in:
+\begin{verbatim}
+\href{https://some/url}{some text} % no!
+\end{verbatim}
+When printed on physical paper, the url will not be visible, and indeed,
+readers will not know it exists. Instead, use something like
+\begin{verbatim}
+some text (\tbsurl{some/url}) % yes
+\end{verbatim}
+so the url will be in the typeset output.
+
+The \verb|\tbsurl{some/url}| \TUB\ macro expands to
+\verb|\href{https://some/url}{some/url}|, so that the url will be both
+visible and active, yet need be written only once in the source. There
+is also \cs{tbhurl} to use \texttt{http://}, when \texttt{https} is not
+supported. We generally prefer to omit the network protocol when it is
+\texttt{http} or \texttt{https}, for brevity, but include it in other
+cases.
+
+\section{Abbreviation macros}
+
+The \texttt{ltugboat} class provides many abbreviation commands; here
+are a few of the most common:
+
+% verbatim blocks are often better in \small
+\begin{verbatim}[\small]
+\AllTeX \AMS
+\BibTeX \Cplusplus \CTAN
+\DVI
+\HTML \LaTeXe
+\MacOSX \MathML \MF
+\PDF \PS
+\TUB \TUG \tug
+\WEB
+\XeLaTeX \XeTeX \XML
+
+\Dash \slash
+
+\acro{FRED} -> {\small[er] FRED}  % please use!
+\cs{fred}   -> \fred
+\meta{fred} -> <fred>
+\booktitle{Book of Fred}
+\end{verbatim}
+
+\section{Figures}
+
+The standard \texttt{figure} environment produces a column-width figure;
+this is desirable when at all possible. The \texttt{figure*} environment
+produces a full-width (across both columns) figure when needed.
+Analogously for \texttt{table} and \texttt{table*}. 
+
+Please put captions below figures, but above tables. That's our
+convention.
+
+Don't worry overmuch about figure placement, as this will likely change
+with any edits.
+
+\begin{figure}
+A column-width figure, made with \cs{begin}\tubbraced{figure}.
+\caption{Caption for column-width figure.}
+\label{fig.colwidth}
+\end{figure}
+
+\begin{figure*}
+A full-width figure, made with \cs{begin}\tubbraced{figure*}.
+\caption{Caption for full-width figure.}
+\label{fig.fullwidth}
+\end{figure*}
+
+\section{Bibliographies}
+
+For references to other issues of \TUB, please use the format
+\textsl{volno:issno}, e.g., ``\TUB\ 32:1'' for volume~32, number~1.
+
+The \TUB\ style documentation is the \texttt{ltubguid} document at
+\tbsurl{ctan.org/pkg/tugboat}. For general \CTAN\ package references, we
+recommend the form just shown, using \texttt{/pkg/}; if you need to
+refer to a specific file location, use
+\texttt{http://mirror.ctan.org/\textsl{path}}.
+
+We recommend using \BibTeX\ (but don't require it), with the
+\texttt{tugboat} \BibTeX\ style. The \texttt{biblio} directory on \CTAN,
+\tbsurl{ctan.org/pkg/biblio}, provides files \texttt{tugboat.bib} with
+an essentially complete bibliography of \TUB, and \texttt{texbook3.bib}
+(and others there) with many \TeX-related citations. Both of these (and
+many more) should also already be in a non-minimal \TeX\ distribution.
+
+Email \verb|tugboat@tug.org| with any problems or questions.
+
+\bibliographystyle{tugboat}
+\nocite{book-minimal}      % make the bibliography non-empty
+\bibliography{xampl}       % xampl.bib comes with BibTeX
+
+\makesignature
+\end{document}
