@@ -28,6 +28,8 @@
 
 %%% End of metadata %%%
 
+\newcommand\makefourht{\texttt{make4ht}}
+
 \begin{document}
 \maketitle
 
@@ -46,27 +48,82 @@ the recent changes in the system.
 \hypertarget{Whatux27sux20newux20inux20TeX4ht}{%
 \section{What's new in TeX4ht}\label{Whatux27sux20newux20inux20TeX4ht}}
 
-You can find the basic summary of the current \TeX4ht status in my previous article
+You can find the basic summary of the basic \TeX4ht features in my previous article
 \cite{hoftich19}. I will focus on the new features and changes in this section.
 
-\subsection{New compilation modes for make4ht}
+\subsection{New features in \makefourht}
 
-Article for TUGBoat
+There are some substantial changes in \makefourht\ build system. These are the
+most important:
 
-Themes:
+\subsubsection{Terminal output}
 
-\begin{itemize}
-\item make4ht logging
-  \begin{itemize}
-  \item debug mode
-  \item clean mode
-  \end{itemize}
+Originally, \makefourht\ showed full terminal output from \TeX\ and all
+commands that it called in the process of conversion. It resulted in a huge 
+amount of information printed to the terminal. It also used the default 
+behavior of \LaTeX, so the compilation was stopped on every error, waiting
+for the user action.
 
-\item make4ht extensions:
+The new default behaviour is to run the compilation in the non-stop mode, 
+with most of the terminal output suppressed. Only errors and warnings are 
+shown. 
+
+You can change the output method using a new command line option,
+\verb|--loglevel|, or \verb|-a| in the short form. Each log level prints 
+messages of the current level and all higher levels.
+It supports the following levels:
+
+\begin{description}
+  \item[error] -- print only error messages
+  \item[warning] -- show \makefourht\ warnings, for example from HTML post-processing filters
+  \item[status] -- this is the default level 
+  \item[info]  -- print all \makefourht\ messages, but suppress output from commands
+  \item[debug] -- this level is the original default, it prints output of
+    \TeX\ and all other executed programs, it also stops on compilation
+    errors.
+\end{description}
+
+\subsubsection{Input redirection}
+
+\makefourht\ now supports shell input redirection, which means that it can 
+process output from other commands without the need to use temporary files.
+You need to pass \verb|-| as a filename, and also set the output filename using
+the \verb|--jobname| or \verb|-j| option:
+
+\begin{verbatim}
+$ python generatetex.py | make4ht -j foo -
+\end{verbatim}
+
+
+
+\subsection{New \makefourht\ extensions}
+
+
+
   \begin{itemize}
   \item MathML fixes
   \item sectionid
   \end{itemize}
+
+\section{\TeX4ht updates}
+
+\tbsurl{www.kodymirus.cz/tex4ht-doc}
+
+%- support for shell pipes
+%  - --jobname
+%- preprocess_input
+
+
+\subsection{JATS output}
+
+We recently added a support for the JATS XML format, which is intended for 
+scientific articles authoring. 
+
+
+
+\begin{itemize}
+
+\item make4ht extensions:
   
 \item JATS export
 \item documentation at kodymirus.cz
@@ -112,25 +169,6 @@ Themes:
   \end{itemize}
 \end{itemize}
 
-
-Please do \emph{not} hide hyperlinks via \cs{href}, as in:
-\begin{verbatim}
-\href{https://some/url}{some text} % no!
-\end{verbatim}
-When printed on physical paper, the url will not be visible, and indeed,
-readers will not know it exists. Instead, use something like
-\begin{verbatim}
-some text (\tbsurl{some/url}) % yes
-\end{verbatim}
-so the url will be in the typeset output.
-
-The \verb|\tbsurl{some/url}| \TUB\ macro expands to
-\verb|\href{https://some/url}{some/url}|, so that the url will be both
-visible and active, yet need be written only once in the source. There
-is also \cs{tbhurl} to use \texttt{http://}, when \texttt{https} is not
-supported. We generally prefer to omit the network protocol when it is
-\texttt{http} or \texttt{https}, for brevity, but include it in other
-cases.
 
 \section{Abbreviation macros}
 
