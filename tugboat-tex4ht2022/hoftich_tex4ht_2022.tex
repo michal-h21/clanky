@@ -40,7 +40,7 @@
 \section{Introduction}
 
 Richard Koch wrote an article about interactive documents produced using
-\TeX4ht in this issue of TUGBoat. He and Karl Berry asked me if I wanted 
+\TeX4ht in this issue of \TUB. He and Karl Berry asked me if I wanted 
 to provide additional tips for usage of \TeX4ht, and also to summarize
 the recent changes in the system.
 
@@ -49,7 +49,7 @@ the recent changes in the system.
 \section{What's new in TeX4ht}\label{Whatux27sux20newux20inux20TeX4ht}}
 
 You can find the basic summary of the basic \TeX4ht features in my previous article
-\cite{hoftich19}. I will focus on the new features and changes in this section.
+\cite{Hoftich:2019:TLW}. I will focus on the new features and changes in this section.
 
 \subsection{New features in \makefourht}
 
@@ -96,16 +96,58 @@ $ python generatetex.py | make4ht -j foo -
 
 
 
-\subsection{New \makefourht\ extensions}
+\subsection{Conversion of additional markup languages}
+
+In addition to \LaTeX\ and Plain\TeX, \makefourht\ supports some additional
+markup languages, thanks to the \verb|preprocess_input| extension. 
+It detects the used markup using the file extension, so it is necessary
+to name the file accordingly. It pre-processes the input using Pandoc or R with
+the Knitr library, which needs to be installed on your system.
+
+The list of supported file extensions is following:
+
+\begin{description}
+  \item[rtex] -- \LaTeX\ with R code chunks
+  \item[rnw] -- \LaTeX\ with the Sweave code chunks
+  \item[rmd] -- RMarkdown
+  \item[rrst] -- R + reStructuredText
+  \item[md] -- Markdown
+  \item[rst] -- reStructuredText
+\end{description}
+
+For example, the following sample contains R\TeX\ document:
+
+\begin{verbatim}
+\documentclass{article}
+\begin{document}
+
+You can type R commands in your \LaTeX{} 
+document which will be processed and
+their output included in the document:
+
+<<>>=
+# Create a sequence of numbers
+X = 2:10
+
+# Display basic statistical measures
+summary(X)
+
+@
+\end{document}
+\end{verbatim}
+
+You can compile it with the following command, which loads
+the \verb|preprocess_input| extension:
+
+\begin{verbatim}
+$ make4ht -f html5+preprocess_input x.rtex
+\end{verbatim}
 
 
 
-  \begin{itemize}
-  \item MathML fixes
-  \item sectionid
-  \end{itemize}
+\section{Documentation and server side compilation}
 
-\section{\TeX4ht updates}
+Thanks to the 
 
 \tbsurl{www.kodymirus.cz/tex4ht-doc}
 
@@ -170,10 +212,6 @@ scientific articles authoring.
 \end{itemize}
 
 
-\section{Abbreviation macros}
-
-The \texttt{ltugboat} class provides many abbreviation commands; here
-are a few of the most common:
 
 % verbatim blocks are often better in \small
 \begin{verbatim}[\small]
@@ -195,54 +233,10 @@ are a few of the most common:
 \booktitle{Book of Fred}
 \end{verbatim}
 
-\section{Figures}
-
-The standard \texttt{figure} environment produces a column-width figure;
-this is desirable when at all possible. The \texttt{figure*} environment
-produces a full-width (across both columns) figure when needed.
-Analogously for \texttt{table} and \texttt{table*}. 
-
-Please put captions below figures, but above tables. That's our
-convention.
-
-Don't worry overmuch about figure placement, as this will likely change
-with any edits.
-
-\begin{figure}
-A column-width figure, made with \cs{begin}\tubbraced{figure}.
-\caption{Caption for column-width figure.}
-\label{fig.colwidth}
-\end{figure}
-
-\begin{figure*}
-A full-width figure, made with \cs{begin}\tubbraced{figure*}.
-\caption{Caption for full-width figure.}
-\label{fig.fullwidth}
-\end{figure*}
-
-\section{Bibliographies}
-
-For references to other issues of \TUB, please use the format
-\textsl{volno:issno}, e.g., ``\TUB\ 32:1'' for volume~32, number~1.
-
-The \TUB\ style documentation is the \texttt{ltubguid} document at
-\tbsurl{ctan.org/pkg/tugboat}. For general \CTAN\ package references, we
-recommend the form just shown, using \texttt{/pkg/}; if you need to
-refer to a specific file location, use
-\texttt{http://mirror.ctan.org/\textsl{path}}.
-
-We recommend using \BibTeX\ (but don't require it), with the
-\texttt{tugboat} \BibTeX\ style. The \texttt{biblio} directory on \CTAN,
-\tbsurl{ctan.org/pkg/biblio}, provides files \texttt{tugboat.bib} with
-an essentially complete bibliography of \TUB, and \texttt{texbook3.bib}
-(and others there) with many \TeX-related citations. Both of these (and
-many more) should also already be in a non-minimal \TeX\ distribution.
-
-Email \verb|tugboat@tug.org| with any problems or questions.
 
 \bibliographystyle{tugboat}
 \nocite{book-minimal}      % make the bibliography non-empty
-\bibliography{mybib}       % xampl.bib comes with BibTeX
+\bibliography{tugboat}
 
 \makesignature
 \end{document}
