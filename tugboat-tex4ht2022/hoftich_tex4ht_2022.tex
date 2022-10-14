@@ -143,7 +143,47 @@ the \verb|preprocess_input| extension:
 $ make4ht -f html5+preprocess_input x.rtex
 \end{verbatim}
 
+\subsection{New commands available in build files}
 
+You can use Lua build files to call additional commands like indexing and
+bibliography processors with \makefourht. There are now built-in
+commands for Biber, \BibTeX, Makeindex, Xindy, Xindex and PythonTeX. They 
+take care of special settings necessary to work correctly with \TeX4ht.
+
+As an example, the following sample file should produce an index with links 
+that point to the place where \verb|\index| were used:
+
+\begin{verbatim}
+\documentclass{article} 
+\usepackage{makeidx} 
+\makeindex 
+\begin{document} 
+Hello\index{hello} 
+world\index{world} 
+\printindex 
+\end{document}
+\end{verbatim}
+
+The build file, that uses Makeindex as an indexing processor can look like this:
+
+\begin{verbatim}
+Make:htlatex {} 
+Make:makeindex {} 
+Make:htlatex{}
+\end{verbatim}
+
+The \verb|Make:htlatex| command compiles the document using \LaTeX\ with 
+the \TeX4ht package automatically loaded, \verb|Make:makeindex| calls 
+Makeindex and the final \verb|Make:htlatex| will compile document with 
+the index included. Note that instead of page numbers, numbers in the index
+are numbered consecutively for each \verb|\index| command. Thanks to that,
+we can point every index entry back to the original location.
+
+To use a build file, use the \verb|-e| command line option:
+
+\begin{verbatim}
+$ make4ht -e build.lua foo.tex
+\end{verbatim}
 
 \section{Documentation and server side compilation}
 
