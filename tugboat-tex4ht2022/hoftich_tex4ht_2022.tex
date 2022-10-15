@@ -34,60 +34,58 @@
 \maketitle
 
 \begin{abstract}
-  % ToDo: write abstract
+This article provides an overview of the recent development of \TeX4ht, 
+\LaTeX{} to XML converter, and \makefourht, the build system that carry this conversion.
 \end{abstract}
 
 \section{Introduction}
 
 Richard Koch wrote an article on interactive documents produced using
-\TeX4ht in this issue of \TUB. He and Karl Berry asked me if I wanted 
-to provide additional tips for usage of \TeX4ht, and also to summarize
-the recent changes in the system.
+\TeX4ht in this issue of \TUB. He and Karl Berry asked if I wanted 
+to provide additional tips on the usage of \TeX4ht and also to summarize 
+recent changes in the system.
 
 
-\hypertarget{Whatux27sux20newux20inux20TeX4ht}{%
-\section{What's new in TeX4ht}\label{Whatux27sux20newux20inux20TeX4ht}}
-
-You can find the basic summary of the basic \TeX4ht features in my previous article
+You can find the basic summary of the basic features of \TeX4ht in my previous article
 \cite{Hoftich:2019:TLW}. I will focus on the new features and changes in this section.
 
-\subsection{New features in \makefourht}
+\section{Changes and new features in \makefourht}
 
 There are some substantial changes in \makefourht\ build system. These are the
 most important:
 
-\subsubsection{Terminal output}
+\subsection{Terminal output}
 
-Originally, \makefourht\ showed full terminal output from \TeX\ and all
-commands that it called in the process of conversion. It resulted in a huge 
-amount of information printed to the terminal. It also used the default 
-behavior of \LaTeX, so the compilation was stopped on every error, waiting
+Originally, \makefourht\ showed the full terminal output of \TeX and all 
+the commands it called during the conversion process. It resulted in a huge 
+amount of information printed on the terminal. It also used the default 
+behavior of \LaTeX, so the compilation was stopped for every error, waiting
 for the user action.
 
-The new default behaviour is to run the compilation in the non-stop mode, 
+The new default behavior is to run the compilation in the non-stop mode, 
 with most of the terminal output suppressed. Only errors and warnings are 
 shown. 
 
-You can change the output method using a new command line option,
-\verb|--loglevel|, or \verb|-a| in the short form. Each log level prints 
+You can change the output method using a new command line option
+\verb|--loglevel |, or \verb|--a | in the short form. Each log level prints 
 messages of the current level and all higher levels.
 It supports the following levels:
 
 \begin{description}
   \item[error] -- print only error messages
-  \item[warning] -- show \makefourht\ warnings, for example from HTML post-processing filters
+  \item[warning] -- show \makefourht\ warnings, for example, from HTML postprocessing filters
   \item[status] -- this is the default level 
-  \item[info]  -- print all \makefourht\ messages, but suppress output from commands
+  \item[info]  -- print all \makefourht\ messages, but suppress the output from commands
   \item[debug] -- this level is the original default, it prints output of
-    \TeX\ and all other executed programs, it also stops on compilation
+    \TeX\ and all other executed programs, and it also stops on compilation
     errors.
 \end{description}
 
-\subsubsection{Input redirection}
+\subsection{Input redirection}
 
 \makefourht\ now supports shell input redirection, which means that it can 
-process output from other commands without the need to use temporary files.
-You need to pass \verb|-| as a filename, and also set the output filename using
+process the output of other commands without the need to use temporary files.
+You need to pass \verb | -| as the filename, and also set the output filename using
 the \verb|--jobname| or \verb|-j| option:
 
 \begin{verbatim}
@@ -100,11 +98,11 @@ $ python generatetex.py | make4ht -j foo -
 
 In addition to \LaTeX\ and Plain\TeX, \makefourht\ supports some additional
 markup languages, thanks to the \verb|preprocess_input| extension. 
-It detects the used markup using the file extension, so it is necessary
-to name the file accordingly. It pre-processes the input using Pandoc or R with
+It detects the markup used using the file extension, so it is necessary
+to name the file accordingly. It preprocesses the input using Pandoc or R with
 the Knitr library, which needs to be installed on your system.
 
-The list of supported file extensions is following:
+The list of supported file extensions is as follows:
 
 \begin{description}
   \item[rtex] -- \LaTeX\ with R code chunks
@@ -115,23 +113,21 @@ The list of supported file extensions is following:
   \item[rst] -- reStructuredText
 \end{description}
 
-For example, the following sample contains R\TeX\ document:
+For example, the following sample contains \textt{RTeX} document:
 
 \begin{verbatim}
 \documentclass{article}
 \begin{document}
 
-You can type R commands in your \LaTeX{} 
-document which will be processed and
-their output included in the document:
-
+You can type the R commands into your 
+\LaTeX{} document, which will be 
+processed and their output included 
+in the document:
 <<>>=
 # Create a sequence of numbers
 X = 2:10
-
-# Display basic statistical measures
+# Summary of basic statistical measures
 summary(X)
-
 @
 \end{document}
 \end{verbatim}
@@ -145,10 +141,10 @@ $ make4ht -f html5+preprocess_input x.rtex
 
 \subsection{New commands available in build files}
 
-You can use Lua build files to call additional commands like indexing and
-bibliography processors with \makefourht. There are now built-in
+You can use Lua build files to call additional commands, such as indexing and
+bibliography processors, with \makefourht. There are now built-in
 commands for Biber, \BibTeX, Makeindex, Xindy, Xindex and PythonTeX. They 
-take care of special settings necessary to work correctly with \TeX4ht.
+take care of the special settings necessary to work correctly with \TeX4ht.
 
 As an example, the following sample file should produce an index with links 
 that point to the place where \verb|\index| were used:
@@ -158,13 +154,12 @@ that point to the place where \verb|\index| were used:
 \usepackage{makeidx} 
 \makeindex 
 \begin{document} 
-Hello\index{hello} 
-world\index{world} 
+Hello\index{hello} world\index{world} 
 \printindex 
 \end{document}
 \end{verbatim}
 
-The build file, that uses Makeindex as an indexing processor can look like this:
+The build file that uses Makeindex as an indexing processor can look like this:
 
 \begin{verbatim}
 Make:htlatex {} 
@@ -172,11 +167,11 @@ Make:makeindex {}
 Make:htlatex{}
 \end{verbatim}
 
-The \verb|Make:htlatex| command compiles the document using \LaTeX\ with 
+The command \verb| Make:htlatex| compiles the document using \LaTeX\ with 
 the \TeX4ht package automatically loaded, \verb|Make:makeindex| calls 
-Makeindex and the final \verb|Make:htlatex| will compile document with 
-the index included. Note that instead of page numbers, numbers in the index
-are numbered consecutively for each \verb|\index| command. Thanks to that,
+Makeindex and the final \verb| Make:htlatex| compiles the document with 
+the index included. Note that instead of page numbers, the numbers in the index
+are numbered consecutively for each \verb|\index| command. Due to that,
 we can point every index entry back to the original location.
 
 To use a build file, use the \verb|-e| command line option:
@@ -187,91 +182,78 @@ $ make4ht -e build.lua foo.tex
 
 \section{Documentation and server side compilation}
 
-Thanks to the 
+We have made progress in writing the new \TeX4ht documentation. 
+In addition to chapters on available configuration commands and command line options,
+it contains also a how-to guide with common tasks and developer information for package writers.
+It is available at the following address:
 
-\tbsurl{www.kodymirus.cz/tex4ht-doc}
+\smallskip
+\noindent\tbsurl{www.kodymirus.cz/tex4ht-doc}
+\smallskip
 
-%- support for shell pipes
-%  - --jobname
-%- preprocess_input
+\noindent It also shows an important development, the usage of server-side compilation. 
+Thanks to Github Actions, documentation is automatically generated from
+\LaTeX\ sources every time we update them. We don't need to upload generated 
+HTML files to a web server, everything is handled automatically by Github Actions.
+In the background, the Docker container for \TeX\ Live is used. It enables us
+to call any command available in \TEX\ Live, including \makefourht. 
+A similar service is also provided by GitLab and other source code hosting platforms.
+
+This method was also used for the conversion of Overleaf projects linked to Github
+repositories, the HTML version of \makefourht\ documentation, or even a simple blog:
+
+\smallskip
+\noindent\tbsurl{www.kodymirus.cz/testblog/}
 
 
-\subsection{JATS output}
+
+\section{JATS format support}
 
 We recently added a support for the JATS XML format, which is intended for 
-scientific articles authoring. 
+scientific article authoring. It is an important development, as it is required
+by many publishers for the article archiving or for the further processing.
 
+It is also the first output format for \TeX4ht that I personally created. 
+The specification is quite strict on the structure of the document, 
+which is often inconsistent with the free document structure used in \LaTeX. 
+\makefourht\ postprocessing using LuaXML is heavily used to produce the 
+correct structure. 
 
+The support is still fairly basic, so user feedback and bug reports are appreciated.
 
-\begin{itemize}
+\section{MathJax configuration}
 
-\item make4ht extensions:
-  
-\item JATS export
-\item documentation at kodymirus.cz
-\item server side compilation:
-  \begin{itemize}
-  \item siterebuild
-  \item testblog
-  \end{itemize}
+We continue to extend support for MathJax, which can be used to render
+math in converted documents. The resulting document typically looks
+much better than documents converted using the default \TeX4ht method,
+which uses a mix of images and HTML formatting. It is also better
+for accessibility, as MathJax can support screen readers, for example.
 
-\item LaTeX kernel updates
-\item handling of catcode issues in packages
-  \begin{itemize}
-  \item \textbackslash SUBOff and \textbackslash SUBOn in usepackage.4ht
-    \url{https://tug.org/pipermail/tex4ht-commits/2022q3/001185.html}
-  \end{itemize}
-\item Math processing:
-  \begin{itemize}
-  \item make4ht options:
-    \begin{itemize}
-    \item mathml
-    \item mathjax
-      \begin{itemize}
-      \item configuration
-      \item loading of custom commands
-      \item cross-referencing support
-      \end{itemize}
-    \end{itemize}
-  \item MathJax mode
-    \begin{itemize}
-    \item mathml rendering
-    \item LaTeX rendering
-    \item
-      new node.js compilation - \texttt{mjcli}
-      \url{https://github.com/michal-h21/mjcli}
-    \end{itemize}
-  \end{itemize}
-\item HTF fonts
-\item command and package fixes
+One downside is that MathJax does not support custom commands out of the box. 
+It needs a special configuration that declares these commands. An example
+of a configuration file that provides that could be the following one:
 
-  \begin{itemize}
-  \item robust commands and issues with TOC and list of figures, captions
-    etc.
-  \end{itemize}
-\end{itemize}
-
-
-
-% verbatim blocks are often better in \small
-\begin{verbatim}[\small]
-\AllTeX \AMS
-\BibTeX \Cplusplus \CTAN
-\DVI
-\HTML \LaTeXe
-\MacOSX \MathML \MF
-\PDF \PS
-\TUB \TUG \tug
-\WEB
-\XeLaTeX \XeTeX \XML
-
-\Dash \slash
-
-\acro{FRED} -> {\small[er] FRED}  % please use!
-\cs{fred}   -> \fred
-\meta{fred} -> <fred>
-\booktitle{Book of Fred}
+\begin{verbatim}
+\Preamble{xhtml,mathjax} 
+\Configure{MathJaxConfig}{{ 
+tex: { 
+ \detokenize{% 
+  macros: { 
+    foo: "\\mathrm{foo}", 
+  } 
+ } 
+} 
+}} 
+\begin{document} 
+\EndPreamble
 \end{verbatim}
+
+The \verb|\Configure{MathJaxConfig}| command contains JavaScript
+code that configures MathJax. The \texttt{macros} table, which needs
+to be located inside the table \texttt{tex}, can contain user macros.
+The \verb|\detokenize| command is used to prevent problems with backslash
+characters, which need to be doubled. In the example, we define the
+\verb|\foo| macro, which prints the word ``foo'' in roman font.
 
 
 \bibliographystyle{tugboat}
