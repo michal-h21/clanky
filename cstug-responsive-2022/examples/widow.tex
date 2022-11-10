@@ -1,0 +1,28 @@
+% \documentclass[12pt,twocolumn]{article}
+\documentclass[12pt,twocolumn]{article}
+\usepackage{lua-widow-control}
+\usepackage{lipsum}
+\begin{document}
+\lwcsetup{draft,disable}
+
+\def\test{
+\lipsum[13]
+
+\lipsum[13] Vestibulum ante ipsum primis in orci luctus et ultrices.
+
+\lipsum[14-16]
+}
+\test
+
+\newpage
+\lwcsetup{enable,default}
+\test
+
+\newpage
+\lwcsetup{balanced}
+\test
+
+\newpage
+\lwcsetup{strict}
+\test
+\end{document}
