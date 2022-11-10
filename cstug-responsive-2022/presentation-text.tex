@@ -12,7 +12,15 @@ Outline:
 - Automatizovaná sazba
   - luvlna
   - luawidowcontrol
-    - sází odstavec na zkoušku, pokud detekuje 
+    - každý odstavec sází dvakrát -- jeden s normálními parametry, druhý o jeden řádek větší
+    - pokud se najde parchant, vymění předešlý odstavec za verzi s rádkem navíc
+    - nastavení:
+      - default - nepřidává žádné vertikální mezery, ale může vést k příliš vzdušným odstavcům
+      - strict - využívá primárně vertikální mezery a nevytváří špatné odstavce,  ale odstraní jen třetinu parchantů
+      - balanced - kombinuje obě metody, odstraní 90\% parchantů
+    - upozornění:
+      - \verb|\clubpenalty| a \verb|\widowpenalty| nemají žádný efekt, naopak mohou způsobit vedlejší účinky
+      - podpora pro více sloupcovou sazbu je omezená, balíček Multicol nefunguje
   - linebreaker
 
  
@@ -29,25 +37,12 @@ Outline:
 \begin{frame}
   \frametitle{How are hooks configured}
   \begin{itemize}
-    \item hooks are configured using the \texttt{\textbackslash Configure} command
-    \item either in the output format file (html4.4ht, html5.4ht, ooffice.4ht)
-    \item or in the private configuration file
-    \item the output format can define options that are passed to the \texttt{tex4ht.sty} package
-    % \item soubory výstupního formátu mohou definovat volby, které ovlivňují konfiguraci háčků
-    % \item po vložení háčků se nahrají jejich konfigurace v závislosti na výstupním formátu
-    % \item další konfigurace je možné vložit do .cfg souboru, který se načítá pomocí volby \texttt{-c} příkazu \texttt{make4ht}
 
 \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitle{\texttt{tex4ht.sty} package options}
-    they are used by the output format for a conditional configuration
-
-  \begin{itemize}
-    \item they can be passed on the command line
-    \item or in a private configuration file 
-  \end{itemize}
   \begin{priklad}
 \begin{verbatim}
 $ make4ht filename.tex "mathml,mathjax"
