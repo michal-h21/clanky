@@ -5,11 +5,50 @@ Outline:
 \section{Úvod}
 
 \begin{frame}
-  \frametitle{Motivace}
-  \begin{itemize}
-    \item xx
-  \end{itemize}
+  \frametitle{Co je cílem?}
+    Vytvořit z různých zdrojů (HTML, ePub) PDF vhodné pro několik výstupů:
+    \begin{itemize}
+      \item čtečky e-booků
+      \item smartphony a tablety
+      \item tisk
+    \end{itemize}
+
+  \end{frame}
+  \begin{frame}
+    \frametitle{Proč?}
+
+    \begin{itemize}
+      \item Komfortnější čtení
+      \item Archivace
+    \end{itemize}
+
+
 \end{frame}
+
+\section{Jak zkonvertujeme HTML do PDF pro čtečku?}
+
+\begin{frame}
+  \frametitle{Rmodepdf}
+
+    Experimentální kód se nachází zde:
+
+    \url{https://github.com/michal-h21/rmodepdf/}
+  \end{frame}
+
+\begin{frame}
+  \frametitle{Reader mode pro skripty}
+  Zobrazení pro čtečku je mód ve webových prohlížečích, který odstraní ovládací prvky ze stránky a zobrazí jen text článku.
+
+  \bigskip
+
+  \begin{tabular}{ll}
+    Readability.js & \url{https://github.com/mozilla/readability}\\
+    Python-readability & \url{https://github.com/buriy/python-readability}\\
+    Rdrview: &\url{https://github.com/eafer/rdrview}\\
+  \end{tabular}
+
+\end{frame}
+
 \begin{frame}
   \frametitle{Stránka s ovládacími prvky a reklamami}
   \begin{center}
@@ -24,16 +63,27 @@ Outline:
   \end{center}
 \end{frame}
 
-\section{Jak zkonvertujeme HTML do PDF pro čtečku?}
+\begin{frame}
+  \frametitle{Jak načteme HTML a ePub soubory?}
+  V Lua\TeX u máme několik nástrojů
+  \begin{itemize}
+    \item knihovna pro čtení ZIP souborů
+    \item LuaXML obsahuje knihovnu Transform pro převod XML do jiných formátů, například \TeX u
+    \item podpora pro HTML v LuaXML je ve vývoji
+  \end{itemize}
+\end{frame}
 
 \begin{frame}
-  \frametitle{Reader mode pro skripty}
-  \begin{tabular}{ll}
-    Readability.js & \url{https://github.com/mozilla/readability}\\
-    Python-readability & \url{https://github.com/buriy/python-readability}\\
-    Rdrview: &\url{https://github.com/eafer/rdrview}\\
-  \end{tabular}
-
+  \frametitle{Co dále?}
+  \begin{itemize}
+  \item  zautomatizovat design výstupního dokumentu pro různé velikosti zobrazení
+  \item  automaticky zamezit chybám v sazbě:
+    \begin{itemize}
+      \item vdovy a sirotci
+      \item zalamování řádků s jednopísmennými předložkami, jednotkami nebo ak. tituly
+      \item přetečené řádky při sazbě úzkých sloupců
+    \end{itemize}
+  \end{itemize}
 \end{frame}
 
 \section{Responzivní design v \LaTeX u}
@@ -110,9 +160,11 @@ body {
 
 \begin{frame}
   \frametitle{Porovnání různých metod k omezení parchantů}
+  \begin{priklad}
   \begin{center}
   \includegraphics[height=.95\textheight]{img/lua-widow.pdf}
   \end{center}
+\end{priklad}
   % \myfig[height=0.8\textheight]{img/lua-widow.pdf}{}
 \end{frame}
 
@@ -170,29 +222,8 @@ body {
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Jak to funguje?}
-  
-  \begin{itemize}
-    \item využíváme callback Lua\TeX u \verb|pre_linebreak_filter|
-    \item zpracovává odstavce a boxy před tím, než jsou zalomené do řádků
-  \end{itemize}
-
-\end{frame}
-
-\begin{frame}[fragile]
   \frametitle{Podporované jazyky}
 
 \end{frame}
 
-\begin{frame}
-  \frametitle{How are hooks configured}
-\end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{\texttt{tex4ht.sty} package options}
-  \begin{priklad}
-\begin{verbatim}
-$ make4ht filename.tex "mathml,mathjax"
-\end{verbatim}
-\end{priklad}
-\end{frame}
