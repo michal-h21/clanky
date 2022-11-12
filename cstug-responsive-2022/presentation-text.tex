@@ -109,6 +109,21 @@
 \end{frame}
 
 \begin{frame}
+  \frametitle{Ukázka stránky na velkém monitoru}
+  \begin{center}
+    \includegraphics[height=.9\textheight]{img/pedf-web-big.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Ukázka stránky na malém displeji}
+  \begin{center}
+    \includegraphics[height=.9\textheight]{img/pedf-web-small.png}
+  \end{center}
+\end{frame}
+
+
+\begin{frame}
   \frametitle{Balíček \texttt{responsive}}
 
   Balíček inspirovaný metodami responzivního designu pro webové stránky
@@ -355,23 +370,9 @@ body {
           
 \end{frame}
 
-\begin{frame}
-  \frametitle{Ukázka stránky na velkém monitoru}
-  \begin{center}
-    \includegraphics[height=.9\textheight]{img/pedf-web-big.png}
-  \end{center}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Ukázka stránky na malém displeji}
-  \begin{center}
-    \includegraphics[height=.9\textheight]{img/pedf-web-small.png}
-  \end{center}
-\end{frame}
-
 \begin{frame}[fragile]
   \frametitle{Media queries v \LaTeX u}
-    Pomocí příkazu \verb|\MediaQuery| můžeme testovat různé vlastnosti:
+    Pomocí příkazu \verb|\mediaquery| můžeme testovat různé vlastnosti:
   
     \begin{itemize}
   \item velikost fyzické stránky
@@ -425,13 +426,15 @@ Další testy jdou snadno přidat
 \section{Automatická sazba}
 
 \begin{frame}
-  \frametitle{Balíček texttt{lua-widow-control}}
+  \frametitle{Balíček \texttt{lua-widow-control}}
+  Potlačení vdov a sirotků za pomoci Lua callbacků
   \begin{itemize}
     \item každý odstavec sází dvakrát -- jeden s normálními parametry, druhý o jeden řádek delší
     \item vliv na rychlost by měl být malý
     
     \item pokud se najde parchant, vymění předešlý odstavec za verzi s řádkem navíc
   \end{itemize}
+  \url{https://ctan.org/pkg/lua-widow-control}
 \end{frame}
 
 \begin{frame}
@@ -485,15 +488,14 @@ Další testy jdou snadno přidat
 
 \begin{frame}[fragile]
   \frametitle{Balíček \texttt{luavlna}}
-  \begin{itemize}
-    \item Zamezuje rozdělení řádků:
+    Zamezuje rozdělení řádků:
       \begin{itemize}
         \item za jednoslovnými předložkami
         \item u iniciál
         \item u akademických titulů
         \item mezi čísly a jednotkami
       \end{itemize}
-  \end{itemize}
+  \url{https://ctan.org/pkg/luavlna}
 \end{frame}
 
 \begin{frame}
@@ -604,12 +606,15 @@ A something.
 }
 
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Balíček \texttt{linebreaker}}
+  Brání výskytu přetečených řádků
   \begin{itemize}
-    \item brání výskytu přetečených řádků
     \item ovlivňuje pouze sazbu  odstavců, kde se takový řádek vyskytl
+    \item pokud detekuje přetečený řádek v odstavci, vysází ho znovu s většími hodnotami
+      \verb|tolerance| a \verb|emergencystretch|.
   \end{itemize}
+  \url{https://ctan.org/pkg/linebreaker}
 \end{frame}
   
 \begin{frame}
@@ -634,17 +639,19 @@ create new nodes and manipulate the nodes links structure.
   \end{description}
 \begin{verbatim}
 \linebreakersetup{
-maxtolerance = 90,
-maxemergencystretch = 1em,
-maxcycles = 4
+maxtolerance = 90,         % default 9999
+maxemergencystretch = 1em, % default 3em
+maxcycles = 4              % default 30
 }
 \end{verbatim}
 
 \end{frame}
 
-\section{Závěr}
+% \section{Závěr}
 
 \begin{frame}[standout]
+
+ 
   Děkuji za pozornost!
 
   \url{michal.h21@gmail.com}
