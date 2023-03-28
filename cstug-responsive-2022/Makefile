@@ -13,5 +13,6 @@ build: $(pdf_file)
 	mkdir $(build_dir)
 	cp $(source_files) $(build_dir)
 	cp `kpsewhich responsive.sty` $(build_dir)
+	cp -r img/ $(build_dir)
 	zip -r $(zip_file) $(build_dir)
 
