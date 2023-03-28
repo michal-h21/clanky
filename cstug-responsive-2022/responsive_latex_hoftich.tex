@@ -1,13 +1,17 @@
-\documentclass{csbulletin}
 % při kompilaci dokumentu LuaLaTeXem dojde k chybě, protože
-% následující 
-\ifdefined\pdfpagewidth\else
+% nedefinuje \pdfpagewidth a \pdfpageheight. 
+% Balíček luatex85 to napravuje
+\ifdefined\directlua
+\RequirePackage{luatex85}
 \fi
-\usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
+
+\documentclass{csbulletin}
+% \usepackage[T1]{fontenc}
+% \usepackage[utf8]{inputenc}
+\usepackage{fontspec}
 \selectlanguage{czech}
 \usepackage{luavlna}
-% \usepackage{responsive}
+\usepackage[noautomatic]{responsive}
 \usepackage[all]{nowidow}
 \usepackage{csquotes}
 \usepackage[
@@ -49,7 +53,8 @@ Díky těmto metodám lze použít jeden zdrojový dokument pro různé výstupy
 jsou tiskové verze, čtečky e-knih a webové stránky, a dosáhnout optimálního
 zobrazení dokumentu na všech zařízeních.
 \end{abstract}
-\klicovaslova: první klíčové slovo, druhé klíčové slovo, třetí klíčové slovo, …
+\klicovaslova: automatická sazba, responzivní design, Lua\LaTeX
+
 
 \section{Název sekce}
 \TeX{} je program pro digitální sazbu. Kniha \citetitle{knuth-ttp}~\cite{knuth-ttp} obsahuje komentovaný zdrojový kód \TeX u. \textcite{knuth-tb} popisuje \TeX{} z pohledu uživatele.
@@ -63,6 +68,6 @@ zobrazení dokumentu na všech zařízeních.
 
   With these methods, a single source document can be used for different outputs, such as print versions, e-book readers, and web pages, and achieve optimal document display on all devices.
 
-\keywords: první anglické klíčové slovo, druhé anglické klíčové slovo, …
+\keywords: automatic typesetting, responsive design, Lua\LaTeX
 \end{summary}
 \end{document}
