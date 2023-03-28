@@ -1,0 +1,68 @@
+\documentclass{csbulletin}
+% při kompilaci dokumentu LuaLaTeXem dojde k chybě, protože
+% následující 
+\ifdefined\pdfpagewidth\else
+\fi
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\selectlanguage{czech}
+\usepackage{luavlna}
+% \usepackage{responsive}
+\usepackage[all]{nowidow}
+\usepackage{csquotes}
+\usepackage[
+  backend=biber,
+  style=iso-numeric,
+  sortlocale=cs,
+  autolang=other,
+  bibencoding=UTF8,
+  mincitenames=2,
+  maxcitenames=2,
+]{biblatex}
+\addbibresource{responsive.bib}
+\usepackage[
+  implicit=false,
+  hidelinks,
+]{hyperref}
+\begin{document}
+
+\title{Responzivní design s \LaTeX em}
+\EnglishTitle{Responsive Design with \LaTeX}
+\author{Michal Hoftich}
+\podpis{Michal Hoftich, \url{michal.h21@gmail.com}}
+\maketitle
+
+\begin{abstract}
+Tento článek se zaměřuje na použití metod responzivního designu pro zobrazení
+webových stránek na zařízeních s různou velikostí displejů, jako jsou mobilní
+telefony, tablety, velké monitory a tiskárny. Tyto metody umožňují optimalizaci
+čitelnosti dokumentu na všech zařízeních pomocí použití různých velikostí
+písma, jednotlivých prvků na stránce a okrajů.
+
+V této práci se představuje způsob, jak lze podobné funkcionality dosáhnout
+pomocí \LaTeX u. Konkrétně se zaměřuje na využití Lua\LaTeX u pro automatizovanou
+sazbu s pomocí balíčků Luavlna pro zamezení výskytu jednopísmenných předložek
+na koncích řádků, Lua-widow-control pro omezení osamocených řádků na koncích a
+začátcích stránek a Linebreaker, který brání přetečení řádků.
+
+Díky těmto metodám lze použít jeden zdrojový dokument pro různé výstupy, jako
+jsou tiskové verze, čtečky e-knih a webové stránky, a dosáhnout optimálního
+zobrazení dokumentu na všech zařízeních.
+\end{abstract}
+\klicovaslova: první klíčové slovo, druhé klíčové slovo, třetí klíčové slovo, …
+
+\section{Název sekce}
+\TeX{} je program pro digitální sazbu. Kniha \citetitle{knuth-ttp}~\cite{knuth-ttp} obsahuje komentovaný zdrojový kód \TeX u. \textcite{knuth-tb} popisuje \TeX{} z pohledu uživatele.
+
+\printbibliography
+
+\begin{summary}
+  This article focuses on the use of responsive design techniques to display web pages on devices with different display sizes, such as mobile phones, tablets, large monitors and printers. These methods allow optimizing the readability of a document on all devices by using different font sizes, individual page elements, and margins.
+
+  This paper presents how similar functionality can be achieved using LATEX. Specifically, it focuses on the use of LuaTEX for automated typesetting, using the Luavlna packages to prevent the occurrence of single-letter prepositions at line breaks, Lua-widow-control to reduce orphan lines at page breaks and page starts, and Linebreaker to prevent line overflow.
+
+  With these methods, a single source document can be used for different outputs, such as print versions, e-book readers, and web pages, and achieve optimal document display on all devices.
+
+\keywords: první anglické klíčové slovo, druhé anglické klíčové slovo, …
+\end{summary}
+\end{document}
