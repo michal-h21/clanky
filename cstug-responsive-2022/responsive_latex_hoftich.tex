@@ -69,6 +69,18 @@ zobrazení dokumentu na všech zařízeních.
 
 \section{Úvod}
 
+Před časem jsem si pořídil čtečku elektronických knih, ale i přesto většinu
+textů čtu z obrazovky svého PC, protože pochází z webových zdrojů, především 
+různých blogů. To má za důsledek několik problémů, například únavu očí, bolesti zad
+z příliš dlouhého sezení na židli, nemluvě o zbytečně spotřebované elektrické
+energii. Napadlo mě tedy, že bych bych si delší články ukládal pro pozdější
+přečtení na čtečce. K tomuto účelu samozřejmě existuje řada aplikací, ale 
+já se rozhodl vytvořit si vlastní. Nemá to žádný racionální důvod, pouze
+mi to přišlo jako zajímavý projekt. 
+
+
+
+
 \begin{figure}[htbp]
 
   \centering
@@ -85,6 +97,15 @@ zobrazení dokumentu na všech zařízeních.
   \end{subfigure}
 \end{figure}
 
+
+\section{Jak s pomocí \LaTeX u převést webovou stránku na PDF}
+
+% https://github.com/eafer/rdrview
+
+\begin{verbatim}
+$ rdrview -H <url> | pandoc -f html -t latex -V lang=cs \
+  --template template.tex output.html > output.tex
+\end{verbatim}
 
 
 \begin{figure}[htbp]
