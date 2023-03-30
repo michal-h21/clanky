@@ -37,6 +37,7 @@
 
 
 \newcommand\balicek[1]{\textit{#1}}
+\newcommand\program[1]{#1}
 
 \begin{document}
 
@@ -55,10 +56,10 @@ písma, jednotlivých prvků na stránce a okrajů.
 
 Představíme způsob, jak lze podobné funkcionality dosáhnout
 pomocí \LaTeX u. Konkrétně se zaměřuje na využití Lua\LaTeX u pro automatizovanou
-sazbu s pomocí balíčků \balicek{Responsive} pro nastavení velikosti písma a řádkového prokladu
-podle velikosti stránky, \balicek{Luavlna} pro zamezení výskytu jednopísmenných předložek
-na koncích řádků, \balicek{Lua-widow-control} pro omezení osamocených řádků na koncích a
-začátcích stránek a \balicek{Linebreaker}, který brání přetečení řádků.
+sazbu s pomocí balíčků \balicek{Responsive}\cite{responsive} pro nastavení velikosti písma a řádkového prokladu
+podle velikosti stránky, \balicek{Luavlna} \cite{luavlna} pro zamezení výskytu jednopísmenných předložek
+na koncích řádků, \balicek{Lua-widow-control}  \cite{lua-widow-control} pro omezení osamocených řádků na koncích a
+začátcích stránek a \balicek{Linebreaker} \cite{linebreaker}, který brání přetečení řádků.
 
 Díky těmto metodám lze použít jeden zdrojový dokument pro různé výstupy, jako
 jsou tiskové verze, čtečky e-knih a webové stránky, a dosáhnout optimálního
@@ -75,16 +76,50 @@ různých blogů. To má za důsledek několik problémů, například únavu o�
 z příliš dlouhého sezení na židli, nemluvě o zbytečně spotřebované elektrické
 energii. Napadlo mě tedy, že bych bych si delší články ukládal pro pozdější
 přečtení na čtečce. K tomuto účelu samozřejmě existuje řada aplikací, ale 
-já se rozhodl vytvořit si vlastní. Nemá to žádný racionální důvod, pouze
-mi to přišlo jako zajímavý projekt. 
+já se rozhodl vytvořit si vlastní, kterou si přizpůsobím přesně svým potřebám
+a preferencím. Další motivací je možnost naučit se něco nového a vytvořit
+balíčky, které budou užitečné i pro další uživatele \TeX u. 
+
+Protože díky Lua\TeX u je v \TeX ových distribucích dostupný programovací jazyk 
+Lua, využil jsem ho pro vytvoření svého projektu \program{Rmodepdf} \cite{rmodepdf}.
+Ten využívá balíček \balicek{LuaXML} \cite{luaxml} pro 
+transformaci HTML na \TeX{} a příkazy \program{Curl} pro stažení stránky, \program{Tidy} 
+pro opravu chyb v HTML a \program{Rdrview} \cite{rdrview}, který odstraní
+ze stránky navigační prvky, reklamy a jiné rušivé elementy. \program{Rdrview} 
+tak funguje podobně jako mód zobrazení čtečky v prohlížeči \program{Firefox}
+(ilustrováno v obrázku~\ref{fig:readermode}).
+
+V následujícím textu se však nezaměřím na samotný \program{Rmodepdf}.
+Myslím, že pro čtenáře bude užitečnější popis metod pro automatickou sazbu,
+které lze využít i pro jiné účely, například při konverzi z dokumentů ve formátu MS Word, 
+nebo elektronických knih ve formátu Epub. Zde nevyužijeme funkci
+odstraňování navigačních prvků ze stránky, ale můžeme zde využít
+přizpůsobení velikosti písma velikosti stránky nebo automatické řešení
+typografických problémů či špatně zalomených řádků.
+
+\section{Responzivní design}
+
+Prvním problémem, který jsem řešil při  
 
 
+Responzivní design je způsob návrhu webových stránek, který umožňuje
+pružné a dynamické přizpůsobení vzhledu a uspořádání obsahu stránky
+různým zobrazovacím zařízením. Jedním z klíčových prvků responzivního
+designu je flexibilní struktura, která umožňuje přizpůsobit velikost
+prvků na stránce zobrazovacímu zařízení.
+
+Dalším důležitým prvkem jsou media queries, které umožňují definovat
+pravidla, která se aplikují na základě vlastností zobrazovacího
+zařízení, jako je velikost displeje, druh displeje, atd. Díky těmto
+vlastnostem může stejný kód stránky být dobře zobrazen jak na velkém
+monitoru, tak na mobilních zařízeních.
 
 
 \begin{figure}[htbp]
 
   \centering
-  \caption{Ukázka použití režimu \emph{zobrazení čtečky} v prohlížeči Firefox}
+  \caption{Ukázka použití režimu \emph{zobrazení čtečky} v prohlížeči \program{Firefox}}
+  \label{fig:readermode}
 
   \begin{subfigure}[t]{0.45\textwidth}
     \includegraphics[width=\textwidth]{img/root-balast.png}
