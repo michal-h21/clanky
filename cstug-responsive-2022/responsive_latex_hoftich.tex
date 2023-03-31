@@ -9,6 +9,7 @@
 % \usepackage[T1]{fontenc}
 % \usepackage[utf8]{inputenc}
 \usepackage{fontspec}
+\setmainfont[Ligatures={TeX,Rare}]{Latin Modern Roman}
 \selectlanguage{czech}
 \usepackage{luavlna}
 \usepackage[noautomatic]{responsive}
@@ -18,6 +19,7 @@
 \usepackage{graphicx}
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage{lipsum}
 
 
 \usepackage[
@@ -38,6 +40,22 @@
 
 \newcommand\balicek[1]{\textit{#1}}
 \newcommand\program[1]{#1}
+
+
+\newcommand\printsize[1]{\csname #1\endcsname\par\noindent Sample \par}
+\newcommand\showscale[2][.5\textwidth]{%
+      % \setsizes[38]{25}
+      \printsize{huge}
+      \printsize{LARGE}
+      \printsize{Large}
+      \printsize{large}
+      \hrule
+      \printsize{normalsize}
+      \hrule
+      \printsize{small}
+      \printsize{footnotesize}
+}
+
 
 \begin{document}
 
@@ -97,24 +115,6 @@ odstraňování navigačních prvků ze stránky, ale můžeme zde využít
 přizpůsobení velikosti písma velikosti stránky nebo automatické řešení
 typografických problémů či špatně zalomených řádků.
 
-\section{Responzivní design}
-
-Prvním problémem, který jsem řešil při  
-
-
-Responzivní design je způsob návrhu webových stránek, který umožňuje
-pružné a dynamické přizpůsobení vzhledu a uspořádání obsahu stránky
-různým zobrazovacím zařízením. Jedním z klíčových prvků responzivního
-designu je flexibilní struktura, která umožňuje přizpůsobit velikost
-prvků na stránce zobrazovacímu zařízení.
-
-Dalším důležitým prvkem jsou media queries, které umožňují definovat
-pravidla, která se aplikují na základě vlastností zobrazovacího
-zařízení, jako je velikost displeje, druh displeje, atd. Díky těmto
-vlastnostem může stejný kód stránky být dobře zobrazen jak na velkém
-monitoru, tak na mobilních zařízeních.
-
-
 \begin{figure}[htbp]
 
   \centering
@@ -132,18 +132,46 @@ monitoru, tak na mobilních zařízeních.
   \end{subfigure}
 \end{figure}
 
+% \section{Jak s pomocí \LaTeX u převést webovou stránku na PDF}
 
-\section{Jak s pomocí \LaTeX u převést webovou stránku na PDF}
+% % https://github.com/eafer/rdrview
 
-% https://github.com/eafer/rdrview
+% \begin{verbatim}
+% $ rdrview -H <url> | pandoc -f html -t latex -V lang=cs \
+%   --template template.tex output.html > output.tex
+% \end{verbatim}
 
-\begin{verbatim}
-$ rdrview -H <url> | pandoc -f html -t latex -V lang=cs \
-  --template template.tex output.html > output.tex
-\end{verbatim}
+\section{Responzivní design}
+
+Prvním problémem, který jsem řešil, bylo nastavení správné velikosti písma 
+z hlediska čitelnosti. 
+Výchozí velikost písma v \LaTeX u je 10 bodů, bez ohledu na velikost
+stránky. To je vhodná velikost pro stránku formátu A5. Pro formát
+A4 by měla být větší, naopak pro menší displeje čteček a mobilních
+telefonů může být menší. Stejný problém řeší webové prohlížeče,
+které musí zobrazit text jak na velkých monitorech PC, tak na
+menších displejích notebooků, tabletů a mobilních telefonů. 
+Řešením, který používají, je \textit{responzivní design}.
+
+
+
+Responzivní design je způsob návrhu webových stránek, který umožňuje
+pružné a dynamické přizpůsobení vzhledu a uspořádání obsahu stránky
+různým zobrazovacím zařízením. Jedním z klíčových prvků responzivního
+designu je flexibilní struktura, která umožňuje přizpůsobit velikost
+prvků na stránce zobrazovacímu zařízení.
+
+Dalším důležitým prvkem jsou media queries, které umožňují definovat
+pravidla, která se aplikují na základě vlastností zobrazovacího
+zařízení, jako je velikost displeje, druh displeje, atd. Díky těmto
+vlastnostem může stejný kód stránky být dobře zobrazen jak na velkém
+monitoru, tak na mobilních zařízeních. Ukázku reálného využití 
+můžete vidět na obrázku~\ref{fig:responzivni}.
 
 
 \begin{figure}[htbp]
+  \caption{Ukázka zobrazení webové stránky s využitím responzivního designu}
+  \label{fig:responzivni}
 \begin{subfigure}[t]{0.74\textwidth}
     \includegraphics[width=\textwidth]{img/pedf-web-big.png}
     \caption{Ukázka stránky na velkém monitoru}
@@ -155,35 +183,152 @@ $ rdrview -H <url> | pandoc -f html -t latex -V lang=cs \
 \end{subfigure}
 \end{figure}
 
-\begin{figure}[btbp]
-  \caption{Nastavení velikosti písma podle velikosti displeje}
+Můj nový balíček \balicek{Responsive} se těmito zásadami inspiroval. 
+Jeho hlavní funkcí je nastavení velikosti písma podle velikosti stránky
+a přibližného počtu znaků, které by se měly vejít na stránku. 
+Dále nastavuje typografickou stupnici (ovlivňuje velikost písma například 
+u nadpisů nebo poznámek pod čarou), písmovou osnovu a podporuje
+jednoduchou verzi media queries.
 
-  % Velikost písma můžeme nastavit pomocí příkazu \verb|\setsizes{počet znaků na řádek}|.
-  
+\subsection{Nastavení balíčku \balicek{Responsive}}
+
+\balicek{Responsive} automaticky nastavuje velikost písma, řádkový proklad
+a typografickou stupnici na začátku dokumentu. Výchozí hodnoty můžeme změnit
+pomocí voleb balíčku, nebo příkazem \verb|\ResponsiveSetup|, který můžeme 
+využít i v dokumentu, například pro lokální změny nastavení písma. 
+
+Hlavní volby balíčku jsou tyto:
+
+\begin{description}
+  \item[noautomatic] – nenastavovat velikost písma automaticky na začátku dokumentu
+  \item[characters] – počet znaků při automatickém nastavení velikosti písma
+  \item[scale] –  typografická stupnice použitá pro velikosti řezů písma
+  \item[lineratio] – poměr využitý při výpočtu řádkového prokladu
+\end{description}
+
+\subsection{Základní velikost písma}
+
+Velikost písma můžeme nastavit pomocí příkazu \verb|\setsizes{<počet znaků na|\allowbreak\verb|řádek>}|. 
+\balicek{Responsive} se snaží nastavit velikost písma tak, aby na řádku byl v průměru
+požadovaný počet znaků. Skutečný počet znaků samozřejmě záleží na použitém textu, ve 
+skutečnosti bývá mírně vyšší.
+
+Pokud neuvedeme počet znaků, použije se hodnota volby \texttt{characters}.
+Následující příklad využívá právě nastavení této volby. Obrázek~\ref{fig:fontsize} 
+ukazuje, jak se stejný text může v daném rámci zobrazit rozdílně v závislosti na
+nastavených volbách.
 
 \begin{verbatim}
 \begin{minipage}{5cm}
-\setsizes{25}
+\ResponsiveSetup{characters=55}
+\setsizes{}
 
 \lipsum[1]
 
-\end{minipage}
+\end{minipage}}
 \end{verbatim}
+ 
+\begin{figure}
+  \caption{Rozdíl velikosti písma v závislosti na počtu znaků}
+  \label{fig:fontsize}
+  \begin{subfigure}[t]{0.45\textwidth}
 \fbox{%
 \begin{minipage}{5cm}
-\ResponsiveSetup{lineratio=38}
-\setsizes{25}
+\ResponsiveSetup{characters=55}
+\setsizes{}
 
-\normalsize
+\lipsum[1]
 
+\end{minipage}}
+\caption{\texttt{characters=55}}
+\end{subfigure}
+\begin{subfigure}[t]{0.45\textwidth}
+\fbox{%
+\begin{minipage}{5cm}
+\ResponsiveSetup{lineratio=38,characters=25}
+\setsizes{}
 
 Lorem ipsum dolor sit amet,
 consectetuer adipiscing elit.
 Ut purus elit, vestibulum ut,
 placerat ac, adipiscing vitae,
-felis. 
+felis. Curabitur dictum gravida 
+mauris. Nam arcu libero, nonummy 
+eget, consectetuer id, vulputate 
+a, magna. Donec vehicula augue eu neque.
 
 \end{minipage}}
+\caption{\texttt{characters=25, lineratio=38}}
+\end{subfigure}
+\end{figure}
+
+\subsection{Řádkový proklad}
+
+\begin{figure}
+  \begin{subfigure}{0.5\textwidth}
+\begin{verbatim}
+\ResponsiveSetup{lineratio=38}
+\end{verbatim}
+\fbox{%
+\begin{minipage}{5cm}
+\ResponsiveSetup{lineratio=38}
+\setsizes{65}
+
+\lipsum[1]
+
+\end{minipage}}
+\end{subfigure}
+  \begin{subfigure}{0.5\textwidth}
+\begin{verbatim}
+\ResponsiveSetup{lineratio=34}
+\end{verbatim}
+\fbox{%
+\begin{minipage}{5cm}
+\ResponsiveSetup{lineratio=34}
+\setsizes{65}
+
+\lipsum[1]
+
+\end{minipage}}
+\end{subfigure}
+\end{figure}
+
+\subsection{Typografická stupnice}
+
+
+Klasická typografická stupnice je soubor velikostí písma, které jsou vizuálně v
+harmonii. Podobně jako hudebník vybírá noty z hudební stupnice, typograf si
+vybírá velikosti z typografické stupnice.  
+\cite{mortensen}
+
+
+\begin{figure}
+  \caption{Ukázka typografických stupnic (výchozí velikost písma je zvýrazněna linkami)}
+  \label{fig:stupnice}
+  \begin{subfigure}[b]{0.5\textwidth}
+\fbox{%
+\begin{minipage}{5cm}
+\setsizes{45}
+
+\showscale{}
+
+\end{minipage}}
+\caption{Výchozí stupnice (pentatonická)}
+\end{subfigure}
+\begin{subfigure}[b]{0.5\textwidth}
+\begin{verbatim}
+\ResponsiveSetup{scale=golden}
+\end{verbatim}
+\fbox{%
+\begin{minipage}{5cm}
+\ResponsiveSetup{scale=golden}
+\setsizes{45}
+
+\showscale
+
+\end{minipage}}
+\caption{Stupnice založená na zlatém řezu}
+\end{subfigure}
 \end{figure}
 
 \printbibliography
