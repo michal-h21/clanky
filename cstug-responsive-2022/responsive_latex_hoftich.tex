@@ -15,6 +15,7 @@
 \usepackage[noautomatic]{responsive}
 \usepackage[all]{nowidow}
 \usepackage{csquotes}
+\usepackage{linebreaker}
 
 \usepackage{graphicx}
 \usepackage{caption}
@@ -265,10 +266,7 @@ a, magna. Donec vehicula augue eu neque.
 \subsection{Řádkový proklad}
 
 \begin{figure}
-  \begin{subfigure}{0.5\textwidth}
-\begin{verbatim}
-\ResponsiveSetup{lineratio=38}
-\end{verbatim}
+  \begin{subfigure}[b]{0.45\textwidth}
 \fbox{%
 \begin{minipage}{5cm}
 \ResponsiveSetup{lineratio=38}
@@ -277,11 +275,9 @@ a, magna. Donec vehicula augue eu neque.
 \lipsum[1]
 
 \end{minipage}}
+\caption{lineratio=38}
 \end{subfigure}
-  \begin{subfigure}{0.5\textwidth}
-\begin{verbatim}
-\ResponsiveSetup{lineratio=34}
-\end{verbatim}
+\begin{subfigure}[b]{0.45\textwidth}
 \fbox{%
 \begin{minipage}{5cm}
 \ResponsiveSetup{lineratio=34}
@@ -290,6 +286,7 @@ a, magna. Donec vehicula augue eu neque.
 \lipsum[1]
 
 \end{minipage}}
+\caption{lineratio=34}
 \end{subfigure}
 \end{figure}
 
@@ -305,7 +302,7 @@ vybírá velikosti z typografické stupnice.
 \begin{figure}
   \caption{Ukázka typografických stupnic (výchozí velikost písma je zvýrazněna linkami)}
   \label{fig:stupnice}
-  \begin{subfigure}[b]{0.5\textwidth}
+  \begin{subfigure}[b]{0.45\textwidth}
 \fbox{%
 \begin{minipage}{5cm}
 \setsizes{45}
@@ -315,7 +312,7 @@ vybírá velikosti z typografické stupnice.
 \end{minipage}}
 \caption{Výchozí stupnice (pentatonická)}
 \end{subfigure}
-\begin{subfigure}[b]{0.5\textwidth}
+\begin{subfigure}[b]{0.45\textwidth}
 \begin{verbatim}
 \ResponsiveSetup{scale=golden}
 \end{verbatim}
