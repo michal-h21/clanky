@@ -16,6 +16,7 @@
 \usepackage[all]{nowidow}
 \usepackage{csquotes}
 \usepackage{linebreaker}
+\usepackage{amsmath}
 
 \usepackage{graphicx}
 \usepackage{caption}
@@ -43,7 +44,7 @@
 \newcommand\program[1]{#1}
 
 
-\newcommand\printsize[1]{\csname #1\endcsname\par\noindent Sample \par}
+\newcommand\printsize[1]{\csname #1\endcsname\par\noindent Sample\par}
 \newcommand\showscale[2][.5\textwidth]{%
       % \setsizes[38]{25}
       \printsize{huge}
@@ -243,6 +244,7 @@ nastavených volbách.
 \end{minipage}}
 \caption{\texttt{characters=55}}
 \end{subfigure}
+\hfill
 \begin{subfigure}[t]{0.45\textwidth}
 \fbox{%
 \begin{minipage}{5cm}
@@ -265,7 +267,29 @@ a, magna. Donec vehicula augue eu neque.
 
 \subsection{Řádkový proklad}
 
+V základním nastavení \LaTeX u je řádkový proklad nastavený
+na velikost písma násobený hodnotou $1.2$. Pro jiná 
+písma a velikosti stránky může být vhodná jiná velikost prokladu.
+Stejně tak mohou být rozdílné hodnoty pro tištěnou a elektronickou 
+verzi dokumentu. 
+
+Inspiroval jsem se článekem Edoarda Cavazza \cite{cavazza} o čitelnosti
+a přidal podporu pro nastavení řádkové prokladu na základě poměru výšky 
+malých písmen a proměnné \texttt{lineratio}. Ten se získá následujícím 
+výpočtem: 
+
+\[
+  \text{proklad} = \frac{1\text{ex}}{\text{lineratio}/ 100}
+\]
+
+Efekt změny hodnoty můžete pozorovat v obrázku~\ref{fig:lineratio}. 
+Správná hodnota je individuální, doporučuji s ní experimentovat.
+
+
+
 \begin{figure}
+  \caption{Změna řádkového prokladu změnou hodnoty \texttt{lineratio}}
+  \label{fig:lineratio}
   \begin{subfigure}[b]{0.45\textwidth}
 \fbox{%
 \begin{minipage}{5cm}
@@ -294,9 +318,8 @@ a, magna. Donec vehicula augue eu neque.
 
 
 Klasická typografická stupnice je soubor velikostí písma, které jsou vizuálně v
-harmonii. Podobně jako hudebník vybírá noty z hudební stupnice, typograf si
-vybírá velikosti z typografické stupnice.  
-\cite{mortensen}
+harmonii, 
+\cite{mortensen}. Výchozí 
 
 
 \begin{figure}
@@ -310,7 +333,7 @@ vybírá velikosti z typografické stupnice.
 \showscale{}
 
 \end{minipage}}
-\caption{Výchozí stupnice (pentatonická)}
+\caption{Výchozí stupnice}
 \end{subfigure}
 \begin{subfigure}[b]{0.45\textwidth}
 \begin{verbatim}
