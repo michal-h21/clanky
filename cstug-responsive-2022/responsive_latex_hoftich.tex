@@ -43,6 +43,17 @@
 \newcommand\balicek[1]{\textit{#1}}
 \newcommand\program[1]{#1}
 
+% pro případ, kdy je \lipsum moc velké 
+\newcommand\smalllipsum{%
+Lorem ipsum dolor sit amet,
+consectetuer adipiscing elit.
+Ut purus elit, vestibulum ut,
+placerat ac, adipiscing vitae,
+felis. Curabitur dictum gravida 
+mauris. Nam arcu libero, nonummy 
+eget, consectetuer id, vulputate 
+a, magna. Donec vehicula augue eu neque.
+}
 
 \newcommand\printsize[1]{\csname #1\endcsname\par\noindent Sample\par}
 \newcommand\showscale[2][.5\textwidth]{%
@@ -385,36 +396,47 @@ Balíček \balicek{Responsive} obsahuje základní podporu pro
 
 \begin{figure}[tbp]
 
+  \centering
+
   \caption{Příklad Media Query}
 
+  Zobrazit méně znaků na řádku pokud je šířka textu menší, než 4~cm.
 
   
 \begin{verbatim}
-  Tento příklad zobrazí méně písmen pokud je šířka textu menší, než 4 cm.
 \mediaquery{max-textwidth=4cm}
-{\setsizes{45}}{\setsizes{60}}
+{\ResponsiveSetup{characters=45}}
+{\ResponsiveSetup{characters=60}}
 \end{verbatim}
-  \begin{subfigure}{0.45\textwidth}
+\begin{subfigure}[b]{0.45\textwidth}
 \fbox{%
 \begin{minipage}{5cm}
 \mediaquery{max-textwidth=4cm}
-{\setsizes{45}}
-{\setsizes{60}}
+{\ResponsiveSetup{characters=45}}
+{\ResponsiveSetup{characters=60}}
+\setsizes{}
 
-\lipsum[1]
+% \lipsum[1]
+\smalllipsum
 
 \end{minipage}}
+\caption{Šířka textu 5 cm}
 \end{subfigure}
-  \begin{subfigure}{0.45\textwidth}
+\hfill
+  \begin{subfigure}[b]{0.45\textwidth}
+    \centering
 \fbox{%
 \begin{minipage}{3.9cm}
 \mediaquery{max-textwidth=4cm}
-{\setsizes{45}}
-{\setsizes{60}}
+{\ResponsiveSetup{characters=45}}
+{\ResponsiveSetup{characters=60}}
+\setsizes{}
 
-\lipsum[1]
+\smalllipsum
+% \lipsum[1]
 
 \end{minipage}}
+\caption{Šířka textu 3.9 cm}
 \end{subfigure}
 \end{figure}
 
