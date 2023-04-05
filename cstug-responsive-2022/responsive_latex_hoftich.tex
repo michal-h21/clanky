@@ -61,8 +61,8 @@
 
 \begin{document}
 
-\title{Responzivní design s \LaTeX em}
-\EnglishTitle{Responsive Design with \LaTeX}
+\title{Responzivní design a automatická sazba s Lua\LaTeX em}
+\EnglishTitle{Responsive Design and Automatic Typesetting with Lua\LaTeX}
 \author{Michal Hoftich}
 \podpis{Michal Hoftich, \url{michal.h21@gmail.com}}
 \maketitle
@@ -224,9 +224,7 @@ nastavených volbách.
 \begin{minipage}{5cm}
 \ResponsiveSetup{characters=55}
 \setsizes{}
-
 \lipsum[1]
-
 \end{minipage}}
 \end{verbatim}
 
@@ -276,7 +274,9 @@ verzi dokumentu.
 Inspiroval jsem se článkem Edoarda Cavazza \cite{cavazza} o čitelnosti
 a přidal podporu pro nastavení řádkové prokladu na základě poměru výšky 
 malých písmen a proměnné \texttt{lineratio}. Ten se získá následujícím 
-výpočtem: $\text{proklad} = \frac{1\text{ex}}{\text{lineratio}/ 100}$
+výpočtem: 
+
+\[\text{proklad} = \frac{1\text{ex}}{\text{lineratio}/ 100}\]
 
 Jaký vliv mají změny hodnoty \texttt{lineratio} můžete pozorovat v obrázku~\ref{fig:lineratio}. 
 Volba optimální hodnoty je individuální a pro dosažení maximální čitelnosti
@@ -371,6 +371,52 @@ Příkaz \verb|\setsizes| poté redefinuje velikosti písem.
 \ResponsiveSetup{ratio=2, number=3, scale=none}
 \setsizes{}
 \end{verbatim}
+
+\subsection{Media queries}
+
+Media queries jsou technikou, která umožňuje webovým vývojářům dynamicky
+přizpůsobovat vzhled a chování webových stránek na základě různých vlastností
+zařízení, jako jsou například šířka a výška obrazovky, orientace zařízení,
+podpora barev a mnoho dalších. Díky těmto podmínkám lze
+vytvářet responzivní a flexibilní webové stránky, které se dokážou automaticky
+přizpůsobovat různým typům a velikostem zařízení, na kterých jsou zobrazovány.
+
+Balíček \balicek{Responsive} obsahuje základní podporu pro 
+
+\begin{figure}[tbp]
+
+  \caption{Příklad Media Query}
+
+
+  
+\begin{verbatim}
+  Tento příklad zobrazí méně písmen pokud je šířka textu menší, než 4 cm.
+\mediaquery{max-textwidth=4cm}
+{\setsizes{45}}{\setsizes{60}}
+\end{verbatim}
+  \begin{subfigure}{0.45\textwidth}
+\fbox{%
+\begin{minipage}{5cm}
+\mediaquery{max-textwidth=4cm}
+{\setsizes{45}}
+{\setsizes{60}}
+
+\lipsum[1]
+
+\end{minipage}}
+\end{subfigure}
+  \begin{subfigure}{0.45\textwidth}
+\fbox{%
+\begin{minipage}{3.9cm}
+\mediaquery{max-textwidth=4cm}
+{\setsizes{45}}
+{\setsizes{60}}
+
+\lipsum[1]
+
+\end{minipage}}
+\end{subfigure}
+\end{figure}
 
 \printbibliography
 
