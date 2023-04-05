@@ -117,7 +117,7 @@ odstraňování navigačních prvků ze stránky, ale můžeme zde využít
 přizpůsobení velikosti písma velikosti stránky nebo automatické řešení
 typografických problémů či špatně zalomených řádků.
 
-\begin{figure}[htbp]
+\begin{figure}[tbp]
 
   \centering
   \caption{Ukázka použití režimu \emph{zobrazení čtečky} v prohlížeči \program{Firefox}}
@@ -171,7 +171,7 @@ monitoru, tak na mobilních zařízeních. Ukázku reálného využití
 můžete vidět na obrázku~\ref{fig:responzivni}.
 
 
-\begin{figure}[htbp]
+\begin{figure}[tbp]
   \caption{Ukázka zobrazení webové stránky s využitím responzivního designu}
   \label{fig:responzivni}
 \begin{subfigure}[t]{0.74\textwidth}
@@ -229,8 +229,8 @@ nastavených volbách.
 
 \end{minipage}}
 \end{verbatim}
- 
-\begin{figure}
+
+\begin{figure}[tbp]
   \caption{Rozdíl velikosti písma v závislosti na počtu znaků}
   \label{fig:fontsize}
   \begin{subfigure}[t]{0.45\textwidth}
@@ -273,21 +273,19 @@ písma a velikosti stránky může být vhodná jiná velikost prokladu.
 Stejně tak mohou být rozdílné hodnoty pro tištěnou a elektronickou 
 verzi dokumentu. 
 
-Inspiroval jsem se článekem Edoarda Cavazza \cite{cavazza} o čitelnosti
+Inspiroval jsem se článkem Edoarda Cavazza \cite{cavazza} o čitelnosti
 a přidal podporu pro nastavení řádkové prokladu na základě poměru výšky 
 malých písmen a proměnné \texttt{lineratio}. Ten se získá následujícím 
-výpočtem: 
-
-\[
-  \text{proklad} = \frac{1\text{ex}}{\text{lineratio}/ 100}
-\]
+výpočtem: $\text{proklad} = \frac{1\text{ex}}{\text{lineratio}/ 100}$
 
 Jaký vliv mají změny hodnoty \texttt{lineratio} můžete pozorovat v obrázku~\ref{fig:lineratio}. 
-Správná hodnota je individuální, doporučuji s ní experimentovat.
+Volba optimální hodnoty je individuální a pro dosažení maximální čitelnosti
+výstupu je vhodné vyzkoušet několik různých hodnot a vybrat tu nejvhodnější.
 
 
 
-\begin{figure}
+
+\begin{figure}[tbp]
   \caption{Změna řádkového prokladu změnou hodnoty \texttt{lineratio}}
   \label{fig:lineratio}
   \begin{subfigure}[b]{0.45\textwidth}
@@ -316,13 +314,25 @@ Správná hodnota je individuální, doporučuji s ní experimentovat.
 
 \subsection{Typografická stupnice}
 
+Typografická stupnice je soubor předem stanovených velikostí písma, které jsou
+používány pro vytváření jednotného vizuálního stylu dokumentu nebo webové
+stránky. Tyto velikosti jsou obvykle vyjádřeny v bodové jednotce a postupně se
+zvětšují nebo zmenšují o konkrétní interval, který leží na stupnici.
 
-Klasická typografická stupnice je soubor velikostí písma, které jsou vizuálně v
-harmonii, 
-\cite{mortensen}. Výchozí 
+Typografická stupnice může obsahovat velikosti pro nadpisy, poznámky pod čarou a běžný
+text. Správné používání typografické stupnice pomáhá vytvořit vizuální
+hierarchii, která zlepšuje čitelnost a estetický dojem textu. 
+Více informací o typografických stupnicích naleznete v článku Spencera Mortensena
+\cite{mortensen}. 
 
+V \LaTeX u je typografická stupnice dostupná pomocí příkazů jako \verb|\large|, \verb|\Large|, \verb|\LARGE|,
+\verb|\huge|, nebo třeba \verb|\scriptsize|. Každý z těchto příkazů je od předešlé velikosti 
+vzdálený o jeden interval.  Výchozí stupnice v balíčku \balicek{Responsive} je nejbližší stupnici použitou v \LaTeX u.
+V Mortensenově článku se nazývá \textit{tetratonická}. Balíček nabízí i další stupnice v článku popsané,
+například \textit{golden}, založenou na zlatém řezu. Efekt použití stupnice je zobrazen na 
+obrázku~\ref{fig:stupnice}.
 
-\begin{figure}
+\begin{figure}[tbp]
   \caption{Ukázka typografických stupnic (výchozí velikost písma je zvýrazněna linkami)}
   \label{fig:stupnice}
   \begin{subfigure}[b]{0.45\textwidth}
@@ -350,6 +360,17 @@ harmonii,
 \caption{Stupnice založená na zlatém řezu}
 \end{subfigure}
 \end{figure}
+
+Můžeme však definovat i vlastní stupnici. Například následující kód definuje stupnici,
+na které se velikost textu zdvojnásobí (\verb|ratio=2|) za tři kroky (\verb|number=2|).
+Při definici vlastních voleb stupnice je třeba zadat hodnotu \verb|scale=none|.
+Příkaz \verb|\setsizes| poté redefinuje velikosti písem.
+
+
+\begin{verbatim}
+\ResponsiveSetup{ratio=2, number=3, scale=none}
+\setsizes{}
+\end{verbatim}
 
 \printbibliography
 
