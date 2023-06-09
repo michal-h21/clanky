@@ -395,7 +395,37 @@ přizpůsobovat různým typům a velikostem zařízení, na kterých jsou zobra
 Jak může být tato technika užitečná pro autory \LaTeX ových balíčků? 
 Mohli bychom například nastavit velikost písma, řádkového prokladu a dalších prvků
 pro určité rozměry stránky. Uživatel si poté nastaví výslednou velikost stránky
-ve svém dokumentu a  
+ve svém dokumentu a  pomocí media queries se automaticky nastaví tyto prvky podle 
+rozměrů stránky. Můžeme například definovat, že pokud je šířka textového řádku menší,
+než určitý rozměr, zobrazí se na něm méně znaků, než na delších řádcích. Výsledek je zobrazen 
+na obrázku~\ref{fig:mediaguery}.
+
+Media query můžeme deklarovat pomocí příkazu \verb|\mediaquery|, který očekává tři 
+parametry -- první je seznam testů, další parametr poté očekává kód, který se vykoná
+pokud se testy vyhodnotí jako pravdivé, poslední pak kód spuštěný při nesplněné 
+podmínce. Kód může obsahovat například příkaz \verb|\ResponsiveSetup|, ale i libovolné
+jiné příkazy.
+
+
+V současné době můžeme testovat následující vlastnosti stránky: \texttt{paperwidth} a
+\texttt{paperheight} pro rozměry stránky, \texttt{textwidth} a \texttt{textheight} pro 
+rozměry textu, \texttt{orientation} pro orientaci textu a \texttt{twocolumn} pro 
+detekci dvou sloupců v textu.
+
+Testy pro rozměry textu a stránky podporují také předpony \texttt{max-} a \texttt{min-}.
+\texttt{max-}. Pomocí nich můžeme testovat, že daný rozměr je menší nebo větší, 
+než zadaná hodnota.
+
+Například následující příkaz změní barvu textu na modro za podmínky, že dokument 
+má orientaci stránky na šířku, šířka textu je menší, než 20 cm a používá dva sloupce.
+
+\begin{verbatim}
+\mediaquery{orientation=landscape,
+max-textwidth=20cm,
+twocolumn=true}{\color{blue}}{}
+\end{verbatim}
+
+
 
 
 
@@ -404,6 +434,7 @@ ve svém dokumentu a
   \centering
 
   \caption{Příklad Media Query}
+  \label{fig:mediaguery}
 
   Zobrazit méně znaků na řádku pokud je šířka textu menší, než 4~cm.
 
