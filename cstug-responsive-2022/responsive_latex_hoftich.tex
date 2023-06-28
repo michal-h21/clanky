@@ -16,7 +16,7 @@
 \usepackage{lua-widow-control}
 \usepackage{csquotes}
 \usepackage{linebreaker}
-\usepackage{amsmath}
+\usepackage{amsmath,amsfonts}
 
 \usepackage{graphicx}
 \usepackage{caption}
@@ -476,7 +476,7 @@ twocolumn=true}{\color{blue}}{}
 
 \section{Automatická sazba}
 
-Díky využití Lua\TeX u  můžeme
+Díky využití Lua\TeX u  můžeme 
 
 
 % \begin{figure}
@@ -487,6 +487,192 @@ Díky využití Lua\TeX u  můžeme
 
 
 
+  \subsection{Balíček \texttt{lua-widow-control}}
+  Potlačení vdov a sirotků za pomoci Lua callbacků
+  \begin{itemize}
+    \item každý odstavec sází dvakrát -- jeden s normálními parametry, druhý o jeden řádek delší
+    \item vliv na rychlost by měl být malý
+    
+    \item pokud se najde parchant, vymění předešlý odstavec za verzi s řádkem navíc
+  \end{itemize}
+  \url{https://ctan.org/pkg/lua-widow-control}
+
+
+  \begin{figure}[htbp]
+\begin{subfigure}[t]{0.45\textwidth}
+  \caption{Ukázka sirotka}
+% \begin{minipage}{5cm}
+  \begin{center}
+    \includegraphics[width=\textwidth,page=1]{examples/widow.pdf}
+  \end{center}
+% \end{minipage}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.45\textwidth}
+  \caption{Potlačený sirotek}
+% \begin{minipage}{5cm}
+  \begin{center}
+    \includegraphics[width=\textwidth,page=2]{examples/widow.pdf}
+  \end{center}
+% \end{minipage}
+\end{subfigure}
+\caption{Příklad potlačení sirotků}
+\label{fig:sirotek}
+\end{figure}
+
+  \subsubsection{Možnosti nastavení}
+ \begin{verbatim}
+ \lwcsetup{...}
+ \end{verbatim}
+
+ \begin{description}
+   \item[default] -- nepřidává žádné vertikální mezery, ale může vést k příliš vzdušným odstavcům
+   \item[strict] -- využívá primárně vertikální mezery a nevytváří špatné odstavce,  
+     \begin{itemize}
+       \item ale odstraní jen třetinu parchantů
+        \item funguje špatně hlavně pro dokumenty, které obsahují jen text, beletrii apod.
+      \end{itemize}
+    \item[balanced] -- kombinuje obě metody, odstraní 90\% parchantů
+  \end{description}
+
+
+\subsubsection{Omezení balíčku Luawidowcontrol}
+
+    \begin{itemize}
+      \item \verb|\clubpenalty| a \verb|\widowpenalty| nemají žádný efekt, naopak mohou způsobit vedlejší účinky
+      \item  podpora pro více sloupcovou sazbu je omezená, balíček Multicol nefunguje
+  \end{itemize}
+
+
+  \subsection{Balíček \texttt{luavlna}}
+
+    Zamezuje rozdělení řádků:
+
+      \begin{itemize}
+        \item za jednoslovnými předložkami
+        \item u iniciál
+        \item u akademických titulů
+        \item mezi čísly a jednotkami
+      \end{itemize}
+  \url{https://ctan.org/pkg/luavlna}
+
+
+\begin{figure}
+  \begin{minipage}{3in}
+
+    \preventsingledebugon
+
+    Text s krátkými souhláskami a samohláskami i dalšími jevy
+    z nabídky možností (v textu možnými).
+
+    Co třeba í znaky š diakritikou?
+
+    Různé možnosti [v závorkách \textless i jiných znacích
+
+    Podpora iniciál a titulů: M. J. Hegel, Ing. Běháková, Ph.D., Ž. Zíbrt,
+    Ch. Borner.
+
+    Podpora jednotek: 100,5 MN\cdot{}s, 100.5 kJ, 200 µA, $-1$ dag, 1 MB. 1 kJ.
+
+    Uvnitř matematiky by mělo být zpracování vypnuté: $k \in \mathbb N$.
+
+    \preventsingledebugoff
+  \end{minipage}
+  \caption{Ukázka užití balíčku Luavlna}
+\end{figure}
+
+  Pomocí voleb můžeme zakázat některé vlastnosti
+
+  \begin{description}
+    \item [noprocess] – nespouštět zpracování dokumentu automaticky
+    \item [noinitials] – iniciály
+    \item [nounits] – SI jednotky
+    \item [nopredegrees] – tituly před jménem
+    \item [nosufdegrees] – tituly za jménem
+  \end{description}
+
+  Užitečné příkazy
+
+  \begin{itemize}
+    \item \verb|\singlechars{jazyk}{písmena}| -- seznam písmen, u kterých se potlačuje zalamování řádků
+
+    \item \verb|\enablesplithyphens{jazyk}| -- nastaví podporu zalamování spojovníků pro daný jazyk
+    \item \verb|\preventsinglelang{jazyk}| -- nastaví pravidla pro daný jazyk pro celý dokument
+  \end{itemize}
+
+Je třeba jazyk vybrat pomocí balíčků Babel nebo Polyglossia
+
+\begin{verbatim}
+A příklad česky.
+\selectlanguage{english}
+A something.
+\end{verbatim}
+
+    \preventsingledebugon
+
+A příklad česky.
+\selectlanguage{english}
+A something.
+
+    \preventsingledebugoff
+
+    \selectlanguage{czech}
+
+\newcommand\testbox[1]{%
+  \parbox{120pt}{%
+    \parindent=15pt%
+    \tolerance=1%
+    \pretolerance=1%
+    #1
+  }%
+}
+
+\newcommand\printtest[1]{%
+  \linebreakerdisable%
+  \noindent\testbox{%
+    #1
+    \par\medskip\noindent\hfill\textbf{Bez Linebreakeru}\hfill\null
+  }%
+  \linebreakerenable%
+  \hfill%
+  \testbox{%
+    #1
+    \par\medskip\noindent\hfill\textbf{S Linebreakerem}\hfill\null
+  }%
+}
+
+  \subsection{Balíček \texttt{linebreaker}}
+  Brání výskytu přetečených řádků
+  \begin{itemize}
+    \item ovlivňuje pouze sazbu  odstavců, kde se takový řádek vyskytl
+    \item pokud detekuje přetečený řádek v odstavci, vysází ho znovu s většími hodnotami
+      \verb|tolerance| a \verb|emergencystretch|.
+  \end{itemize}
+  \url{https://ctan.org/pkg/linebreaker}
+
+  \printtest{
+    The example document given below creates two pages by using Lua code alone. You
+will learn how to access TeX's boxes and counters from the Lua side, shipout a
+page into the PDF file, create horizontal and vertical boxes (hbox and vbox),
+create new nodes and manipulate the nodes links structure. 
+%The example covers the following node types: rule, whatsit, vlist, hlist and action.
+  }
+
+  \subsubsection{Nastavení}
+
+  Linebreaker můžeme konfigurovat pomocí příkazu \verb|\linebreakersetup|:
+  \begin{description}
+    \item[maxcycles] -- počet pokusů o přesázení odstavce
+    \item[maxemergencystretch] -- maximální hodnota \verb|\emergencystretch|
+    \item[maxtolerance]  -- maximální hodnota \verb|tolerance|
+  \end{description}
+\begin{verbatim}
+\linebreakersetup{
+maxtolerance = 90,         % default 9999
+maxemergencystretch = 1em, % default 3em
+maxcycles = 4              % default 30
+}
+\end{verbatim}
 
 \printbibliography
 
