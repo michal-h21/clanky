@@ -79,22 +79,17 @@ a, magna. Donec vehicula augue eu neque.
 \maketitle
 
 \begin{abstract}
-Tento článek se zaměřuje na použití metod responzivního designu pro zobrazení
-webových stránek na zařízeních s různou velikostí displejů, jako jsou mobilní
-telefony, tablety, velké monitory a tiskárny. Tyto metody umožňují optimalizaci
-čitelnosti dokumentu na všech zařízeních pomocí použití různých velikostí
-písma, jednotlivých prvků na stránce a okrajů.
+Tento článek představuje využití metod responzivního designu a pokročilých vlastností
+Lua\LaTeX u pro automatickou sazbu dokumentů určených pro různé cílové výstupy,
+jak tištěné, tak elektronické, například mobilní telefony, tablety nebo čtečky e-knih.
 
-Představíme způsob, jak lze podobné funkcionality dosáhnout
-pomocí \LaTeX u. Konkrétně se zaměřuje na využití Lua\LaTeX u pro automatizovanou
+
+Konkrétně se zaměřuje na využití Lua\LaTeX u pro automatizovanou
 sazbu s pomocí balíčků \balicek{Responsive}\cite{responsive} pro nastavení velikosti písma a řádkového prokladu
 podle velikosti stránky, \balicek{Luavlna} \cite{luavlna} pro zamezení výskytu jednopísmenných předložek
 na koncích řádků, \balicek{Lua-widow-control}  \cite{lua-widow-control} pro omezení osamocených řádků na koncích a
 začátcích stránek a \balicek{Linebreaker} \cite{linebreaker}, který brání přetečení řádků.
 
-Díky těmto metodám lze použít jeden zdrojový dokument pro různé výstupy, jako
-jsou tiskové verze, čtečky e-knih a webové stránky, a dosáhnout optimálního
-zobrazení dokumentu na všech zařízeních.
 \end{abstract}
 \klicovaslova: automatická sazba, responzivní design, Lua\LaTeX
 
@@ -120,13 +115,10 @@ ze stránky navigační prvky, reklamy a jiné rušivé elementy. \program{Rdrvi
 tak funguje podobně jako mód zobrazení čtečky v prohlížeči \program{Firefox}
 (ilustrováno v obrázku~\ref{fig:readermode}).
 
-V následujícím textu se však nezaměřím na samotný \program{Rmodepdf}.
-Myslím, že pro čtenáře bude užitečnější popis metod pro automatickou sazbu,
-které lze využít i pro jiné účely, například při konverzi z dokumentů ve formátu MS Word, 
-nebo elektronických knih ve formátu Epub. Zde nevyužijeme funkci
-odstraňování navigačních prvků ze stránky, ale můžeme zde využít
-přizpůsobení velikosti písma velikosti stránky nebo automatické řešení
-typografických problémů či špatně zalomených řádků.
+V následujícím textu se však nezaměřím na samotný program \program{Rmodepdf}, 
+který stále není ve stavu použitelném pro běžné uživatele.
+Myslím, že pro čtenáře bude užitečnější popis metod pro automatickou sazbu a responzivního designu,
+které mohou využít i při sazbě svých vlastních dokumentů.
 
 \begin{figure}[tbp]
 
@@ -196,7 +188,7 @@ můžete vidět na obrázku~\ref{fig:responzivni}.
 \end{subfigure}
 \end{figure}
 
-Můj nový balíček \balicek{Responsive} \cite{responsive} se těmito zásadami inspiroval. 
+Můj balíček \balicek{Responsive} \cite{responsive} se těmito zásadami inspiroval. 
 Jeho hlavní funkcí je nastavení velikosti písma podle velikosti stránky
 a přibližného počtu znaků, které by se měly vejít na stránku. 
 Dále nastavuje typografickou stupnici (ovlivňuje velikost písma například 
@@ -213,20 +205,20 @@ využít i v dokumentu, například pro lokální změny nastavení písma.
 Hlavní volby balíčku jsou tyto:
 
 \begin{description}
-  \item[noautomatic] – nenastavovat velikost písma automaticky na začátku dokumentu
-  \item[characters] – počet znaků při automatickém nastavení velikosti písma
-  \item[scale] –  typografická stupnice použitá pro velikosti řezů písma
-  \item[lineratio] – poměr využitý při výpočtu řádkového prokladu
+  \item[noautomatic] – nenastavovat velikost písma automaticky na začátku dokumentu.
+  \item[characters] – počet znaků při automatickém nastavení velikosti písma.
+  \item[scale] –  typografická stupnice použitá pro velikosti řezů písma.
+  \item[lineratio] – poměr využitý při výpočtu řádkového prokladu.
 \end{description}
 
 \subsection{Základní velikost písma}
 
 Velikost písma můžeme nastavit pomocí příkazu \verb|\setsizes{<počet znaků na|\allowbreak\verb|řádek>}|. 
 \balicek{Responsive} se snaží nastavit velikost písma tak, aby na řádku byl v průměru
-požadovaný počet znaků. Skutečný počet znaků samozřejmě záleží na použitém textu, ve 
+požadovaný počet znaků. Skutečný počet znaků ovšem záleží na použitém textu, ve 
 skutečnosti bývá mírně vyšší.
 
-Pokud neuvedeme počet znaků, použije se hodnota volby \texttt{characters}.
+Pokud v příkazu \verb|\setsizes| neuvedeme počet znaků, použije se hodnota volby \texttt{characters}.
 Následující příklad využívá právě nastavení této volby. Obrázek~\ref{fig:fontsize} 
 ukazuje, jak se stejný text může v daném rámci zobrazit rozdílně v závislosti na
 nastavených volbách.
@@ -339,11 +331,11 @@ Více informací o typografických stupnicích naleznete v článku Spencera Mor
 V \LaTeX u je typografická stupnice dostupná pomocí příkazů jako \verb|\large|, \verb|\Large|, \verb|\LARGE|,
 \verb|\huge|, nebo třeba \verb|\scriptsize|. Každý z těchto příkazů je od předešlé velikosti 
 vzdálený o jeden interval.  Výchozí stupnice v balíčku \balicek{Responsive} je nejbližší stupnici použitou v \LaTeX u.
-V Mortensenově článku se nazývá \textit{tetratonická}. Balíček nabízí i další stupnice v článku popsané,
+V Mortensenově článku se nazývá \textit{tetratonická}. Balíček nabízí i další stupnice popsané v článku,
 například \textit{golden}, založenou na zlatém řezu. Efekt použití stupnice je zobrazen na 
 obrázku~\ref{fig:stupnice}.
 
-\begin{figure}[tbp]
+\begin{figure}[bp]
   \caption{Ukázka typografických stupnic (výchozí velikost písma je zvýrazněna linkami)}
   \label{fig:stupnice}
   \begin{subfigure}[b]{0.45\textwidth}
@@ -393,11 +385,11 @@ vytvářet responzivní a flexibilní webové stránky, které se dokážou auto
 přizpůsobovat různým typům a velikostem zařízení, na kterých jsou zobrazovány.
 
 Jak může být tato technika užitečná pro autory \LaTeX ových balíčků? 
-Mohli bychom například nastavit velikost písma, řádkového prokladu a dalších prvků
+Mohli by například nastavit velikost písma, řádkového prokladu a dalších prvků
 pro určité rozměry stránky. Uživatel si poté nastaví výslednou velikost stránky
 ve svém dokumentu a  pomocí media queries se automaticky nastaví tyto prvky podle 
-rozměrů stránky. Můžeme například definovat, že pokud je šířka textového řádku menší,
-než určitý rozměr, zobrazí se na něm méně znaků, než na delších řádcích. Výsledek je zobrazen 
+rozměrů stránky. Lze například definovat, že pokud je šířka textového řádku menší,
+než určitý rozměr, zobrazí se na něm méně znaků, než na řádcích delších. Výsledek je zobrazen 
 na obrázku~\ref{fig:mediaguery}.
 
 Media query můžeme deklarovat pomocí příkazu \verb|\mediaquery|, který očekává tři 
@@ -464,8 +456,8 @@ Testy pro rozměry textu a stránky podporují také předpony \texttt{max-} a \
 \texttt{max-}. Pomocí nich můžeme testovat, že daný rozměr je menší nebo větší, 
 než zadaná hodnota.
 
-Například následující příkaz změní barvu textu na modro za podmínky, že dokument 
-má orientaci stránky na šířku, šířka textu je menší, než 20 cm a používá dva sloupce.
+Například následující příkaz změní barvu textu na modrou za podmínky, že dokument 
+má orientaci stránky na šířku, šířka textu je menší než 20 cm a používají se dva sloupce.
 
 \begin{verbatim}
 \mediaquery{orientation=landscape,
@@ -477,73 +469,12 @@ twocolumn=true}{\color{blue}}{}
 \section{Automatická sazba}
 
 Lua\TeX\ nám umožňuje automaticky řešit některé problémy, které bylo v
-minulosti třeba řešit ručně. Díky tomu, že proces sazby lze ovlivňovat pomocí
+minulosti třeba řešit ručním zásahem do dokumentu. Díky tomu, že proces sazby lze ovlivňovat pomocí
 callbacků v jazyce Lua, lze například omezit výskyt takových typografických
 chyb jako jsou vdovy a sirotci, jednopísmenné předložky na koncích řádků, nebo
 špatně zalomené odstavce. V této sekci si ukážeme několik balíčků, které tyto
 chyby řeší.
 
-
-
-\subsection{Balíček \balicek{lua-widow-control}}
-
-Vdovy a sirotci (souhrně také parchanty) jsou typografická chyba, která vzniká
-při zalomení stránek. Osamocený řádek odstavce se někdy ocitne na začátku nebo
-konci stránky. Sirotek je osamocený řádek na začátku stránky, vdova pak na
-konci. V \TeX u máme dvě penalty, \verb|\clubpenalty| a \verb|widowpenalty|,
-které při nastavení vdovy a sirotky potlačují, ovšem za cenu rozšíření
-vertikálních mezer. Balíček
-\balicek{Lua-widow-control} \cite{lua-widow-control}
-používá jiný přístup. Každý odstavec sází dvakrát -- jeden s normálními
-parametry, druhý o jeden řádek delší. To může mít vliv na rychlost kompilace
-dokumentu, v praxi by ale měl být malý. V případě, že při zalomení stránky
-detekuje parchant, vymění předešlý odstavec za verzi s delším řádkem, čímž
-dojde k posunutí problematického řádku.
-
-Činnost balíčku v praxi můžete vidět na obrázku \ref{fig:widow}. V tomto
-případě byl detekován sirotek, označený v ukázce (a) červeně, proto se předešlý
-odstavec nahradil za verzi, která je o jeden řádek delší, na ukázce (b)
-označenou zeleně. 
-
-  
-
-
-  \begin{figure}[htbp]
-\begin{subfigure}[t]{0.48\textwidth}
-  \caption{Ukázka sirotka}
-  \label{fig:widow}
-% \begin{minipage}{5cm}
-  \begin{center}
-    \includegraphics[width=\textwidth,page=1]{examples/widow.pdf}
-  \end{center}
-% \end{minipage}
-\end{subfigure}
-\hfill
-\begin{subfigure}[t]{0.48\textwidth}
-  \caption{Potlačený sirotek}
-% \begin{minipage}{5cm}
-  \begin{center}
-    \includegraphics[width=\textwidth,page=2]{examples/widow.pdf}
-  \end{center}
-% \end{minipage}
-\end{subfigure}
-\caption{Příklad potlačení sirotků}
-\label{fig:sirotek}
-\end{figure}
-
-% \subsubsection{Možnosti nastavení}
-
-Balíček \balicek{Lua-widow-control} lze nastavit pomocí několika voleb. Ty je možné zadat jako čárkou oddělené volby 
-v příkazu  \verb|\usepackage[<volby>]{lua-widow-control}|, nebo pomocí příkazu 
-\verb|\lwcsetup{<volby>}|.
-
-Následující volby umožňují změnit metodu použitou pro zamezení parchantů:
-
- \begin{description}
-   \item[default] – nepřidává žádné vertikální mezery, používá pouze prodloužení odstavců. Tato metoda by měla odstranit 95 \% parchantů, může ovšem vést k příliš vzdušným odstavcům.
-   \item[strict] – přísnější nastavení, které dbá, aby změny zalomení odstavců byly co nejméně postřehnutelné.  Odstraní ovšem pouze třetinu parchantů.
-   \item[balanced] – nejdříve přidává vertikální mezery, pokud to nestačí, prodlouží odstavce. Tato metoda odstraní až 90 \% parchantů.
-  \end{description}
 
 
 
@@ -592,7 +523,7 @@ V tomto stádiu jsou již všechna makra expandována, takže nezlomitelná meze
   \label{fig:luavlna}
 \end{figure}
 
-Ukázku použití balíčku můžete vidět na obrázku \ref{fig:luavlna}. Nezlomitelné
+Ukázku použití balíčku můžete vidět na obrázku~\ref{fig:luavlna}. Nezlomitelné
 mezery jsou zvýrazněné růžově, díky použití volby \texttt{debug}. Balíček
 nabízí řadu dalších voleb, například pro zakázání vkládání nezlomitelných 
 mezer v určitých situacích:
@@ -628,9 +559,10 @@ A thing.
 
 \preventsingledebugon
 
-\noindent \fbox{A příklad česky.
+\noindent 
+A příklad česky.
 \selectlanguage{english}
-A something.}
+A thing.
 
 \preventsingledebugoff
 
@@ -641,6 +573,23 @@ A something.}
 
 Zpracování celého dokumentu podle českých pravidel, bez ohledu na aktuálně zvolený jazyk, lze dosáhnout pomocí příkazu 
 \verb|\preventsinglelang{czech}|.
+
+\begin{verbatim}
+\preventsinglelang{czech}
+Příklad v češtině
+\selectlanguage{english}
+A thing.
+\end{verbatim}
+
+\preventsingledebugon
+
+\preventsinglelang{czech}
+\noindent Příklad v češtině
+\selectlanguage{english}
+A thing.
+
+\preventsingledebugoff
+\selectlanguage{czech}
 
 \subsection{Balíček \balicek{Linebreaker}}
 
@@ -658,24 +607,25 @@ Zpracování celého dokumentu podle českých pravidel, bez ohledu na aktuáln�
   \linebreakerdisable%
   \begin{subfigure}{.45\textwidth}
     \centering
-  \caption{Bez Linebreakeru}
   \noindent\testbox{%
     #1
   }%
+  \caption{Bez balíčku \balicek{Linebreaker}}
   \end{subfigure}
   \linebreakerenable%
   \hfill%
   \begin{subfigure}{.45\textwidth}
     \centering
-  \caption{S Linebreakerem}
   \testbox{%
     #1
   }%
+  \medskip
+  \caption{S balíčkem \balicek{Linebreaker}}
   \end{subfigure}
 }
 
 Balíček \balicek{Linebreaker} \cite{linebreaker} brání přetečení textu boxů a odstavců. 
-Příklad jeho použití můžete vidět na obrázku \ref{fig:linebreaker}, kde zamezí přetečení 
+Příklad jeho použití můžete vidět na obrázku~\ref{fig:linebreaker}, kde zamezí přetečení 
 několika řádků při sazbě do úzkého sloupce. 
 
 \balicek{Linebreaker} využívá callback Lua\TeX u pro zalomení odstavců, kde nahrazuje výchozí 
@@ -689,32 +639,100 @@ pro aktuálně lámaný odstavec, zbytek textu nijak neovlivní.
 
 
 \begin{figure}
+  \caption{Příklad využití balíčku \balicek{Linebreaker}}
+  \label{fig:linebreaker}
   \printtest{
     The example document given below creates two pages by using Lua code alone. You
 will learn how to access TeX's boxes and counters from the Lua side, shipout a
 page into the PDF file, create horizontal and vertical boxes (hbox and vbox),
 create new nodes and manipulate the nodes links structure. 
   }
-  \caption{Příklad využití balíčku \balicek{Linebreaker}}
-  \label{fig:linebreaker}
 \end{figure}
 
   % \subsubsection{Nastavení}
 
 \balicek{Linebreaker} můžeme konfigurovat pomocí příkazu \verb|\linebreakersetup|:
   \begin{description}
-    \item[maxcycles] – počet pokusů o přesázení odstavce
-    \item[maxemergencystretch] – maximální hodnota \verb|\emergencystretch|
-    \item[maxtolerance] – maximální hodnota \verb|tolerance|
+    \item[maxcycles] – počet pokusů o přesázení odstavce.
+    \item[maxemergencystretch] – maximální hodnota \verb|\emergencystretch|.
+    \item[maxtolerance] – maximální hodnota \verb|tolerance|.
   \end{description}
 
 \begin{verbatim}
 \linebreakersetup{
-maxtolerance = 90,         % default 9999
-maxemergencystretch = 1em, % default 3em
-maxcycles = 4              % default 30
+maxtolerance = 90,         % výchozí 8189
+maxemergencystretch = 1em, % výchozí 3em
+maxcycles = 4              % výchozí 30
 }
 \end{verbatim}
+
+\subsection{Balíček \balicek{lua-widow-control}}
+
+Vdovy a sirotci (souhrně také parchanty) jsou typografická chyba, která vzniká
+při zalomení stránek. Osamocený řádek odstavce se někdy ocitne na začátku nebo
+konci stránky. Sirotek je osamocený řádek na začátku stránky, vdova pak na
+konci. V \TeX u máme dvě penalty, \verb|\clubpenalty| a \verb|widowpenalty|,
+které při nastavení vdovy a sirotky potlačují, ovšem za cenu rozšíření
+vertikálních mezer. Balíček
+\balicek{Lua-widow-control} \cite{lua-widow-control}
+používá jiný přístup. Každý odstavec sází dvakrát -- jeden s normálními
+parametry, druhý o jeden řádek delší. To může mít vliv na rychlost kompilace
+dokumentu, v praxi by ale měl být malý. V případě, že při zalomení stránky
+detekuje parchant, vymění předešlý odstavec za verzi s delším řádkem, čímž
+dojde k posunutí problematického řádku.
+
+% =======================================================
+% Edit: Nejsem si jistý, odkud jsem získal tento obrázek. Pro jistotu ho
+% ve finální verzi článku nepoužiji.
+
+% Činnost balíčku v praxi můžete vidět na obrázku~\ref{fig:widow}. V tomto
+% případě byl detekován sirotek, označený v ukázce (a) červeně, proto se předešlý
+% odstavec nahradil za verzi, která je o jeden řádek delší, na ukázce (b)
+% označenou zeleně. 
+% 
+%   
+% 
+% 
+%   \begin{figure}[htbp]
+% \begin{subfigure}[t]{0.48\textwidth}
+%   \caption{Ukázka sirotka}
+%   \label{fig:widow}
+% % \begin{minipage}{5cm}
+%   \begin{center}
+%     \includegraphics[width=\textwidth,page=1]{examples/widow.pdf}
+%   \end{center}
+% % \end{minipage}
+% \end{subfigure}
+% \hfill
+% \begin{subfigure}[t]{0.48\textwidth}
+%   \caption{Potlačený sirotek}
+% % \begin{minipage}{5cm}
+%   \begin{center}
+%     \includegraphics[width=\textwidth,page=2]{examples/widow.pdf}
+%   \end{center}
+% % \end{minipage}
+% \end{subfigure}
+% \caption{Příklad potlačení sirotků}
+% \label{fig:sirotek}
+% \end{figure}
+% ========================================================
+
+
+% \subsubsection{Možnosti nastavení}
+
+Balíček \balicek{Lua-widow-control} lze nastavit pomocí několika voleb. Ty je možné zadat jako čárkou oddělené volby 
+v příkazu  \verb|\usepackage[<volby>]{lua-widow-control}|, nebo pomocí příkazu 
+\verb|\lwcsetup{<volby>}|.
+
+Následující volby umožňují změnit metodu použitou pro zamezení parchantů:
+
+ \begin{description}
+   \item[default] – nepřidává žádné vertikální mezery, používá pouze prodloužení odstavců. Tato metoda by měla odstranit 95 \% parchantů, může ovšem vést k příliš vzdušným odstavcům.
+   \item[strict] – přísnější nastavení, které dbá, aby změny zalomení odstavců byly co nejméně postřehnutelné.  Odstraní ovšem pouze třetinu parchantů.
+   \item[balanced] – nejdříve přidává vertikální mezery, pokud to nestačí, prodlouží odstavce. Tato metoda odstraní až 90 \% parchantů.
+  \end{description}
+
+Tento výčet je pouze malým úvodem k balíčku \balicek{Lua-widow-control}. Podrobný popis naleznete v článku Maxe Chernoffa \cite{chernoff}, který vyšel v loňském Zpravodaji.
 
 \printbibliography
 
