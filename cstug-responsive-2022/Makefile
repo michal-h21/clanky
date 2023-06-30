@@ -3,7 +3,7 @@ tex_file=$(article_name).tex
 pdf_file=$(article_name).pdf
 build_dir=hoftich_responsive
 zip_file=$(build_dir).zip
-source_files=$(tex_file) $(pdf_file) Makefile responsive.bib
+source_files=$(tex_file) $(pdf_file) Makefile responsive.bib responsive.sty
 
 $(pdf_file): $(tex_file)
 	lualatex $<
