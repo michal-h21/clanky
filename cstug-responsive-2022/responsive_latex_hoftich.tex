@@ -476,8 +476,7 @@ twocolumn=true}{\color{blue}}{}
 
 \section{Automatická sazba}
 
-Díky využití Lua\TeX u  můžeme 
-
+Lua\TeX\ nám umožňuje automaticky řešit některé problémy, které bylo v minulosti třeba řešit ručně. Díky tomu, že proces sazby lze ovlivňovat pomocí callbacků v jazyce Lua, lze například omezit výskyt takových typografických chyb jako jsou vdovy a sirotci, jednopísmenné předložky na koncích řádků, nebo špatně zalomené odstavce. V této sekci si ukážeme několik balíčků, které tyto chyby řeší.
 
 % \begin{figure}
 %   \includegraphics[width=.95\textwidth]{img/lua-widow.pdf}
@@ -487,20 +486,19 @@ Díky využití Lua\TeX u  můžeme
 
 
 
-  \subsection{Balíček \texttt{lua-widow-control}}
-  Potlačení vdov a sirotků za pomoci Lua callbacků
-  \begin{itemize}
-    \item každý odstavec sází dvakrát -- jeden s normálními parametry, druhý o jeden řádek delší
-    \item vliv na rychlost by měl být malý
-    
-    \item pokud se najde parchant, vymění předešlý odstavec za verzi s řádkem navíc
-  \end{itemize}
-  \url{https://ctan.org/pkg/lua-widow-control}
+  \subsection{Balíček \balicek{lua-widow-control}}
+
+Vdovy a sirotci (souhrně také parchanty) jsou typografická chyba, která vzniká při zalomení stránek. Osamocený řádek odstavce se někdy ocitne na začátku nebo konci stránky. Sirotek je osamocený řádek na začátku stránky, vdova pak na konci. V \TeX u máme dvě penalty, \verb|\clubpenalty| a \verb|widowpenalty|, které při nastavení vdovy a sirotky potlačují, ovšem za cenu rozšíření vertikálních mezer. Balíček \balicek{lua-widow-control}\footnote{\url{https://ctan.org/pkg/lua-widow-control}} používá jiný přístup. Každý odstavec sází dvakrát -- jeden s normálními parametry, druhý o jeden řádek delší. To může mít vliv na rychlost kompilace dokumentu, v praxi by ale měl být malý. V případě, že při zalomení stránky detekuje parchant, vymění předešlý odstavec za verzi s delším řádkem, čímž dojde k posunutí problematického řádku.
+
+Činnost balíčku v praxi můžete vidět na obrázku \ref{fig:widow}. V tomto případě byl detekován sirotek, označený v ukázce (a) červeně, proto se předešlý odstavec nahradil za verzi, která je o jeden řádek delší, na ukázce (b) označenou zeleně. 
+
+  
 
 
   \begin{figure}[htbp]
 \begin{subfigure}[t]{0.45\textwidth}
   \caption{Ukázka sirotka}
+  \label{fig:widow}
 % \begin{minipage}{5cm}
   \begin{center}
     \includegraphics[width=\textwidth,page=1]{examples/widow.pdf}
