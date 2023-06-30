@@ -196,7 +196,7 @@ můžete vidět na obrázku~\ref{fig:responzivni}.
 \end{subfigure}
 \end{figure}
 
-Můj nový balíček \balicek{Responsive} se těmito zásadami inspiroval. 
+Můj nový balíček \balicek{Responsive} \cite{responsive} se těmito zásadami inspiroval. 
 Jeho hlavní funkcí je nastavení velikosti písma podle velikosti stránky
 a přibližného počtu znaků, které by se měly vejít na stránku. 
 Dále nastavuje typografickou stupnici (ovlivňuje velikost písma například 
@@ -476,27 +476,40 @@ twocolumn=true}{\color{blue}}{}
 
 \section{Automatická sazba}
 
-Lua\TeX\ nám umožňuje automaticky řešit některé problémy, které bylo v minulosti třeba řešit ručně. Díky tomu, že proces sazby lze ovlivňovat pomocí callbacků v jazyce Lua, lze například omezit výskyt takových typografických chyb jako jsou vdovy a sirotci, jednopísmenné předložky na koncích řádků, nebo špatně zalomené odstavce. V této sekci si ukážeme několik balíčků, které tyto chyby řeší.
-
-% \begin{figure}
-%   \includegraphics[width=.95\textwidth]{img/lua-widow.pdf}
-%   \caption{Porovnání různých metod k omezení parchantů}
-%   \label{fig:widow}
-% \end{figure}
-
+Lua\TeX\ nám umožňuje automaticky řešit některé problémy, které bylo v
+minulosti třeba řešit ručně. Díky tomu, že proces sazby lze ovlivňovat pomocí
+callbacků v jazyce Lua, lze například omezit výskyt takových typografických
+chyb jako jsou vdovy a sirotci, jednopísmenné předložky na koncích řádků, nebo
+špatně zalomené odstavce. V této sekci si ukážeme několik balíčků, které tyto
+chyby řeší.
 
 
-  \subsection{Balíček \balicek{lua-widow-control}}
 
-Vdovy a sirotci (souhrně také parchanty) jsou typografická chyba, která vzniká při zalomení stránek. Osamocený řádek odstavce se někdy ocitne na začátku nebo konci stránky. Sirotek je osamocený řádek na začátku stránky, vdova pak na konci. V \TeX u máme dvě penalty, \verb|\clubpenalty| a \verb|widowpenalty|, které při nastavení vdovy a sirotky potlačují, ovšem za cenu rozšíření vertikálních mezer. Balíček \balicek{lua-widow-control}\footnote{\url{https://ctan.org/pkg/lua-widow-control}} používá jiný přístup. Každý odstavec sází dvakrát -- jeden s normálními parametry, druhý o jeden řádek delší. To může mít vliv na rychlost kompilace dokumentu, v praxi by ale měl být malý. V případě, že při zalomení stránky detekuje parchant, vymění předešlý odstavec za verzi s delším řádkem, čímž dojde k posunutí problematického řádku.
+\subsection{Balíček \balicek{lua-widow-control}}
 
-Činnost balíčku v praxi můžete vidět na obrázku \ref{fig:widow}. V tomto případě byl detekován sirotek, označený v ukázce (a) červeně, proto se předešlý odstavec nahradil za verzi, která je o jeden řádek delší, na ukázce (b) označenou zeleně. 
+Vdovy a sirotci (souhrně také parchanty) jsou typografická chyba, která vzniká
+při zalomení stránek. Osamocený řádek odstavce se někdy ocitne na začátku nebo
+konci stránky. Sirotek je osamocený řádek na začátku stránky, vdova pak na
+konci. V \TeX u máme dvě penalty, \verb|\clubpenalty| a \verb|widowpenalty|,
+které při nastavení vdovy a sirotky potlačují, ovšem za cenu rozšíření
+vertikálních mezer. Balíček
+\balicek{Lua-widow-control} \cite{lua-widow-control}
+používá jiný přístup. Každý odstavec sází dvakrát -- jeden s normálními
+parametry, druhý o jeden řádek delší. To může mít vliv na rychlost kompilace
+dokumentu, v praxi by ale měl být malý. V případě, že při zalomení stránky
+detekuje parchant, vymění předešlý odstavec za verzi s delším řádkem, čímž
+dojde k posunutí problematického řádku.
+
+Činnost balíčku v praxi můžete vidět na obrázku \ref{fig:widow}. V tomto
+případě byl detekován sirotek, označený v ukázce (a) červeně, proto se předešlý
+odstavec nahradil za verzi, která je o jeden řádek delší, na ukázce (b)
+označenou zeleně. 
 
   
 
 
   \begin{figure}[htbp]
-\begin{subfigure}[t]{0.45\textwidth}
+\begin{subfigure}[t]{0.48\textwidth}
   \caption{Ukázka sirotka}
   \label{fig:widow}
 % \begin{minipage}{5cm}
@@ -506,7 +519,7 @@ Vdovy a sirotci (souhrně také parchanty) jsou typografická chyba, která vzni
 % \end{minipage}
 \end{subfigure}
 \hfill
-\begin{subfigure}[t]{0.45\textwidth}
+\begin{subfigure}[t]{0.48\textwidth}
   \caption{Potlačený sirotek}
 % \begin{minipage}{5cm}
   \begin{center}
@@ -518,42 +531,41 @@ Vdovy a sirotci (souhrně také parchanty) jsou typografická chyba, která vzni
 \label{fig:sirotek}
 \end{figure}
 
-  \subsubsection{Možnosti nastavení}
- \begin{verbatim}
- \lwcsetup{...}
- \end{verbatim}
+% \subsubsection{Možnosti nastavení}
+
+Balíček \balicek{Lua-widow-control} lze nastavit pomocí několika voleb. Ty je možné zadat jako čárkou oddělené volby 
+v příkazu  \verb|\usepackage[<volby>]{lua-widow-control}|, nebo pomocí příkazu 
+\verb|\lwcsetup{<volby>}|.
+
+Následující volby umožňují změnit metodu použitou pro zamezení parchantů:
 
  \begin{description}
-   \item[default] -- nepřidává žádné vertikální mezery, ale může vést k příliš vzdušným odstavcům
-   \item[strict] -- využívá primárně vertikální mezery a nevytváří špatné odstavce,  
-     \begin{itemize}
-       \item ale odstraní jen třetinu parchantů
-        \item funguje špatně hlavně pro dokumenty, které obsahují jen text, beletrii apod.
-      \end{itemize}
-    \item[balanced] -- kombinuje obě metody, odstraní 90\% parchantů
+   \item[default] – nepřidává žádné vertikální mezery, používá pouze prodloužení odstavců. Tato metoda by měla odstranit 95 \% parchantů, může ovšem vést k příliš vzdušným odstavcům.
+   \item[strict] – přísnější nastavení, které dbá, aby změny zalomení odstavců byly co nejméně postřehnutelné.  Odstraní ovšem pouze třetinu parchantů.
+   \item[balanced] – nejdříve přidává vertikální mezery, pokud to nestačí, prodlouží odstavce. Tato metoda odstraní až 90 \% parchantů.
   \end{description}
 
 
-\subsubsection{Omezení balíčku Luawidowcontrol}
-
-    \begin{itemize}
-      \item \verb|\clubpenalty| a \verb|\widowpenalty| nemají žádný efekt, naopak mohou způsobit vedlejší účinky
-      \item  podpora pro více sloupcovou sazbu je omezená, balíček Multicol nefunguje
-  \end{itemize}
 
 
-  \subsection{Balíček \texttt{luavlna}}
+\subsection{Balíček \balicek{Luavlna}}
 
-    Zamezuje rozdělení řádků:
+Podle českých a slovenských typografických zvyklostí by se na koncích řádků neměly vyskytovat jednopísmenné předložky nebo spojky. 
+Tomu se dá v \TeX u zabránit vložením znaku \verb|~| mezi předložku a následující slovo. Pro zjednodušení této činnosti existuje
+několik nástrojů, například program \balicek{Vlna} Petra Olšáka, nebo balíček \balicek{Encxvlna} vytvořený také Petrem Olšákem a Zdeňkem Wagnerem.
 
-      \begin{itemize}
-        \item za jednoslovnými předložkami
-        \item u iniciál
-        \item u akademických titulů
-        \item mezi čísly a jednotkami
-      \end{itemize}
-  \url{https://ctan.org/pkg/luavlna}
+Balíček \balicek{Luavlna} \cite{luavlna} využívá možnosti Lua\TeX u pro úpravu plně zpracovaných nódů textu před zalomením do odstavců. 
+V tomto stádiu jsou již všechna makra expandována, takže nezlomitelná mezera může být snadno vložena na všechna místa, kde by se měla nacházet.
 
+\balicek{Luavlna} zamezuje zalomení řádků v následujících situacích:
+
+\begin{itemize}
+  \item za jednoslovnými předložkami
+  \item u iniciál
+  \item u akademických titulů
+  \item mezi čísly a jednotkami
+\end{itemize}
+  
 
 \begin{figure}
   \begin{minipage}{3in}
@@ -577,44 +589,60 @@ Vdovy a sirotci (souhrně také parchanty) jsou typografická chyba, která vzni
     \preventsingledebugoff
   \end{minipage}
   \caption{Ukázka užití balíčku Luavlna}
+  \label{fig:luavlna}
 \end{figure}
 
-  Pomocí voleb můžeme zakázat některé vlastnosti
+Ukázku použití balíčku můžete vidět na obrázku \ref{fig:luavlna}. Nezlomitelné
+mezery jsou zvýrazněné růžově, díky použití volby \texttt{debug}. Balíček
+nabízí řadu dalších voleb, například pro zakázání vkládání nezlomitelných 
+mezer v určitých situacích:
 
-  \begin{description}
-    \item [noprocess] – nespouštět zpracování dokumentu automaticky
-    \item [noinitials] – iniciály
-    \item [nounits] – SI jednotky
-    \item [nopredegrees] – tituly před jménem
-    \item [nosufdegrees] – tituly za jménem
-  \end{description}
+\begin{description}
+  \item [noprocess] – nespouštět zpracování dokumentu automaticky
+  \item [noinitials] – nezpracovávat iniciály
+  \item [nounits] – nezpracovávat SI jednotky
+  \item [nopredegrees] – nezpracovávat tituly před jménem
+  \item [nosufdegrees] – nezpracovávat tituly za jménem
+\end{description}
 
-  Užitečné příkazy
+Nastavení jednotlivých jazyků se provádí pomocí těchto příkazů\balicek{Luavlna} také poskytuje příkaz
 
   \begin{itemize}
-    \item \verb|\singlechars{jazyk}{písmena}| -- seznam písmen, u kterých se potlačuje zalamování řádků
+    \item\verb|\singlechars{jazyk}{písmena}| – seznam písmen, u kterých se potlačuje zalamování řádků.
 
-    \item \verb|\enablesplithyphens{jazyk}| -- nastaví podporu zalamování spojovníků pro daný jazyk
-    \item \verb|\preventsinglelang{jazyk}| -- nastaví pravidla pro daný jazyk pro celý dokument
+    \item\verb|\enablesplithyphens{jazyk}| –  nastaví podporu zalamování spojovníků pro daný jazyk.
+    \item\verb|\preventsinglelang{jazyk}| – nastaví pravidla pro daný jazyk pro celý dokument.
   \end{itemize}
 
-Je třeba jazyk vybrat pomocí balíčků Babel nebo Polyglossia
+Jazyk lze  vybrat pomocí balíčků \balicek{Babel} nebo \balicek{Polyglossia}. Následující příklad
+ukazuje, že v českém textu se vloží nezlomitelná mezera, po změně jazyka na angličtinu pomocí
+\verb|\selectlanguage{english}| se zpracování mezer vypne. 
+  
+
 
 \begin{verbatim}
-A příklad česky.
+Příklad v češtině
 \selectlanguage{english}
-A something.
+A thing.
 \end{verbatim}
 
-    \preventsingledebugon
+\preventsingledebugon
 
-A příklad česky.
+\noindent \fbox{A příklad česky.
 \selectlanguage{english}
-A something.
+A something.}
 
-    \preventsingledebugoff
+\preventsingledebugoff
 
-    \selectlanguage{czech}
+\selectlanguage{czech}
+
+
+\bigskip
+
+Zpracování celého dokumentu podle českých pravidel, bez ohledu na aktuálně zvolený jazyk, lze dosáhnout pomocí příkazu 
+\verb|\preventsinglelang{czech}|.
+
+\subsection{Balíček \balicek{Linebreaker}}
 
 \newcommand\testbox[1]{%
   \parbox{120pt}{%
@@ -625,45 +653,61 @@ A something.
   }%
 }
 
+
 \newcommand\printtest[1]{%
   \linebreakerdisable%
+  \begin{subfigure}{.45\textwidth}
+    \centering
+  \caption{Bez Linebreakeru}
   \noindent\testbox{%
     #1
-    \par\medskip\noindent\hfill\textbf{Bez Linebreakeru}\hfill\null
   }%
+  \end{subfigure}
   \linebreakerenable%
   \hfill%
+  \begin{subfigure}{.45\textwidth}
+    \centering
+  \caption{S Linebreakerem}
   \testbox{%
     #1
-    \par\medskip\noindent\hfill\textbf{S Linebreakerem}\hfill\null
   }%
+  \end{subfigure}
 }
 
-  \subsection{Balíček \texttt{linebreaker}}
-  Brání výskytu přetečených řádků
-  \begin{itemize}
-    \item ovlivňuje pouze sazbu  odstavců, kde se takový řádek vyskytl
-    \item pokud detekuje přetečený řádek v odstavci, vysází ho znovu s většími hodnotami
-      \verb|tolerance| a \verb|emergencystretch|.
-  \end{itemize}
-  \url{https://ctan.org/pkg/linebreaker}
+Balíček \balicek{Linebreaker} \cite{linebreaker} brání přetečení textu boxů a odstavců. 
+Příklad jeho použití můžete vidět na obrázku \ref{fig:linebreaker}, kde zamezí přetečení 
+několika řádků při sazbě do úzkého sloupce. 
 
+\balicek{Linebreaker} využívá callback Lua\TeX u pro zalomení odstavců, kde nahrazuje výchozí 
+funkci pro zalomení upravenou verzí, která detekuje přetečení nebo podtečení lámaného 
+textu. Při detekci tohoto problému, jej sází znovu s většími hodnotami
+\verb|\tolerance| a \verb|\emergencystretch|, dokud se přetečení nepotlačí, nebo dokud se nedosáhne 
+maximální hranice \verb|\tolerance|.
+
+Výhodou je, že tyto změny \verb|\tolerance| a \verb|\emergencystretch| jsou lokální pouze 
+pro aktuálně lámaný odstavec, zbytek textu nijak neovlivní. 
+
+
+\begin{figure}
   \printtest{
     The example document given below creates two pages by using Lua code alone. You
 will learn how to access TeX's boxes and counters from the Lua side, shipout a
 page into the PDF file, create horizontal and vertical boxes (hbox and vbox),
 create new nodes and manipulate the nodes links structure. 
-%The example covers the following node types: rule, whatsit, vlist, hlist and action.
   }
+  \caption{Příklad využití balíčku \balicek{Linebreaker}}
+  \label{fig:linebreaker}
+\end{figure}
 
-  \subsubsection{Nastavení}
+  % \subsubsection{Nastavení}
 
-  Linebreaker můžeme konfigurovat pomocí příkazu \verb|\linebreakersetup|:
+\balicek{Linebreaker} můžeme konfigurovat pomocí příkazu \verb|\linebreakersetup|:
   \begin{description}
-    \item[maxcycles] -- počet pokusů o přesázení odstavce
-    \item[maxemergencystretch] -- maximální hodnota \verb|\emergencystretch|
-    \item[maxtolerance]  -- maximální hodnota \verb|tolerance|
+    \item[maxcycles] – počet pokusů o přesázení odstavce
+    \item[maxemergencystretch] – maximální hodnota \verb|\emergencystretch|
+    \item[maxtolerance] – maximální hodnota \verb|tolerance|
   \end{description}
+
 \begin{verbatim}
 \linebreakersetup{
 maxtolerance = 90,         % default 9999
