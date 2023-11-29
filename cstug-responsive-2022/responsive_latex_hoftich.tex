@@ -96,46 +96,51 @@ začátcích stránek a \balicek{Linebreaker} \cite{linebreaker}, který brání
 
 \section{Úvod}
 
-Před časem jsem si pořídil čtečku elektronických knih, ale i přesto většinu
-textů čtu z obrazovky svého PC, protože pochází z webových zdrojů, především 
-různých blogů. To má za důsledek několik problémů, například únavu očí, bolesti zad
-z příliš dlouhého sezení na židli, nemluvě o zbytečně spotřebované elektrické
-energii. Napadlo mě tedy, že bych bych si delší články ukládal pro pozdější
-přečtení na čtečce. K tomuto účelu samozřejmě existuje řada aplikací, ale 
-já se rozhodl vytvořit si vlastní, kterou si přizpůsobím přesně svým potřebám
-a preferencím. Další motivací je možnost naučit se něco nového a vytvořit
-balíčky, které budou užitečné i pro další uživatele \TeX u. 
+V tomto textu představím některé tipy k sazbě různých verzí dokumentů určených
+pro různé cílové výstupy, jak tištěné, tak elektronické, například pro čtečky
+e-booků nebo tablety.   
 
-Protože díky Lua\TeX u je v \TeX ových distribucích dostupný programovací jazyk 
-Lua, využil jsem ho pro vytvoření svého projektu \program{Rmodepdf} \cite{rmodepdf}.
-Ten využívá balíček \balicek{LuaXML} \cite{luaxml} pro 
-transformaci HTML na \TeX{} a příkazy \program{Curl} pro stažení stránky, \program{Tidy} 
-pro opravu chyb v HTML a \program{Rdrview} \cite{rdrview}, který odstraní
-ze stránky navigační prvky, reklamy a jiné rušivé elementy. \program{Rdrview} 
-tak funguje podobně jako mód zobrazení čtečky v prohlížeči \program{Firefox}
-(ilustrováno v obrázku~\ref{fig:readermode}).
 
-V následujícím textu se však nezaměřím na samotný program \program{Rmodepdf}, 
-který stále není ve stavu použitelném pro běžné uživatele.
-Myslím, že pro čtenáře bude užitečnější popis metod pro automatickou sazbu a responzivního designu,
-které mohou využít i při sazbě svých vlastních dokumentů.
 
-\begin{figure}[tbp]
+% Před časem jsem si pořídil čtečku elektronických knih, ale i přesto většinu
+% textů čtu z obrazovky svého PC, protože pochází z webových zdrojů, především 
+% různých blogů. 
+% Napadlo mě tedy, že bych bych si delší články ukládal pro pozdější
+% přečtení na čtečce. K tomuto účelu samozřejmě existuje řada aplikací, ale 
+% já se rozhodl vytvořit si vlastní, kterou si přizpůsobím přesně svým potřebám
+% a preferencím. Další motivací je možnost naučit se něco nového a vytvořit
+% balíčky, které budou užitečné i pro další uživatele \TeX u. 
 
-  \centering
-  \caption{Ukázka použití režimu \emph{zobrazení čtečky} v prohlížeči \program{Firefox}}
-  \label{fig:readermode}
+% Protože díky Lua\TeX u je v \TeX ových distribucích dostupný programovací jazyk 
+% Lua, využil jsem ho pro vytvoření svého projektu \program{Rmodepdf} \cite{rmodepdf}.
+% Ten využívá balíček \balicek{LuaXML} \cite{luaxml} pro 
+% transformaci HTML na \TeX{} a příkazy \program{Curl} pro stažení stránky, \program{Tidy} 
+% pro opravu chyb v HTML a \program{Rdrview} \cite{rdrview}, který odstraní
+% ze stránky navigační prvky, reklamy a jiné rušivé elementy. \program{Rdrview} 
+% tak funguje podobně jako mód zobrazení čtečky v prohlížeči \program{Firefox}
+% (ilustrováno v obrázku~\ref{fig:readermode}).
 
-  \begin{subfigure}[t]{0.45\textwidth}
-    \includegraphics[width=\textwidth]{img/root-balast.png}
-    \caption{Stránka s ovládacími prvky a reklamami}
-  \end{subfigure}
-  \hfill
-  \begin{subfigure}[t]{0.45\textwidth}
-    \includegraphics[width=\textwidth]{img/root-čtečka.png}
-    \caption{Stránka v zobrazení čtečky}
-  \end{subfigure}
-\end{figure}
+% V následujícím textu se však nezaměřím na samotný program \program{Rmodepdf}, 
+% který stále není ve stavu použitelném pro běžné uživatele.
+% Myslím, že pro čtenáře bude užitečnější popis metod pro automatickou sazbu a responzivního designu,
+% které mohou využít i při sazbě svých vlastních dokumentů.
+
+% \begin{figure}[tbp]
+
+%   \centering
+%   \caption{Ukázka použití režimu \emph{zobrazení čtečky} v prohlížeči \program{Firefox}}
+%   \label{fig:readermode}
+
+%   \begin{subfigure}[t]{0.45\textwidth}
+%     \includegraphics[width=\textwidth]{img/root-balast.png}
+%     \caption{Stránka s ovládacími prvky a reklamami}
+%   \end{subfigure}
+%   \hfill
+%   \begin{subfigure}[t]{0.45\textwidth}
+%     \includegraphics[width=\textwidth]{img/root-čtečka.png}
+%     \caption{Stránka v zobrazení čtečky}
+%   \end{subfigure}
+% \end{figure}
 
 % \section{Jak s pomocí \LaTeX u převést webovou stránku na PDF}
 
@@ -148,14 +153,16 @@ které mohou využít i při sazbě svých vlastních dokumentů.
 
 \section{Responzivní design}
 
-Prvním problémem, který jsem řešil, bylo nastavení správné velikosti písma 
+Jedním z problémů, který je třeba řešit, je nastavení správné velikosti písma 
 z hlediska čitelnosti. 
 Výchozí velikost písma v \LaTeX u je 10 bodů, bez ohledu na velikost
 stránky. To je vhodná velikost písma pro stránku formátu A5. Pro formát
 A4 by měla být velikost písma větší, pro menší displeje čteček a mobilních
-telefonů může být naopak menší. 
+telefonů může být naopak menší. Stejně tak můžeme změnit řádkový proklad,
+který také ovlivňuje čitelnost textu v závislosti na velikosti písma a 
+stránky.
 
-Stejný problém řeší webové prohlížeče,
+Podobný problém řeší webové prohlížeče,
 které musí zobrazit text jak na velkých monitorech PC, tak na
 menších displejích notebooků, tabletů a mobilních telefonů. 
 Řešení, který používají, se nazývá \textit{responzivní design}.
@@ -326,19 +333,20 @@ zvětšují nebo zmenšují o konkrétní interval, který leží na stupnici.
 Typografická stupnice může obsahovat velikosti pro nadpisy, poznámky pod čarou a běžný
 text. Správné používání typografické stupnice pomáhá vytvořit vizuální
 hierarchii, která zlepšuje čitelnost a estetický dojem textu. 
-Více informací o typografických stupnicích naleznete v článku Spencera Mortensena
-\cite{mortensen}. 
+Více informací o typografických stupnicích naleznete v článku Spencera
+Mortensena~\cite{mortensen}. 
 
-V \LaTeX u je typografická stupnice dostupná pomocí příkazů jako \verb|\large|, \verb|\Large|, \verb|\LARGE|,
-\verb|\huge|, nebo třeba \verb|\scriptsize|. Každý z těchto příkazů je od předešlé velikosti 
-vzdálený o jeden interval.  Výchozí stupnice v balíčku \balicek{Responsive} je nejbližší stupnici použitou v \LaTeX u.
-V Mortensenově článku se nazývá \textit{tetratonická}. Balíček nabízí i další stupnice popsané v článku,
-například \textit{golden}, založenou na zlatém řezu. Efekt použití stupnice je zobrazen na 
+V \LaTeX u je typografická stupnice dostupná pomocí příkazů jako \verb|\large|,
+\verb|\Large|, \verb|\LARGE|, \verb|\huge|, nebo třeba \verb|\scriptsize|.
+Každý z těchto příkazů je od předešlé velikosti vzdálený o jeden interval.
+Výchozí stupnice v balíčku \balicek{Responsive} je nejbližší stupnici použitou
+v \LaTeX u.  V Mortensenově článku se nazývá \textit{tetratonická}. Balíček
+nabízí i další stupnice popsané v článku, například \textit{golden}, založenou
+na zlatém řezu. Efekt použití stupnice je zobrazen na
 obrázku~\ref{fig:stupnice}.
 
 \begin{figure}[bp]
-  \caption{Ukázka typografických stupnic (výchozí velikost písma je zvýrazněna linkami)}
-  \label{fig:stupnice}
+  \caption{Ukázka typografických stupnic (výchozí velikost písma je zvýrazněna linkami)}\label{fig:stupnice}
   \begin{subfigure}[b]{0.45\textwidth}
 \fbox{%
 \begin{minipage}{5cm}
@@ -400,7 +408,7 @@ na obrázku~\ref{fig:mediaguery}.
 Media query můžeme deklarovat pomocí příkazu \verb|\mediaquery|, který očekává tři 
 parametry -- první je seznam testů, další parametr poté očekává kód, který se vykoná
 pokud se testy vyhodnotí jako pravdivé, poslední pak kód spuštěný při nesplněné 
-podmínce. Kód může obsahovat například příkaz \verb|\ResponsiveSetup|, ale i libovolné
+podmínce. Kód může obsahovat příkaz \verb|\ResponsiveSetup|, ale i libovolné
 jiné příkazy. Například nastavení velikosti textového bloku, záhlaví a zápatí pomocí 
 balíčku Geometry.
 
@@ -409,8 +417,7 @@ balíčku Geometry.
 
   \centering
 
-  \caption{Příklad Media Query}
-  \label{fig:mediaguery}
+  \caption{Příklad Media Query}\label{fig:mediaguery}
 
   Zobrazit méně znaků na řádku pokud je šířka textu menší, než 4~cm.
 
@@ -474,11 +481,11 @@ twocolumn=true}{\color{blue}}{}
 \section{Automatická sazba}
 
 Lua\TeX\ nám umožňuje automaticky řešit některé problémy, které bylo v
-minulosti třeba řešit ručním zásahem do dokumentu. Díky tomu, že proces sazby lze ovlivňovat pomocí
-callbacků v jazyce Lua, můžeme například omezit výskyt takových typografických
-chyb jako jsou vdovy a sirotci, jednopísmenné předložky na koncích řádků, nebo
-špatně zalomené odstavce. V této sekci si ukážeme několik balíčků, které tyto
-chyby řeší.
+minulosti třeba řešit ručním zásahem do dokumentu. Díky tomu, že proces sazby
+lze ovlivňovat pomocí callbacků v jazyce Lua, můžeme například omezit výskyt
+takových typografických chyb jako jsou vdovy a sirotci, jednopísmenné předložky
+na koncích řádků, nebo špatně zalomené odstavce. V této sekci si ukážeme
+několik balíčků, které tyto chyby řeší.
 
 
 
@@ -638,10 +645,10 @@ Příklad jeho použití můžete vidět na obrázku~\ref{fig:linebreaker}, kde 
 několika řádků při sazbě do úzkého sloupce. 
 
 \balicek{Linebreaker} využívá callback Lua\TeX u \verb|linebreak_filter|, který řídí řádkový zlom.
-\balicek{Linebreaker} nahrazuje výchozí 
-funkci pro řádkový zlom upravenou verzí, která detekuje přetečení nebo podtečení lámaného 
-textu. Při detekci tohoto problému, jej sází znovu s většími hodnotami
-\verb|\tolerance| a \verb|\emergencystretch|, dokud se přetečení nepotlačí, nebo dokud se nedosáhne 
+\balicek{Linebreaker} nahrazuje výchozí funkci pro řádkový zlom upravenou
+verzí, která detekuje přetečení nebo podtečení lámaného textu. Při detekci
+tohoto problému, jej sází znovu s většími hodnotami \verb|\tolerance| a
+\verb|\emergencystretch|, dokud se přetečení nepotlačí, nebo dokud se nedosáhne
 maximální hranice \verb|\tolerance|.
 
 Výhodou je, že tyto změny \verb|\tolerance| a \verb|\emergencystretch| jsou lokální pouze 
@@ -681,14 +688,14 @@ maxcycles = 4              % výchozí 30
 Vdovy a sirotci (souhrně také parchanty) jsou typografická chyba, která vzniká
 při zalomení stránek. Osamocený řádek odstavce se někdy ocitne na začátku nebo
 konci stránky. Sirotek je osamocený řádek na začátku stránky, vdova pak na
-konci. V \TeX u máme dvě penalty, \verb|\clubpenalty| a \verb|widowpenalty|,
+konci. V \TeX u existují dvě penalty, \verb|\clubpenalty| a \verb|widowpenalty|,
 které při nastavení vdovy a sirotky potlačují, ovšem za cenu rozšíření
 vertikálních mezer. Balíček
 \balicek{Lua-widow-control} \cite{lua-widow-control}
-používá jiný přístup. Každý odstavec sází dvakrát -- jeden s normálními
+používá jiný přístup. Každý odstavec sází dvakrát -- jednou s výchozími
 parametry, druhý o jeden řádek delší. To může mít vliv na rychlost kompilace
 dokumentu, v praxi by ale měl být malý. V případě, že při zalomení stránky
-detekuje parchant, vymění předešlý odstavec za verzi s delším řádkem, čímž
+detekuje parchant, vymění předposlední odstavec na stránce za jeho verzi s delším řádkem, čímž
 dojde k posunutí problematického řádku.
 
 % =======================================================
@@ -743,6 +750,10 @@ Následující volby umožňují změnit metodu použitou pro zamezení parchant
   \end{description}
 
 Tento výčet je pouze malým úvodem k balíčku \balicek{Lua-widow-control}. Podrobný popis naleznete v článku Maxe Chernoffa~\cite{chernoff}, který vyšel v loňském Zpravodaji.
+
+\section{Závěr}
+
+Článek se pokusil ukázat, že
 
 \printbibliography
 
