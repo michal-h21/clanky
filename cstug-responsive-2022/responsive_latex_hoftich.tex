@@ -151,12 +151,14 @@ které mohou využít i při sazbě svých vlastních dokumentů.
 Prvním problémem, který jsem řešil, bylo nastavení správné velikosti písma 
 z hlediska čitelnosti. 
 Výchozí velikost písma v \LaTeX u je 10 bodů, bez ohledu na velikost
-stránky. To je vhodná velikost pro stránku formátu A5. Pro formát
-A4 by měla být větší, naopak pro menší displeje čteček a mobilních
-telefonů může být menší. Stejný problém řeší webové prohlížeče,
+stránky. To je vhodná velikost písma pro stránku formátu A5. Pro formát
+A4 by měla být velikost písma větší, pro menší displeje čteček a mobilních
+telefonů může být naopak menší. 
+
+Stejný problém řeší webové prohlížeče,
 které musí zobrazit text jak na velkých monitorech PC, tak na
 menších displejích notebooků, tabletů a mobilních telefonů. 
-Řešením, který používají, je \textit{responzivní design}.
+Řešení, který používají, se nazývá \textit{responzivní design}.
 
 
 
@@ -166,17 +168,17 @@ různým zobrazovacím zařízením. Jedním z klíčových prvků responzivníh
 designu je flexibilní struktura, která umožňuje přizpůsobit velikost
 prvků na stránce zobrazovacímu zařízení.
 
-Dalším důležitým prvkem jsou media queries, které umožňují definovat
+Dalším důležitým prvkem jsou \textit{media queries}. 
+Ty umožňují definovat
 pravidla, která se aplikují na základě vlastností zobrazovacího
-zařízení, jako je velikost displeje, druh displeje, atd. Díky těmto
-vlastnostem může stejný kód stránky být dobře zobrazen jak na velkém
-monitoru, tak na mobilních zařízeních. Ukázku reálného využití 
+zařízení, jako jsou například šířka a výška obrazovky nebo typ výstupu (papír, displej). 
+Díky těmto pravidlům může stejný kód stránky být dobře zobrazen jak na velkém
+monitoru, tak na mobilních zařízeních nebo při tisku. Ukázku reálného využití 
 můžete vidět na obrázku~\ref{fig:responzivni}.
 
 
 \begin{figure}[tbp]
-  \caption{Ukázka zobrazení webové stránky s využitím responzivního designu}
-  \label{fig:responzivni}
+  \caption{Ukázka zobrazení webové stránky s využitím responzivního designu}\label{fig:responzivni}
 \begin{subfigure}[t]{0.74\textwidth}
     \includegraphics[width=\textwidth]{img/pedf-web-big.png}
     \caption{Ukázka stránky na velkém monitoru}
@@ -188,7 +190,7 @@ můžete vidět na obrázku~\ref{fig:responzivni}.
 \end{subfigure}
 \end{figure}
 
-Můj balíček \balicek{Responsive} \cite{responsive} se těmito zásadami inspiroval. 
+Balíček \balicek{Responsive}~\cite{responsive} se těmito zásadami inspiruje. 
 Jeho hlavní funkcí je nastavení velikosti písma podle velikosti stránky
 a přibližného počtu znaků, které by se měly vejít na stránku. 
 Dále nastavuje typografickou stupnici (ovlivňuje velikost písma například 
@@ -202,10 +204,10 @@ a typografickou stupnici na začátku dokumentu. Výchozí hodnoty můžeme změ
 pomocí voleb balíčku, nebo příkazem \verb|\ResponsiveSetup|, který můžeme 
 využít i v dokumentu, například pro lokální změny nastavení písma. 
 
-Hlavní volby balíčku jsou tyto:
+Balíček \balicek{Responsive} nabízí následující volby:
 
 \begin{description}
-  \item[noautomatic] – nenastavovat velikost písma automaticky na začátku dokumentu.
+  \item[noautomatic] – zabrání nastavení velikost písma a řádkového prokladu automaticky na začátku dokumentu.
   \item[characters] – počet znaků při automatickém nastavení velikosti písma.
   \item[scale] –  typografická stupnice použitá pro velikosti řezů písma.
   \item[lineratio] – poměr využitý při výpočtu řádkového prokladu.
@@ -215,8 +217,9 @@ Hlavní volby balíčku jsou tyto:
 
 Velikost písma můžeme nastavit pomocí příkazu \verb|\setsizes{<počet znaků na|\allowbreak\verb|řádek>}|. 
 \balicek{Responsive} se snaží nastavit velikost písma tak, aby na řádku byl v průměru
-požadovaný počet znaků. Skutečný počet znaků ovšem záleží na použitém textu, ve 
-skutečnosti bývá mírně vyšší.
+požadovaný počet znaků. Skutečný počet znaků ovšem záleží na použitém textu, 
+neboť při použití neproporcionálních fontů má každé písmeno má jinou šířku. 
+Ve skutečnosti může být počet znaků zobrazených na řádce mírně vyšší.
 
 Pokud v příkazu \verb|\setsizes| neuvedeme počet znaků, použije se hodnota volby \texttt{characters}.
 Následující příklad využívá právě nastavení této volby. Obrázek~\ref{fig:fontsize} 
@@ -232,8 +235,7 @@ nastavených volbách.
 \end{verbatim}
 
 \begin{figure}[tbp]
-  \caption{Rozdíl velikosti písma v závislosti na počtu znaků}
-  \label{fig:fontsize}
+  \caption{Rozdíl velikosti písma v závislosti na počtu znaků}\label{fig:fontsize}
   \begin{subfigure}[t]{0.45\textwidth}
 \fbox{%
 \begin{minipage}{5cm}
@@ -271,10 +273,10 @@ a, magna. Donec vehicula augue eu neque.
 V základním nastavení \LaTeX u je řádkový proklad nastavený
 na velikost písma násobený hodnotou $1.2$. Pro jiná 
 písma a velikosti stránky může být vhodná jiná velikost prokladu.
-Stejně tak mohou být rozdílné hodnoty pro tištěnou a elektronickou 
+Stejně tak mohou být vhodné rozdílné hodnoty pro tištěnou a elektronickou 
 verzi dokumentu. 
 
-Inspiroval jsem se článkem Edoarda Cavazza \cite{cavazza} o čitelnosti
+Inspiroval jsem se článkem Edoarda Cavazza~\cite{cavazza} o čitelnosti
 a přidal podporu pro nastavení řádkové prokladu na základě poměru výšky 
 malých písmen a proměnné \texttt{lineratio}. Ten se získá následujícím 
 výpočtem: 
@@ -282,15 +284,14 @@ výpočtem:
 \[\text{proklad} = \frac{1\text{ex}}{\text{lineratio}/ 100}\]
 
 Jaký vliv mají změny hodnoty \texttt{lineratio} můžete pozorovat v obrázku~\ref{fig:lineratio}. 
-Volba optimální hodnoty je individuální a pro dosažení maximální čitelnosti
-výstupu je vhodné vyzkoušet několik různých hodnot a vybrat tu nejvhodnější.
-
+Volba její optimální hodnoty závisí na použitém písmu i velikosti stránky. 
+Pro dosažení maximální čitelnosti výstupu je vhodné porovnat výstup 
+při použití různých hodnot.
 
 
 
 \begin{figure}[tbp]
-  \caption{Změna řádkového prokladu změnou hodnoty \texttt{lineratio}}
-  \label{fig:lineratio}
+  \caption{Změna řádkového prokladu změnou hodnoty \texttt{lineratio}}\label{fig:lineratio}
   \begin{subfigure}[b]{0.45\textwidth}
 \fbox{%
 \begin{minipage}{5cm}
@@ -386,9 +387,13 @@ přizpůsobovat různým typům a velikostem zařízení, na kterých jsou zobra
 
 Jak může být tato technika užitečná pro autory \LaTeX ových balíčků? 
 Mohli by například nastavit velikost písma, řádkového prokladu a dalších prvků
-pro určité rozměry stránky. Uživatel si poté nastaví výslednou velikost stránky
-ve svém dokumentu a  pomocí media queries se automaticky nastaví tyto prvky podle 
-rozměrů stránky. Lze například definovat, že pokud je šířka textového řádku menší,
+pro určité rozměry stránky. 
+Poté, co uživatel zvolí velikost stránky podle velikosti zařízení, pro které 
+chce dokument zkompilovat, nastaví se tyto prvky automaticky.
+% Uživatel si poté nastaví výslednou velikost stránky
+% ve svém dokumentu a  pomocí media queries se automaticky nastaví tyto prvky podle 
+% rozměrů stránky. 
+Autor balíčku může například definovat, že pokud je šířka textového řádku menší,
 než určitý rozměr, zobrazí se na něm méně znaků, než na řádcích delších. Výsledek je zobrazen 
 na obrázku~\ref{fig:mediaguery}.
 
@@ -396,7 +401,7 @@ Media query můžeme deklarovat pomocí příkazu \verb|\mediaquery|, který oč
 parametry -- první je seznam testů, další parametr poté očekává kód, který se vykoná
 pokud se testy vyhodnotí jako pravdivé, poslední pak kód spuštěný při nesplněné 
 podmínce. Kód může obsahovat například příkaz \verb|\ResponsiveSetup|, ale i libovolné
-jiné příkazy, například nastavení velikosti textového bloku, záhlaví a zápatí pomocí 
+jiné příkazy. Například nastavení velikosti textového bloku, záhlaví a zápatí pomocí 
 balíčku Geometry.
 
 
@@ -447,7 +452,7 @@ balíčku Geometry.
 \end{subfigure}
 \end{figure}
 
-V současné době můžeme testovat následující vlastnosti stránky: \texttt{paperwidth} a
+Můžeme testovat následující vlastnosti stránky: \texttt{paperwidth} a
 \texttt{paperheight} pro rozměry stránky, \texttt{textwidth} a \texttt{textheight} pro 
 rozměry textu, \texttt{orientation} pro orientaci textu a \texttt{twocolumn} pro 
 detekci použití dvou sloupců textu v dokumentu.
@@ -470,7 +475,7 @@ twocolumn=true}{\color{blue}}{}
 
 Lua\TeX\ nám umožňuje automaticky řešit některé problémy, které bylo v
 minulosti třeba řešit ručním zásahem do dokumentu. Díky tomu, že proces sazby lze ovlivňovat pomocí
-callbacků v jazyce Lua, lze například omezit výskyt takových typografických
+callbacků v jazyce Lua, můžeme například omezit výskyt takových typografických
 chyb jako jsou vdovy a sirotci, jednopísmenné předložky na koncích řádků, nebo
 špatně zalomené odstavce. V této sekci si ukážeme několik balíčků, které tyto
 chyby řeší.
@@ -481,12 +486,17 @@ chyby řeší.
 
 \subsection{Balíček \balicek{Luavlna}}
 
-Podle českých a slovenských typografických zvyklostí by se na koncích řádků neměly vyskytovat jednopísmenné předložky nebo spojky. 
-Tomu se dá v \TeX u zabránit vložením znaku \verb|~| mezi předložku a následující slovo. Pro zjednodušení této činnosti existuje
-několik nástrojů, například program \balicek{Vlna} Petra Olšáka, nebo balíček \balicek{Encxvlna} vytvořený také Petrem Olšákem a Zdeňkem Wagnerem.
+Podle českých a slovenských typografických zvyklostí by se na koncích řádků
+neměly vyskytovat jednopísmenné předložky nebo spojky. 
+Tomu se dá v \TeX u zabránit vložením znaku \verb|~| mezi předložku a
+následující slovo. Pro zjednodušení této činnosti existuje
+několik nástrojů, například program \balicek{Vlna} Petra Olšáka, nebo balíček
+\balicek{Encxvlna} vytvořený také Petrem Olšákem a Zdeňkem Wagnerem.
 
-Balíček \balicek{Luavlna} \cite{luavlna} využívá možnosti Lua\TeX u pro úpravu plně zpracovaných nódů textu před zalomením do odstavců. 
-V tomto stádiu jsou již všechna makra expandována, takže nezlomitelná mezera může být snadno vložena na všechna místa, kde by se měla nacházet.
+Balíček \balicek{Luavlna} \cite{luavlna} využívá možnosti Lua\TeX u pro úpravu
+plně zpracovaných nódů textu před zalomením do odstavců. 
+V tomto stádiu jsou již všechna makra expandována, nezlomitelná mezera
+tedy může být snadno vložena na všechna místa, kde by se měla nacházet.
 
 \balicek{Luavlna} zamezuje zalomení řádků v následujících situacích:
 
@@ -519,8 +529,7 @@ V tomto stádiu jsou již všechna makra expandována, takže nezlomitelná meze
 
     \preventsingledebugoff
   \end{minipage}
-  \caption{Ukázka užití balíčku Luavlna}
-  \label{fig:luavlna}
+  \caption{Ukázka užití balíčku Luavlna}\label{fig:luavlna}
 \end{figure}
 
 Ukázku použití balíčku můžete vidět na obrázku~\ref{fig:luavlna}. Nezlomitelné
@@ -536,7 +545,7 @@ mezer v určitých situacích:
   \item [nosufdegrees] – nezpracovávat tituly za jménem
 \end{description}
 
-Nastavení jednotlivých jazyků se provádí pomocí těchto příkazů\balicek{Luavlna} také poskytuje příkaz
+Nastavení jednotlivých jazyků se provádí pomocí těchto příkazů:
 
   \begin{itemize}
     \item\verb|\singlechars{jazyk}{písmena}| – seznam písmen, u kterých se potlačuje zalamování řádků.
@@ -624,12 +633,13 @@ A thing.
   \end{subfigure}
 }
 
-Balíček \balicek{Linebreaker} \cite{linebreaker} brání přetečení textu boxů a odstavců. 
+Balíček \balicek{Linebreaker}~\cite{linebreaker} brání přetečení textu boxů a odstavců. 
 Příklad jeho použití můžete vidět na obrázku~\ref{fig:linebreaker}, kde zamezí přetečení 
 několika řádků při sazbě do úzkého sloupce. 
 
-\balicek{Linebreaker} využívá callback Lua\TeX u pro zalomení odstavců, kde nahrazuje výchozí 
-funkci pro zalomení upravenou verzí, která detekuje přetečení nebo podtečení lámaného 
+\balicek{Linebreaker} využívá callback Lua\TeX u \verb|linebreak_filter|, který řídí řádkový zlom.
+\balicek{Linebreaker} nahrazuje výchozí 
+funkci pro řádkový zlom upravenou verzí, která detekuje přetečení nebo podtečení lámaného 
 textu. Při detekci tohoto problému, jej sází znovu s většími hodnotami
 \verb|\tolerance| a \verb|\emergencystretch|, dokud se přetečení nepotlačí, nebo dokud se nedosáhne 
 maximální hranice \verb|\tolerance|.
@@ -732,7 +742,7 @@ Následující volby umožňují změnit metodu použitou pro zamezení parchant
    \item[balanced] – nejdříve přidává vertikální mezery, pokud to nestačí, prodlouží odstavce. Tato metoda odstraní až 90 \% parchantů.
   \end{description}
 
-Tento výčet je pouze malým úvodem k balíčku \balicek{Lua-widow-control}. Podrobný popis naleznete v článku Maxe Chernoffa \cite{chernoff}, který vyšel v loňském Zpravodaji.
+Tento výčet je pouze malým úvodem k balíčku \balicek{Lua-widow-control}. Podrobný popis naleznete v článku Maxe Chernoffa~\cite{chernoff}, který vyšel v loňském Zpravodaji.
 
 \printbibliography
 
