@@ -96,20 +96,19 @@ začátcích stránek a \balicek{Linebreaker} \cite{linebreaker}, který brání
 
 \section{Úvod}
 
-V tomto textu představím některé tipy k sazbě různých verzí dokumentů určených
-pro různé cílové výstupy, jak tištěné, tak elektronické, například pro čtečky
-e-booků nebo tablety.   
+Před časem jsem si pořídil čtečku elektronických knih, ale i přesto většinu
+textů čtu z obrazovky svého PC, protože pochází z webových zdrojů. 
+Napadlo mě tedy, že bych bych si delší články ukládal pro pozdější
+přečtení na čtečce. K tomuto účelu samozřejmě existuje řada aplikací, ale 
+já se rozhodl vytvořit si vlastní, kterou si přizpůsobím přesně svým potřebám
+a preferencím. Další motivací je možnost naučit se něco nového a vytvořit
+balíčky, které budou užitečné i pro další uživatele \TeX u. 
 
+Mým cílem je, aby řešení bylo co nejvíce automatizované, abych například nemusel
+řešit přetečené řádky, nebo jiné chyby, které by vyžadovaly ruční zásah. 
+Díky možnostem Lua\LaTeX u je takové řešení již v současnosti možné, 
+jak si ukážeme v následujícím textu.
 
-
-% Před časem jsem si pořídil čtečku elektronických knih, ale i přesto většinu
-% textů čtu z obrazovky svého PC, protože pochází z webových zdrojů, především 
-% různých blogů. 
-% Napadlo mě tedy, že bych bych si delší články ukládal pro pozdější
-% přečtení na čtečce. K tomuto účelu samozřejmě existuje řada aplikací, ale 
-% já se rozhodl vytvořit si vlastní, kterou si přizpůsobím přesně svým potřebám
-% a preferencím. Další motivací je možnost naučit se něco nového a vytvořit
-% balíčky, které budou užitečné i pro další uživatele \TeX u. 
 
 % Protože díky Lua\TeX u je v \TeX ových distribucích dostupný programovací jazyk 
 % Lua, využil jsem ho pro vytvoření svého projektu \program{Rmodepdf} \cite{rmodepdf}.
@@ -242,7 +241,7 @@ nastavených volbách.
 \end{verbatim}
 
 \begin{figure}[tbp]
-  \caption{Rozdíl velikosti písma v závislosti na počtu znaků}\label{fig:fontsize}
+  \caption{Rozdíl velikosti písma v závislosti na počtu znaků na řádku}\label{fig:fontsize}
   \begin{subfigure}[t]{0.45\textwidth}
 \fbox{%
 \begin{minipage}{5cm}
@@ -753,7 +752,7 @@ Tento výčet je pouze malým úvodem k balíčku \balicek{Lua-widow-control}. P
 
 \section{Závěr}
 
-Článek se pokusil ukázat, že
+
 
 \printbibliography
 
