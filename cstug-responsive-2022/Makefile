@@ -7,6 +7,10 @@ source_files=$(tex_file) $(pdf_file) Makefile responsive.bib responsive.sty
 
 $(pdf_file): $(tex_file)
 	lualatex $<
+	biber $(article_name)
+	lualatex $<
+
+
 
 build: $(pdf_file)
 	rm -rf $(build_dir) $(zip_file)
