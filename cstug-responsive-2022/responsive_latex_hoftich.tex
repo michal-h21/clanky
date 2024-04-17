@@ -85,10 +85,10 @@ jak tištěné, tak elektronické, například mobilní telefony, tablety nebo �
 
 
 Konkrétně se zaměřuje na využití Lua\LaTeX u pro automatizovanou
-sazbu s pomocí balíčků \balicek{Responsive}\cite{responsive} pro nastavení velikosti písma a řádkového prokladu
-podle velikosti stránky, \balicek{Luavlna} \cite{luavlna} pro zamezení výskytu jednopísmenných předložek
-na koncích řádků, \balicek{Lua-widow-control}  \cite{lua-widow-control} pro omezení osamocených řádků na koncích a
-začátcích stránek a \balicek{Linebreaker} \cite{linebreaker}, který brání přetečení řádků.
+sazbu s pomocí balíčků \balicek{Responsive}~\cite{responsive} pro nastavení velikosti písma a řádkování 
+podle velikosti stránky, \balicek{Luavlna}~\cite{luavlna} pro zamezení výskytu jednopísmenných předložek
+na koncích řádků, \balicek{Lua-widow-control}~\cite{lua-widow-control} pro omezení osamocených řádků na koncích a
+začátcích stránek a \balicek{Linebreaker}~\cite{linebreaker}, který brání přetečení řádků.
 
 \end{abstract}
 \klicovaslova: automatická sazba, responzivní design, Lua\LaTeX
@@ -98,14 +98,14 @@ začátcích stránek a \balicek{Linebreaker} \cite{linebreaker}, který brání
 
 Před časem jsem si pořídil čtečku elektronických knih, ale i přesto většinu
 textů čtu z obrazovky svého PC, protože pochází z webových zdrojů. 
-Napadlo mě tedy, že bych bych si delší články ukládal pro pozdější
+Napadlo mě tedy, že bych si delší články ukládal pro pozdější
 přečtení na čtečce. K tomuto účelu samozřejmě existuje řada aplikací, ale 
 já se rozhodl vytvořit si vlastní, kterou si přizpůsobím přesně svým potřebám
 a preferencím. Další motivací je možnost naučit se něco nového a vytvořit
 balíčky, které budou užitečné i pro další uživatele \TeX u. 
 
 Mým cílem je, aby řešení bylo co nejvíce automatizované, abych například nemusel
-řešit přetečené řádky, nebo jiné chyby, které by vyžadovaly ruční zásah. 
+řešit přetečené řádky nebo jiné chyby, které by vyžadovaly ruční zásah. 
 Díky možnostem Lua\LaTeX u je takové řešení již v současnosti možné, 
 jak si ukážeme v následujícím textu.
 
@@ -157,8 +157,8 @@ z hlediska čitelnosti.
 Výchozí velikost písma v \LaTeX u je 10 bodů, bez ohledu na velikost
 stránky. To je vhodná velikost písma pro stránku formátu A5. Pro formát
 A4 by měla být velikost písma větší, pro menší displeje čteček a mobilních
-telefonů může být naopak menší. Stejně tak můžeme změnit řádkový proklad,
-který také ovlivňuje čitelnost textu v závislosti na velikosti písma a 
+telefonů může být naopak menší. Stejně tak můžeme změnit řádkování,
+které také ovlivňuje čitelnost textu v závislosti na velikosti písma a 
 stránky.
 
 Podobný problém řeší webové prohlížeče,
@@ -205,18 +205,18 @@ jednoduchou verzi media queries.
 
 \subsection{Nastavení balíčku \balicek{Responsive}}
 
-\balicek{Responsive} automaticky nastavuje velikost písma, řádkový proklad
+\balicek{Responsive} automaticky nastavuje velikost písma, řádkování 
 a typografickou stupnici na začátku dokumentu. Výchozí hodnoty můžeme změnit
-pomocí voleb balíčku, nebo příkazem \verb|\ResponsiveSetup|, který můžeme 
+pomocí voleb balíčku nebo příkazem \verb|\ResponsiveSetup|, který můžeme 
 využít i v dokumentu, například pro lokální změny nastavení písma. 
 
 Balíček \balicek{Responsive} nabízí následující volby:
 
 \begin{description}
-  \item[noautomatic] – zabrání nastavení velikost písma a řádkového prokladu automaticky na začátku dokumentu.
+  \item[noautomatic] – zabrání nastavení velikost písma a řádkování automaticky na začátku dokumentu.
   \item[characters] – počet znaků při automatickém nastavení velikosti písma.
   \item[scale] –  typografická stupnice použitá pro velikosti řezů písma.
-  \item[lineratio] – poměr využitý při výpočtu řádkového prokladu.
+  \item[lineratio] – poměr využitý při výpočtu řádkování.
 \end{description}
 
 \subsection{Základní velikost písma}
@@ -224,7 +224,7 @@ Balíček \balicek{Responsive} nabízí následující volby:
 Velikost písma můžeme nastavit pomocí příkazu \verb|\setsizes{<počet znaků na|\allowbreak\verb|řádek>}|. 
 \balicek{Responsive} se snaží nastavit velikost písma tak, aby na řádku byl v průměru
 požadovaný počet znaků. Skutečný počet znaků ovšem záleží na použitém textu, 
-neboť při použití neproporcionálních fontů má každé písmeno má jinou šířku. 
+neboť při použití proporcionálních fontů má každé písmeno jinou šířku. 
 Ve skutečnosti může být počet znaků zobrazených na řádce mírně vyšší.
 
 Pokud v příkazu \verb|\setsizes| neuvedeme počet znaků, použije se hodnota volby \texttt{characters}.
@@ -274,20 +274,20 @@ a, magna. Donec vehicula augue eu neque.
 \end{subfigure}
 \end{figure}
 
-\subsection{Řádkový proklad}
+\subsection{Řádkování}
 
-V základním nastavení \LaTeX u je řádkový proklad nastavený
+V základním nastavení \LaTeX u je řádkování nastaveno
 na velikost písma násobený hodnotou $1.2$. Pro jiná 
-písma a velikosti stránky může být vhodná jiná velikost prokladu.
+písma a velikosti stránky může být vhodná jiná velikost řádkování.
 Stejně tak mohou být vhodné rozdílné hodnoty pro tištěnou a elektronickou 
 verzi dokumentu. 
 
 Inspiroval jsem se článkem Edoarda Cavazza~\cite{cavazza} o čitelnosti
-a přidal podporu pro nastavení řádkové prokladu na základě poměru výšky 
+a přidal podporu pro nastavení řádkování na základě poměru výšky 
 malých písmen a proměnné \texttt{lineratio}. Ten se získá následujícím 
 výpočtem: 
 
-\[\text{proklad} = \frac{1\text{ex}}{\text{lineratio}/ 100}\]
+\[\text{řádkování} = \frac{1\text{ex}}{\text{lineratio}/ 100}\]
 
 Jaký vliv mají změny hodnoty \texttt{lineratio} můžete pozorovat v obrázku~\ref{fig:lineratio}. 
 Volba její optimální hodnoty závisí na použitém písmu i velikosti stránky. 
@@ -297,7 +297,7 @@ při použití různých hodnot.
 
 
 \begin{figure}[tbp]
-  \caption{Změna řádkového prokladu změnou hodnoty \texttt{lineratio}}\label{fig:lineratio}
+  \caption{Změna řádkování změnou hodnoty \texttt{lineratio}}\label{fig:lineratio}
   \begin{subfigure}[b]{0.45\textwidth}
 \fbox{%
 \begin{minipage}{5cm}
@@ -338,7 +338,7 @@ Mortensena~\cite{mortensen}.
 V \LaTeX u je typografická stupnice dostupná pomocí příkazů jako \verb|\large|,
 \verb|\Large|, \verb|\LARGE|, \verb|\huge|, nebo třeba \verb|\scriptsize|.
 Každý z těchto příkazů je od předešlé velikosti vzdálený o jeden interval.
-Výchozí stupnice v balíčku \balicek{Responsive} je nejbližší stupnici použitou
+Výchozí stupnice v balíčku \balicek{Responsive} je nejbližší stupnici použité
 v \LaTeX u.  V Mortensenově článku se nazývá \textit{tetratonická}. Balíček
 nabízí i další stupnice popsané v článku, například \textit{golden}, založenou
 na zlatém řezu. Efekt použití stupnice je zobrazen na
@@ -393,23 +393,23 @@ vytvářet responzivní a flexibilní webové stránky, které se dokážou auto
 přizpůsobovat různým typům a velikostem zařízení, na kterých jsou zobrazovány.
 
 Jak může být tato technika užitečná pro autory \LaTeX ových balíčků? 
-Mohli by například nastavit velikost písma, řádkového prokladu a dalších prvků
+Mohli by například nastavit velikost písma, řádkování a dalších prvků
 pro určité rozměry stránky. 
 Poté, co uživatel zvolí velikost stránky podle velikosti zařízení, pro které 
 chce dokument zkompilovat, nastaví se tyto prvky automaticky.
 % Uživatel si poté nastaví výslednou velikost stránky
 % ve svém dokumentu a  pomocí media queries se automaticky nastaví tyto prvky podle 
 % rozměrů stránky. 
-Autor balíčku může například definovat, že pokud je šířka textového řádku menší,
-než určitý rozměr, zobrazí se na něm méně znaků, než na řádcích delších. Výsledek je zobrazen 
+Autor balíčku může například definovat, že pokud je šířka textového řádku menší
+než určitý rozměr, zobrazí se na něm méně znaků než na řádcích delších. Výsledek je zobrazen 
 na obrázku~\ref{fig:mediaguery}.
 
 Media query můžeme deklarovat pomocí příkazu \verb|\mediaquery|, který očekává tři 
-parametry -- první je seznam testů, další parametr poté očekává kód, který se vykoná
+parametry -- první je seznam testů, další parametr poté očekává kód, který se vykoná,
 pokud se testy vyhodnotí jako pravdivé, poslední pak kód spuštěný při nesplněné 
 podmínce. Kód může obsahovat příkaz \verb|\ResponsiveSetup|, ale i libovolné
 jiné příkazy. Například nastavení velikosti textového bloku, záhlaví a zápatí pomocí 
-balíčku Geometry.
+balíčku \balicek{Geometry}.
 
 
 \begin{figure}[btp]
@@ -464,7 +464,7 @@ rozměry textu, \texttt{orientation} pro orientaci textu a \texttt{twocolumn} pr
 detekci použití dvou sloupců textu v dokumentu.
 
 Testy pro rozměry textu a stránky podporují také předpony \texttt{max-} a \texttt{min-}.
-\texttt{max-}. Pomocí nich můžeme testovat, že daný rozměr je menší nebo větší, 
+Pomocí nich můžeme testovat, že daný rozměr je menší nebo větší
 než zadaná hodnota.
 
 Například následující příkaz změní barvu textu na modrou za podmínky, že dokument 
@@ -482,8 +482,8 @@ twocolumn=true}{\color{blue}}{}
 Lua\TeX\ nám umožňuje automaticky řešit některé problémy, které bylo v
 minulosti třeba řešit ručním zásahem do dokumentu. Díky tomu, že proces sazby
 lze ovlivňovat pomocí callbacků v jazyce Lua, můžeme například omezit výskyt
-takových typografických chyb jako jsou vdovy a sirotci, jednopísmenné předložky
-na koncích řádků, nebo špatně zalomené odstavce. V této sekci si ukážeme
+takových typografických chyb, jako jsou vdovy a sirotci, jednopísmenné předložky
+na koncích řádků nebo špatně zalomené odstavce. V této sekci si ukážeme
 několik balíčků, které tyto chyby řeší.
 
 
@@ -507,7 +507,7 @@ tedy může být snadno vložena na všechna místa, kde by se měla nacházet.
 \balicek{Luavlna} zamezuje zalomení řádků v následujících situacích:
 
 \begin{itemize}
-  \item za jednoslovnými předložkami
+  \item za jednoznakovými předložkami
   \item u iniciál
   \item u akademických titulů
   \item mezi čísly a jednotkami
@@ -567,7 +567,7 @@ ukazuje, že v českém textu se vloží nezlomitelná mezera, po změně jazyka
 
 
 \begin{verbatim}
-Příklad v češtině
+A příklad česky.
 \selectlanguage{english}
 A thing.
 \end{verbatim}
@@ -586,7 +586,7 @@ A thing.
 
 \bigskip
 
-Zpracování celého dokumentu podle českých pravidel, bez ohledu na aktuálně zvolený jazyk, lze dosáhnout pomocí příkazu 
+Zpracování celého dokumentu podle českých pravidel bez ohledu na aktuálně zvolený jazyk, lze dosáhnout pomocí příkazu 
 \verb|\preventsinglelang{czech}|.
 
 \begin{verbatim}
@@ -646,8 +646,8 @@ několika řádků při sazbě do úzkého sloupce.
 \balicek{Linebreaker} využívá callback Lua\TeX u \verb|linebreak_filter|, který řídí řádkový zlom.
 \balicek{Linebreaker} nahrazuje výchozí funkci pro řádkový zlom upravenou
 verzí, která detekuje přetečení nebo podtečení lámaného textu. Při detekci
-tohoto problému, jej sází znovu s většími hodnotami \verb|\tolerance| a
-\verb|\emergencystretch|, dokud se přetečení nepotlačí, nebo dokud se nedosáhne
+tohoto problému jej sází znovu s většími hodnotami \verb|\tolerance| a
+\verb|\emergencystretch|, dokud se přetečení nepotlačí nebo dokud se nedosáhne
 maximální hranice \verb|\tolerance|.
 
 Výhodou je, že tyto změny \verb|\tolerance| a \verb|\emergencystretch| jsou lokální pouze 
@@ -687,7 +687,7 @@ maxcycles = 4              % výchozí 30
 Vdovy a sirotci (souhrně také parchanty) jsou typografická chyba, která vzniká
 při zalomení stránek. Osamocený řádek odstavce se někdy ocitne na začátku nebo
 konci stránky. Sirotek je osamocený řádek na začátku stránky, vdova pak na
-konci. V \TeX u existují dvě penalty, \verb|\clubpenalty| a \verb|widowpenalty|,
+konci. V \TeX u existují dvě penalty, \verb|\clubpenalty| a \verb|\widowpenalty|,
 které při nastavení vdovy a sirotky potlačují, ovšem za cenu rozšíření
 vertikálních mezer. Balíček
 \balicek{Lua-widow-control} \cite{lua-widow-control}
