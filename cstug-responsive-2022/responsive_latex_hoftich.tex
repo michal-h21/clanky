@@ -213,7 +213,7 @@ využít i v dokumentu, například pro lokální změny nastavení písma.
 Balíček \balicek{Responsive} nabízí následující volby:
 
 \begin{description}
-  \item[noautomatic] – zabrání nastavení velikost písma a řádkování automaticky na začátku dokumentu.
+  \item[noautomatic] – zabrání nastavení velikosti písma a řádkování automaticky na začátku dokumentu.
   \item[characters] – počet znaků při automatickém nastavení velikosti písma.
   \item[scale] –  typografická stupnice použitá pro velikosti řezů písma.
   \item[lineratio] – poměr využitý při výpočtu řádkování.
@@ -289,7 +289,7 @@ výpočtem:
 
 \[\text{řádkování} = \frac{1\text{ex}}{\text{lineratio}/ 100}\]
 
-Jaký vliv mají změny hodnoty \texttt{lineratio} můžete pozorovat v obrázku~\ref{fig:lineratio}. 
+Jaký vliv mají změny hodnoty \texttt{lineratio}, můžete pozorovat v obrázku~\ref{fig:lineratio}. 
 Volba její optimální hodnoty závisí na použitém písmu i velikosti stránky. 
 Pro dosažení maximální čitelnosti výstupu je vhodné porovnat výstup 
 při použití různých hodnot.
@@ -373,7 +373,7 @@ obrázku~\ref{fig:stupnice}.
 \end{figure}
 
 Můžeme však definovat i vlastní stupnici. Například následující kód definuje stupnici,
-na které se velikost textu zdvojnásobí (\verb|ratio=2|) za tři kroky (\verb|number=2|).
+na které se velikost textu zdvojnásobí (\verb|ratio=2|) za tři kroky (\verb|number=3|).
 Při definici vlastních voleb stupnice je třeba zadat hodnotu \verb|scale=none|.
 Příkaz \verb|\setsizes| poté redefinuje velikosti písem.
 
@@ -464,7 +464,7 @@ rozměry textu, \texttt{orientation} pro orientaci textu a \texttt{twocolumn} pr
 detekci použití dvou sloupců textu v dokumentu.
 
 Testy pro rozměry textu a stránky podporují také předpony \texttt{max-} a \texttt{min-}.
-Pomocí nich můžeme testovat, že daný rozměr je menší nebo větší
+Pomocí nich můžeme testovat, zda daný rozměr je menší nebo větší
 než zadaná hodnota.
 
 Například následující příkaz změní barvu textu na modrou za podmínky, že dokument 
@@ -501,7 +501,7 @@ několik nástrojů, například program \balicek{Vlna} Petra Olšáka, nebo bal
 
 Balíček \balicek{Luavlna} \cite{luavlna} využívá možnosti Lua\TeX u pro úpravu
 plně zpracovaných nódů textu před zalomením do odstavců. 
-V tomto stádiu jsou již všechna makra expandována, nezlomitelná mezera
+V tomto stadiu jsou již všechna makra expandována, nezlomitelná mezera
 tedy může být snadno vložena na všechna místa, kde by se měla nacházet.
 
 \balicek{Luavlna} zamezuje zalomení řádků v následujících situacích:
@@ -529,7 +529,7 @@ tedy může být snadno vložena na všechna místa, kde by se měla nacházet.
     Podpora iniciál a titulů: M. J. Hegel, Ing. Běháková, Ph.D., Ž. Zíbrt,
     Ch. Borner.
 
-    Podpora jednotek: 100,5 MN\cdot{}s, 100.5 kJ, 200 µA, $-1$ dag, 1 MB. 1 kJ.
+    Podpora jednotek: 100,5 MN\cdot{}s, 100.5 kJ, 200 µA, $-1$ dag, 1 MB. 
 
     Uvnitř matematiky by mělo být zpracování vypnuté: $k \in \mathbb N$.
 
@@ -684,7 +684,8 @@ maxcycles = 4              % výchozí 30
 
 \subsection{Balíček \balicek{lua-widow-control}}
 
-Vdovy a sirotci (souhrně také parchanty) jsou typografická chyba, která vzniká
+\selectlanguage{czech}
+Vdovy a sirotci (souhrně také parchanty) jsou typografickou chybou, která vzniká
 při zalomení stránek. Osamocený řádek odstavce se někdy ocitne na začátku nebo
 konci stránky. Sirotek je osamocený řádek na začátku stránky, vdova pak na
 konci. V \TeX u existují dvě penalty, \verb|\clubpenalty| a \verb|\widowpenalty|,
@@ -693,8 +694,8 @@ vertikálních mezer. Balíček
 \balicek{Lua-widow-control} \cite{lua-widow-control}
 používá jiný přístup. Každý odstavec sází dvakrát -- jednou s výchozími
 parametry, druhý o jeden řádek delší. To může mít vliv na rychlost kompilace
-dokumentu, v praxi by ale měl být malý. V případě, že při zalomení stránky
-detekuje parchant, vymění předposlední odstavec na stránce za jeho verzi s delším řádkem, čímž
+dokumentu, v praxi by ale měl být malý. V~případě, že se při zalomení stránky
+detekuje parchant, vymění se předposlední odstavec na stránce za jeho verzi s delším řádkem, čímž
 dojde k posunutí problematického řádku.
 
 % =======================================================
