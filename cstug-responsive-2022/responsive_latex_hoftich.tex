@@ -183,7 +183,6 @@ můžete vidět na obrázku~\ref{fig:responzivni}.
 
 
 \begin{figure}[tbp]
-  \caption{Ukázka zobrazení webové stránky s využitím responzivního designu}\label{fig:responzivni}
 \begin{subfigure}[t]{0.74\textwidth}
     \includegraphics[width=\textwidth]{img/pedf-web-big.png}
     \caption{Ukázka stránky na velkém monitoru}
@@ -193,6 +192,7 @@ můžete vidět na obrázku~\ref{fig:responzivni}.
     \includegraphics[width=\textwidth]{img/pedf-web-small.png}
     \caption{Ukázka stránky na malém displeji}
 \end{subfigure}
+  \caption{Ukázka zobrazení webové stránky s využitím responzivního designu}\label{fig:responzivni}
 \end{figure}
 
 Balíček \balicek{Responsive}~\cite{responsive} se těmito zásadami inspiruje. 
@@ -241,7 +241,6 @@ nastavených volbách.
 \end{verbatim}
 
 \begin{figure}[tbp]
-  \caption{Rozdíl velikosti písma v závislosti na počtu znaků na řádku}\label{fig:fontsize}
   \begin{subfigure}[t]{0.45\textwidth}
 \fbox{%
 \begin{minipage}{5cm}
@@ -272,6 +271,7 @@ a, magna. Donec vehicula augue eu neque.
 \end{minipage}}
 \caption{\texttt{characters=25, lineratio=38}}
 \end{subfigure}
+  \caption{Rozdíl velikosti písma v závislosti na počtu znaků na řádku}\label{fig:fontsize}
 \end{figure}
 
 \subsection{Řádkování}
@@ -297,7 +297,6 @@ při použití různých hodnot.
 
 
 \begin{figure}[tbp]
-  \caption{Změna řádkování změnou hodnoty \texttt{lineratio}}\label{fig:lineratio}
   \begin{subfigure}[b]{0.45\textwidth}
 \fbox{%
 \begin{minipage}{5cm}
@@ -320,6 +319,7 @@ při použití různých hodnot.
 \end{minipage}}
 \caption{lineratio=34}
 \end{subfigure}
+  \caption{Změna řádkování změnou hodnoty \texttt{lineratio}}\label{fig:lineratio}
 \end{figure}
 
 \subsection{Typografická stupnice}
@@ -345,7 +345,6 @@ na zlatém řezu. Efekt použití stupnice je zobrazen na
 obrázku~\ref{fig:stupnice}.
 
 \begin{figure}[bp]
-  \caption{Ukázka typografických stupnic (výchozí velikost písma je zvýrazněna linkami)}\label{fig:stupnice}
   \begin{subfigure}[b]{0.45\textwidth}
 \fbox{%
 \begin{minipage}{5cm}
@@ -370,6 +369,7 @@ obrázku~\ref{fig:stupnice}.
 \end{minipage}}
 \caption{Stupnice založená na zlatém řezu}
 \end{subfigure}
+  \caption{Ukázka typografických stupnic (výchozí velikost písma je zvýrazněna linkami)}\label{fig:stupnice}
 \end{figure}
 
 Můžeme však definovat i vlastní stupnici. Například následující kód definuje stupnici,
@@ -416,7 +416,6 @@ balíčku \balicek{Geometry}.
 
   \centering
 
-  \caption{Příklad Media Query}\label{fig:mediaguery}
 
   Zobrazit méně znaků na řádku pokud je šířka textu menší, než 4~cm.
 
@@ -456,6 +455,7 @@ balíčku \balicek{Geometry}.
 \end{minipage}}
 \caption{Šířka textu 3.9 cm}
 \end{subfigure}
+  \caption{Příklad Media Query}\label{fig:mediaguery}
 \end{figure}
 
 Můžeme testovat následující vlastnosti stránky: \texttt{paperwidth} a
@@ -538,8 +538,9 @@ tedy může být snadno vložena na všechna místa, kde by se měla nacházet.
   \caption{Ukázka užití balíčku Luavlna}\label{fig:luavlna}
 \end{figure}
 
-Ukázku použití balíčku můžete vidět na obrázku~\ref{fig:luavlna}. Nezlomitelné
-mezery jsou zvýrazněné růžově, díky použití volby \texttt{debug}. Balíček
+Ukázku použití balíčku můžete vidět na obrázku~\ref{fig:luavlna}. 
+Volby se zadávají pouze pomocí voleb balíčku: \verb|\usepackage[<volby>]{luavlna}|.
+Nezlomitelné mezery jsou zvýrazněné růžově, díky použití volby \texttt{debug}. Balíček
 nabízí řadu dalších voleb, například pro zakázání vkládání nezlomitelných 
 mezer v určitých situacích:
 
@@ -655,7 +656,6 @@ pro aktuálně lámaný odstavec, zbytek textu nijak neovlivní.
 
 
 \begin{figure}
-  \caption{Příklad využití balíčku \balicek{Linebreaker}}
   \label{fig:linebreaker}
   \printtest{
     The example document given below creates two pages by using Lua code alone. You
@@ -663,16 +663,23 @@ will learn how to access TeX's boxes and counters from the Lua side, shipout a
 page into the PDF file, create horizontal and vertical boxes (hbox and vbox),
 create new nodes and manipulate the nodes links structure. 
   }
+  \caption{Příklad využití balíčku \balicek{Linebreaker}}
 \end{figure}
 
   % \subsubsection{Nastavení}
 
-\balicek{Linebreaker} můžeme konfigurovat pomocí příkazu \verb|\linebreakersetup|:
+Balíček \balicek{Linebreaker} můžeme konfigurovat zadáním voleb balíčku
+\texttt{\textbackslash usepackage[<volby>]\{linebreaker\}}, nebo později i v těle dokumentu s využitím příkazu
+\texttt{\textbackslash linebreakersetup\{<volby>\}}:
+\medskip
+
   \begin{description}
     \item[maxcycles] – počet pokusů o přesázení odstavce.
     \item[maxemergencystretch] – maximální hodnota \verb|\emergencystretch|.
     \item[maxtolerance] – maximální hodnota \verb|tolerance|.
   \end{description}
+
+\medskip
 
 \begin{verbatim}
 \linebreakersetup{
