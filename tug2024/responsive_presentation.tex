@@ -1,0 +1,41 @@
+\documentclass[ignorenonframetext,aspectratio=169]{beamer}
+\usetheme{moloch}
+\usepackage{fontspec}
+\usepackage{hyperref}
+\usepackage[english,czech]{babel}
+\usepackage{multicol}
+\usepackage{lipsum}
+\usepackage{lua-widow-control}
+\usepackage{luavlna}
+\usepackage{linebreaker}
+\usepackage[noautomatic]{responsive}
+
+\newtheorem{priklad}{Příklad}
+\newtheorem{pozor}{Pozor}
+\addtobeamertemplate{block begin}{\setlength\abovedisplayskip{0pt}}{}
+\addtobeamertemplate{block end}{\vspace*{-1em}}{}
+\newcommand\prepinac[1]{\texttt{-\/-#1}}
+
+
+\newcommand\myfig[3][width=.9\textwidth]{%
+  \figure\includegraphics[#1]{#2}%
+  \caption{#3}%
+\endfigure}
+
+\input{bio}
+\begin{document}
+\begin{frame}
+\maketitle
+\end{frame}
+
+\begin{frame}
+\tableofcontents
+\end{frame}
+% the slide input didn't work
+% see https://tex.stackexchange.com/a/29355/2891
+\mode<all>
+\input{presentation-text}
+\mode*
+% \input{outline}
+
+\end{document}

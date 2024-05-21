@@ -1,0 +1,30 @@
+\documentclass{article}
+\usepackage{beamerarticle}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{lipsum}
+\usepackage[english,czech]{babel}
+
+\usepackage{responsive}
+\usepackage{luavlna}
+\usepackage{linebreaker}
+\newtheorem{priklad}{Example}
+\newtheorem{pozor}{Alert!}
+\addtobeamertemplate{block begin}{\setlength\abovedisplayskip{0pt}}{}
+\addtobeamertemplate{block end}{\vspace*{-1em}}{}
+\newcommand\prepinac[1]{\texttt{-\/-#1}}
+
+
+\newcommand\myfig[3][width=.9\textwidth]{%
+  \figure\includegraphics[#1]{#2}%
+  \caption{#3}%
+\endfigure}
+\setjobnamebeamerversion{hoftich_bachotex_presentation}
+\usepackage{fontspec}
+
+\input{bio}
+
+\begin{document}
+\maketitle
+\input{presentation-text}
+\end{document}
