@@ -1,4 +1,4 @@
-
+%! TeX program = lualatex
 \section{Introduction}
 
 \begin{frame}
@@ -23,128 +23,124 @@
 
 \end{frame}
 
-\section{Jak zkonvertujeme HTML do PDF pro čtečku?}
+\section{How do we convert HTML to PDF for an e-reader?}
 
 \begin{frame}
   \frametitle{Rmodepdf}
 
-  Skript, který zkonvertuje webovou stránku nebo ePub soubor do PDF.
+  A script that converts a web page or ePub file to PDF.
 
   \begin{itemize}
-    \item extrahuje čistý text článků, bez reklam a navigačních elementů na stránkách
-    \item měl by umožňovat konfiguraci pro jednotlivé weby nebo vydání e-booků (např. MK Praha)
-    \item konfigurovatelný výstup
+    \item extracts clean text from articles, without ads and navigation elements on the pages
+    \item should allow configuration for individual websites or e-book editions (e.g., MK Prague)
+    \item configurable output
   \end{itemize}
 
+  % Work in progress code is located here:
 
-    
-  % Rozpracovaný kód se nachází zde:
-
-    \url{https://github.com/michal-h21/rmodepdf/}
-  \end{frame}
+  \url{https://github.com/michal-h21/rmodepdf/}
+\end{frame}
 
 \begin{frame}
-  \frametitle{Reader mode pro skripty}
-  Zobrazení pro čtečku je mód ve webových prohlížečích, který odstraní ovládací prvky ze stránky a zobrazí jen text článku.
+  \frametitle{Reader mode for scripts}
+  Reader mode is a feature in web browsers that removes control elements from the page and displays only the article text.
 
   \bigskip
 
   \begin{tabular}{ll}
     Readability.js & \url{https://github.com/mozilla/readability}\\
     Python-readability & \url{https://github.com/buriy/python-readability}\\
-    Rdrview: &\url{https://github.com/eafer/rdrview}\\
+    Rdrview: & \url{https://github.com/eafer/rdrview}\\
   \end{tabular}
 
 \end{frame}
 
 \begin{frame}
-  \frametitle{Stránka s ovládacími prvky a reklamami}
+  \frametitle{Page with control elements and ads}
   \begin{center}
     \includegraphics[height=.9\textheight]{img/root-balast.png}
   \end{center}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Stránka v zobrazení čtečky}
+  \frametitle{Page in reader mode}
   \begin{center}
     \includegraphics[height=.9\textheight]{img/root-čtečka.png}
   \end{center}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Jak načteme HTML a ePub soubory?}
-  V Lua\TeX u máme několik nástrojů
+  \frametitle{How do we load HTML and ePub files?}
+  In Lua\TeX, we have several tools:
   \begin{itemize}
-    \item knihovna pro čtení ZIP souborů
-    \item LuaXML obsahuje knihovnu Transform pro převod XML do jiných formátů, například \TeX u
+    \item a library for reading ZIP files
+    \item LuaXML contains a Transform library for converting XML to other formats, such as \TeX
       \begin{itemize}
-        \item umožňuje pravidla pro specifické elementy vybrané pomocí CSS selektorů
+        \item allows rules for specific elements selected using CSS selectors
       \end{itemize}
-    \item podpora pro HTML v LuaXML je ve vývoji
+    \item support for HTML in LuaXML is under development
   \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Co dále?}
+  \frametitle{What's next?}
   \begin{itemize}
-  \item  zautomatizovat design výstupního dokumentu pro různé velikosti zobrazení
-  \item  automaticky zamezit chybám v sazbě:
+  \item automate the design of the output document for different display sizes
+  \item automatically prevent typesetting errors:
     \begin{itemize}
-      \item vdovy a sirotci
-      \item zalamování řádků s jednopísmennými předložkami, jednotkami nebo ak. tituly
-      \item přetečené řádky při sazbě úzkých sloupců
+      \item widows and orphans
+      \item line breaks with single-letter prepositions, units, or academic titles
+      \item overflow lines when typesetting narrow columns
     \end{itemize}
   \end{itemize}
 \end{frame}
 
-\section{Responzivní design v \LaTeX u}
+
+\section{Responsive Design in \LaTeX}
 
 \begin{frame}
-   \frametitle{Co je responzivní design}
+   \frametitle{What is Responsive Design}
    \begin{itemize}
-     \item flexibilní struktura - přizpůsobení velikosti prvků na stránce zobrazovacímu zařízení
-     \item media queries - pravidla, která se aplikují na základě vlastností zobrazovacího zařízení (velikost displeje, druh displeje, atd.) 
+     \item flexible structure - adjusting the size of elements on the page to the display device
+     \item media queries - rules applied based on the properties of the display device (screen size, type of display, etc.)
    \end{itemize}
 
-   Díky těmto vlastnostem může stejný kód stránky být dobře zobrazen jak na velkém monitoru, tak na mobilních zařízeních.
+   Thanks to these features, the same page code can be well displayed both on a large monitor and on mobile devices.
 \end{frame}
 
 \begin{frame}
-  \frametitle{Ukázka stránky na velkém monitoru}
+  \frametitle{Page Example on a Large Monitor}
   \begin{center}
     \includegraphics[height=.9\textheight]{img/pedf-web-big.png}
   \end{center}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Ukázka stránky na malém displeji}
+  \frametitle{Page Example on a Small Screen}
   \begin{center}
     \includegraphics[height=.9\textheight]{img/pedf-web-small.png}
   \end{center}
 \end{frame}
 
-
 \begin{frame}
-  \frametitle{Balíček \texttt{responsive}}
+  \frametitle{The \texttt{responsive} Package}
 
-  Balíček inspirovaný metodami responzivního designu pro webové stránky
+  A package inspired by responsive design methods for web pages
   \begin{itemize}
-  \item přizpůsobení velikosti fontu velikosti zobrazení
-  \item typografická stupnice pro velikosti písma
+  \item adjusting font size to display size
+  \item typographic scale for font sizes
   \item media queries
-\end{itemize}
+  \end{itemize}
   \url{https://github.com/michal-h21/responsive-latex}
-    % - změny počtu znaků na řádek
-    % - okraje pomocí newgeometry
+    % - changes in the number of characters per line
+    % - margins using newgeometry
 \end{frame}
 
-
 \begin{frame}[fragile]
-  \frametitle{Nastavení velikosti písma podle velikosti displeje}
+  \frametitle{Setting Font Size Based on Display Size}
 
-  Velikost písma můžeme nastavit pomocí příkazu \verb|\setsizes{počet znaků na řádek}|.
+  Font size can be set using the command \verb|\setsizes{number of characters per line}|.
   
-
 \begin{columns}
   \begin{column}{0.5\textwidth}
 \begin{verbatim}
@@ -164,7 +160,6 @@
 
 \normalsize
 
-
 Lorem ipsum dolor sit amet,
 consectetuer adipiscing elit.
 Ut purus elit, vestibulum ut,
@@ -178,7 +173,7 @@ felis.
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Rozdíl velikosti písma v závislosti na počtu znaků}
+  \frametitle{Difference in Font Size Based on Number of Characters}
 \begin{columns}
   \begin{column}{0.5\textwidth}
 \begin{verbatim}
@@ -203,7 +198,6 @@ felis.
 
 \normalsize
 
-
 Lorem ipsum dolor sit amet,
 consectetuer adipiscing elit.
 Ut purus elit, vestibulum ut,
@@ -216,24 +210,24 @@ felis.
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Konfigurace}
-  Volby můžeme nastavovat při volání balíčku, nebo později pomocí příkazu \verb|\ResponsiveSetup|.
+  \frametitle{Configuration}
+  Options can be set when calling the package or later using the command \verb|\ResponsiveSetup|.
 
-  Důležité volby:
+  Important options:
 
   \begin{description}
-    \item[noautomatic] -- nenastavovat velikost písma automaticky na začátku dokumentu
-    \item[characters] -- počet znaků při automatickém nastavení velikosti písma
-    \item[scale] --  typografická stupnice použitá pro velikosti řezů písma
-    \item[lineratio] -- poměr využitý při výpočtu výšky řádku
+    \item[noautomatic] -- do not set font size automatically at the beginning of the document
+    \item[characters] -- number of characters when automatically setting the font size
+    \item[scale] -- typographic scale used for font sizes
+    \item[lineratio] -- ratio used when calculating line height
   \end{description}
 
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Výška řádků}
-  Výšku řádků můžeme ovlivnit pomocí volby \texttt{lineratio}. 
-Čím vyšší má hodnotu, tím je vzdálenost mezi řádky menší.
+  \frametitle{Line Height}
+  Line height can be influenced by the \texttt{lineratio} option. 
+The higher its value, the smaller the distance between lines.
 
 \begin{columns}
   \begin{column}{0.5\textwidth}
@@ -281,16 +275,14 @@ felis.
       \printsize{footnotesize}
 }
 
-
-
 \begin{frame}[fragile]
-  \frametitle{Řezy písma}
+  \frametitle{Font Styles}
 
-  Velikosti jednotlivých řezů písma jsou vybírány na základě typografické stupnice
+  The sizes of individual font styles are chosen based on the typographic scale
 
 \begin{columns}
   \begin{column}{0.5\textwidth}
-Defaultní stupnice (pentatonická)
+Default scale (pentatonic)
 \fbox{%
 \begin{minipage}{5cm}
 \setsizes{45}
@@ -318,9 +310,9 @@ Defaultní stupnice (pentatonická)
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Jemnější nastavení stupnice}
+  \frametitle{Finer Scale Adjustment}
 
-  Můžeme také přímo nastavit poměr a počet kroků, za který se stupnice o tento poměr zvětší.
+  We can also directly set the ratio and number of steps by which the scale increases by this ratio.
 
 \begin{columns}
   \begin{column}{0.5\textwidth}
@@ -359,7 +351,7 @@ number=2,scale=none}
 \end{frame}
 
 \begin{frame}[fragile]
-\frametitle{Ukázka media query v CSS}
+\frametitle{CSS Media Query Example}
 \begin{verbatim}
 body {
   color: green;
@@ -370,30 +362,28 @@ body {
     }
 }
 \end{verbatim}
-          
 \end{frame}
-
+          
 \begin{frame}[fragile]
-  \frametitle{Media queries v \LaTeX u}
-    Pomocí příkazu \verb|\mediaquery| můžeme testovat různé vlastnosti:
+  \frametitle{Media Queries in \LaTeX}
+    Using the \verb|\mediaquery| command, we can test various properties:
   
     \begin{itemize}
-  \item velikost fyzické stránky
-  \item délku řádku
-  \item orientaci stránky
+  \item physical page size
+  \item line length
+  \item page orientation
 \end{itemize}
 
-Další testy jdou snadno přidat
+Additional tests can be easily added.
 
 \end{frame}
 
 \begin{frame}[fragile]
 
-  \frametitle{Příklad Media Query}
+  \frametitle{Media Query Example}
 
-  Tento příklad zobrazí méně písmen pokud je šířka textu menší, než 4 cm.
+  This example displays fewer characters if the text width is less than 4 cm.
 
-  
 \begin{verbatim}
 \mediaquery{max-textwidth=4cm}
 {\setsizes{45}}{\setsizes{60}}
@@ -426,166 +416,162 @@ Další testy jdou snadno přidat
 \end{frame}
 
 \begin{frame}
-  \frametitle{Mají media quries v \LaTeX u smysl?}
+  \frametitle{Do Media Queries Make Sense in \LaTeX?}
   \begin{itemize}
-    \item možná v univerzálních balíčcích
-    \item využití rozdílných šablon pro různé velikosti je snazší
+    \item possibly in universal packages
+    \item using different templates for different sizes is easier
   \end{itemize}
 \end{frame}
 
-
-\section{Automatická sazba}
+\section{Automatic Typesetting}
 
 \begin{frame}
-  \frametitle{Balíček \texttt{lua-widow-control}}
-  Potlačení vdov a sirotků za pomoci Lua callbacků
+  \frametitle{\texttt{lua-widow-control} Package}
+  Suppression of widows and orphans using Lua callbacks
   \begin{itemize}
-    \item každý odstavec sází dvakrát -- jeden s normálními parametry, druhý o jeden řádek delší
-    \item vliv na rychlost by měl být malý
-    
-    \item pokud se najde parchant, vymění předešlý odstavec za verzi s řádkem navíc
+    \item Each paragraph is typeset twice -- once with normal parameters, the second time with one extra line
+    \item The impact on speed should be minimal
+    \item If an orphan is found, the previous paragraph is replaced with the version with the extra line
   \end{itemize}
   \url{https://ctan.org/pkg/lua-widow-control}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Ukázka sirotka}
+  \frametitle{Example of an Orphan}
   \begin{center}
     \includegraphics[height=\textheight,page=1]{examples/widow.pdf}
   \end{center}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Potlačený sirotek}
+  \frametitle{Suppressed Orphan}
   \begin{center}
     \includegraphics[height=\textheight,page=2]{examples/widow.pdf}
   \end{center}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Porovnání různých metod k omezení parchantů}
+  \frametitle{Comparison of Different Methods to Reduce Orphans}
   \begin{priklad}
   \begin{center}
   \includegraphics[height=.95\textheight]{img/lua-widow.pdf}
   \end{center}
-\end{priklad}
+  \end{priklad}
   % \myfig[height=0.8\textheight]{img/lua-widow.pdf}{}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Možnosti nastavení}
+  \frametitle{Configuration Options}
  \begin{verbatim}
  \lwcsetup{...}
  \end{verbatim}
  \begin{description}
-   \item[default] -- nepřidává žádné vertikální mezery, ale může vést k příliš vzdušným odstavcům
-   \item[strict] -- využívá primárně vertikální mezery a nevytváří špatné odstavce,  
+   \item[default] -- does not add any vertical spaces but may lead to overly airy paragraphs
+   \item[strict] -- primarily uses vertical spaces and does not create bad paragraphs,  
      \begin{itemize}
-       \item ale odstraní jen třetinu parchantů
-        \item funguje špatně hlavně pro dokumenty, které obsahují jen text, beletrii apod.
-      \end{itemize}
-    \item[balanced] -- kombinuje obě metody, odstraní 90\% parchantů
+       \item but only removes a third of orphans
+       \item works poorly mainly for documents that contain only text, fiction, etc.
+     \end{itemize}
+   \item[balanced] -- combines both methods, removes 90\% of orphans
   \end{description}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Omezení}
+  \frametitle{Limitations}
     \begin{itemize}
-      \item \verb|\clubpenalty| a \verb|\widowpenalty| nemají žádný efekt, naopak mohou způsobit vedlejší účinky
-      \item  podpora pro více sloupcovou sazbu je omezená, balíček Multicol nefunguje
+      \item \verb|\clubpenalty| and \verb|\widowpenalty| have no effect, and can even cause side effects
+      \item Support for multi-column typesetting is limited, the Multicol package does not work
   \end{itemize}
 \end{frame}
- 
 
 \begin{frame}[fragile]
-  \frametitle{Balíček \texttt{luavlna}}
-    Zamezuje rozdělení řádků:
+  \frametitle{\texttt{luavlna} Package}
+    Prevents line breaks:
       \begin{itemize}
-        \item za jednoslovnými předložkami
-        \item u iniciál
-        \item u akademických titulů
-        \item mezi čísly a jednotkami
+        \item After single-word prepositions
+        \item At initials
+        \item At academic titles
+        \item Between numbers and units
       \end{itemize}
   \url{https://ctan.org/pkg/luavlna}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Ukázka užití Luavlny}
+  \frametitle{Usage Example of Luavlna}
   \begin{minipage}{3in}
 
     \preventsingledebugon
 
-    Text s krátkými souhláskami a samohláskami i dalšími jevy
-    z nabídky možností (v textu možnými).
+    Text with short consonants and vowels and other phenomena
+    from the range of possibilities (possible in text).
 
-    Co třeba í znaky š diakritikou?
+    How about characters with diacritics?
 
-    Různé možnosti [v závorkách \textless i jiných znacích
+    Various possibilities [in brackets \textless and other characters
 
-    Podpora iniciál a titulů: M. J. Hegel, Ing. Běháková, Ph.D., Ž. Zíbrt,
+    Support for initials and titles: M. J. Hegel, Ing. Běháková, Ph.D., Ž. Zíbrt,
     Ch. Borner.
 
-    Podpora jednotek: 100,5 MN\cdot{}s, 100.5 kJ, 200 µA, $-1$ dag, 1 MB. 1 kJ.
+    Support for units: 100.5 MN\cdot{}s, 100.5 kJ, 200 µA, $-1$ dag, 1 MB. 1 kJ.
 
-    Uvnitř matematiky by mělo být zpracování vypnuté: $k \in \mathbb N$.
+    Inside mathematics, processing should be disabled: $k \in \mathbb N$.
 
     \preventsingledebugoff
   \end{minipage}
 \end{frame}
 
 \begin{frame}
-    \frametitle{Zalamování spojovníků}
+    \frametitle{Hyphenation of Compound Words}
     \begin{center}
     \begin{minipage}{2in}
-      Sedlec-Prčice, modro-zelený, překladatel-tlumočník, kuchař-číšník, propan-butan, Otýlie Sklenářová-Malá, František Jílek-Oberpfalcer.
+      Sedlec-Prčice, blue-green, translator-interpreter, cook-waiter, propane-butane, Otýlie Sklenářová-Malá, František Jílek-Oberpfalcer.
     \end{minipage}
   \end{center}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Volby balíčku}
-  Pomocí voleb můžeme zakázat některé vlastnosti
+  \frametitle{Package Options}
+  Using options, we can disable certain features
   \begin{description}
-    \item [noprocess] – nespouštět zpracování dokumentu automaticky
-    \item [noinitials] – iniciály
-    \item [nounits] – SI jednotky
-    \item [nopredegrees] – tituly před jménem
-    \item [nosufdegrees] – tituly za jménem
+    \item [noprocess] – do not process the document automatically
+    \item [noinitials] – initials
+    \item [nounits] – SI units
+    \item [nopredegrees] – titles before the name
+    \item [nosufdegrees] – titles after the name
   \end{description}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Užitečné příkazy}
+  \frametitle{Useful Commands}
   \begin{itemize}
-    \item \verb|\singlechars{jazyk}{písmena}| -- seznam písmen, u kterých se potlačuje zalamování řádků
-
-    \item \verb|\enablesplithyphens{jazyk}| -- nastaví podporu zalamování spojovníků pro daný jazyk
-    \item \verb|\preventsinglelang{jazyk}| -- nastaví pravidla pro daný jazyk pro celý dokument
+    \item \verb|\singlechars{language}{letters}| -- list of letters for which line breaking is suppressed
+    \item \verb|\enablesplithyphens{language}| -- sets support for hyphenation of compound words for the given language
+    \item \verb|\preventsinglelang{language}| -- sets the rules for the given language for the entire document
   \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Podporované jazyky}
-  Vestavěná podpora je pouze pro češtinu a slovenštinu:
+  \frametitle{Supported Languages}
+  Built-in support is only for Czech and Slovak:
 
 \begin{verbatim}
 \singlechars{czech}{AIiVvOoUuSsZzKk}
 \singlechars{slovak}{AIiVvOoUuSsZzKk}
 \end{verbatim}
 
-Je třeba jazyk vybrat pomocí balíčků Babel nebo Polyglossia
+The language needs to be selected using the Babel or Polyglossia packages
 
 \begin{verbatim}
-A příklad česky.
+An example in Czech.
 \selectlanguage{english}
-A something.
+An example in English.
 \end{verbatim}
 
     \preventsingledebugon
 
-A příklad česky.
+An example in Czech.
 \selectlanguage{english}
-A something.
+An example in English.
 
     \preventsingledebugoff
 
@@ -606,30 +592,29 @@ A something.
   \linebreakerdisable%
   \noindent\testbox{%
     #1
-    \par\medskip\noindent\hfill\textbf{Bez Linebreakeru}\hfill\null
+    \par\medskip\noindent\hfill\textbf{Without Linebreaker}\hfill\null
   }%
   \linebreakerenable%
   \hfill%
   \testbox{%
     #1
-    \par\medskip\noindent\hfill\textbf{S Linebreakerem}\hfill\null
+    \par\medskip\noindent\hfill\textbf{With Linebreaker}\hfill\null
   }%
 }
 
-
 \begin{frame}[fragile]
-  \frametitle{Balíček \texttt{linebreaker}}
-  Brání výskytu přetečených řádků
+  \frametitle{\texttt{linebreaker} Package}
+  Prevents the occurrence of overfull lines
   \begin{itemize}
-    \item ovlivňuje pouze sazbu  odstavců, kde se takový řádek vyskytl
-    \item pokud detekuje přetečený řádek v odstavci, vysází ho znovu s většími hodnotami
-      \verb|tolerance| a \verb|emergencystretch|.
+    \item Affects only the typesetting of paragraphs where such a line occurs
+    \item If it detects an overfull line in a paragraph, it retypesets it with larger values for
+      \verb|tolerance| and \verb|emergencystretch|.
   \end{itemize}
   \url{https://ctan.org/pkg/linebreaker}
 \end{frame}
-  
+
 \begin{frame}
-  \frametitle{Příklad}
+  \frametitle{Example}
   \printtest{
     The example document given below creates two pages by using Lua code alone. You
 will learn how to access TeX's boxes and counters from the Lua side, shipout a
@@ -637,16 +622,15 @@ page into the PDF file, create horizontal and vertical boxes (hbox and vbox),
 create new nodes and manipulate the nodes links structure. 
 %The example covers the following node types: rule, whatsit, vlist, hlist and action.
   }
-
 \end{frame}
- 
+
 \begin{frame}[fragile]
-  \frametitle{Nastavení}
-  Linebreaker můžeme konfigurovat pomocí příkazu \verb|\linebreakersetup|:
+  \frametitle{Configuration}
+  Linebreaker can be configured using the \verb|\linebreakersetup| command:
   \begin{description}
-    \item[maxcycles] -- počet pokusů o přesázení odstavce
-    \item[maxemergencystretch] -- maximální hodnota \verb|\emergencystretch|
-    \item[maxtolerance]  -- maximální hodnota \verb|tolerance|
+    \item[maxcycles] -- number of attempts to retypeset a paragraph
+    \item[maxemergencystretch] -- maximum value of \verb|\emergencystretch|
+    \item[maxtolerance]  -- maximum value of \verb|tolerance|
   \end{description}
 \begin{verbatim}
 \linebreakersetup{
@@ -658,15 +642,14 @@ maxcycles = 4              % default 30
 
 \end{frame}
 
-% \section{Závěr}
+% \section{Conclusion}
 
 \begin{frame}[standout]
-
- 
-  Děkuji za pozornost!
+  Thank you for your attention!
 
   \url{michal.h21@gmail.com}
 
   \url{www.kodymirus.cz}
-
 \end{frame}
+
+
