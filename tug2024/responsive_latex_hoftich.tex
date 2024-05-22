@@ -97,13 +97,33 @@ beginnings of pages, and the \tbcode{Linebreaker} package~\cite{linebreaker} to 
 
 \section{Introduction}
 
-Some time ago, I acquired an e-book reader, but I still read most texts on my PC screen because they come from web sources. It occurred to me that I could save longer articles for later reading on my e-reader. There are, of course, several applications for this purpose, but I decided to create my own, tailored exactly to my needs and preferences. Another motivation is the opportunity to learn something new and create packages that will be useful for other \TeX\ users as well.
+Some time ago, I acquired an e-book reader, but I still read most texts on my
+PC screen because they come from web sources. It occurred to me that I could
+save longer articles for later reading on my e-reader. There are, of course,
+several applications for this purpose, but I decided to create my own, tailored
+exactly to my needs and preferences. Another motivation is the opportunity to
+learn something new and create packages that will be useful for other \TeX\
+users as well.
 
-My goal is to make the solution as automated as possible, so I don't have to deal with overflow lines or other errors that would require manual intervention. Thanks to the capabilities of Lua\LaTeX, such a solution is already possible, as we will demonstrate in the following text.
+My goal is to make the solution as automated as possible, so I don't have to
+deal with overflow lines or other errors that would require manual
+intervention. Thanks to the capabilities of Lua\LaTeX, such a solution is
+already possible, as we will demonstrate in the following text.
 
-Because Lua\TeX\ includes the Lua programming language in \TeX\ distributions, I used it to create my project \program{Rmodepdf} \cite{rmodepdf}. It uses the \tbcode{LuaXML} package \cite{luaxml} to transform HTML into \TeX{} and the \program{Curl} commands to download the page, \program{Tidy} to fix HTML errors, and \program{Rdrview} \cite{rdrview}, which removes navigation elements, advertisements, and other distractions from the page. \program{Rdrview} works similarly to the reader mode in the \program{Firefox} browser (illustrated in Figure~\ref{fig:readermode}).
+Because Lua\TeX\ includes the Lua programming language in \TeX\ distributions,
+I used it to create my project \program{Rmodepdf} \cite{rmodepdf}. It uses the
+\tbcode{LuaXML} package \cite{luaxml} to transform HTML into \TeX{} and the
+\program{Curl} commands to download the page, \program{Tidy} to fix HTML
+errors, and \program{Rdrview} \cite{rdrview}, which removes navigation
+elements, advertisements, and other distractions from the page.
+\program{Rdrview} works similarly to the reader mode in the \program{Firefox}
+browser (illustrated in Figure~\ref{fig:readermode}).
 
-However, in the following text, I will not focus on the \program{Rmodepdf} program itself, which is still not in a state suitable for general users. I believe that readers will find it more useful to describe the methods for automated typesetting and responsive design, which they can use in typesetting their own documents.
+However, in the following text, I will not focus on the \program{Rmodepdf}
+program itself, which is still not in a state suitable for general users. I
+believe that readers will find it more useful to describe the methods for
+automated typesetting and responsive design, which they can use in typesetting
+their own documents.
 
 \begin{figure}[tbp]
   \centering
@@ -132,13 +152,29 @@ $ rdrview -H <url> | pandoc -f html -t latex -V lang=cs \
 
 \section{Responsive Design}
 
-One of the issues that need to be addressed is setting the correct font size for readability. The default font size in \LaTeX\ is 10 points, regardless of the page size. This is a suitable font size for an A5 page. For A4 format, the font size should be larger, and for smaller screens of e-readers and mobile phones, it can be smaller. Similarly, we can change the line spacing, which also affects text readability depending on the font size and page size.
+One of the issues that need to be addressed is setting the correct font size
+for readability. The default font size in \LaTeX\ is 10 points, regardless of
+the page size. This is a suitable font size for an A5 page. For A4 format, the
+font size should be larger, and for smaller screens of e-readers and mobile
+phones, it can be smaller. Similarly, we can change the line spacing, which
+also affects text readability depending on the font size and page size.
 
-Web browsers face a similar problem, as they need to display text on large PC monitors as well as on smaller screens of laptops, tablets, and mobile phones. The solution they use is called \textit{responsive design}.
+Web browsers face a similar problem, as they need to display text on large PC
+monitors as well as on smaller screens of laptops, tablets, and mobile phones.
+The solution they use is called \textit{responsive design}.
 
-Responsive design is a way of designing web pages that allows flexible and dynamic adaptation of the appearance and layout of the page content to different display devices. One of the key elements of responsive design is a flexible structure that allows elements on the page to be resized to fit the display device.
+Responsive design is a way of designing web pages that allows flexible and
+dynamic adaptation of the appearance and layout of the page content to
+different display devices. One of the key elements of responsive design is a
+flexible structure that allows elements on the page to be resized to fit the
+display device.
 
-Another important element is \textit{media queries}. These allow defining rules that apply based on the properties of the display device, such as screen width and height or the type of output (paper, display). Thanks to these rules, the same page code can be well displayed on both large monitors and mobile devices or when printed. An example of real-world use can be seen in Figure~\ref{fig:responsive}.
+Another important element is \textit{media queries}. These allow defining rules
+that apply based on the properties of the display device, such as screen width
+and height or the type of output (paper, display). Thanks to these rules, the
+same page code can be well displayed on both large monitors and mobile devices
+or when printed. An example of real-world use can be seen in
+Figure~\ref{fig:responsive}.
 
 \begin{figure}[tbp]
 \begin{subfigure}[t]{0.74\textwidth}
@@ -153,11 +189,20 @@ Another important element is \textit{media queries}. These allow defining rules 
   \caption{Example of displaying a web page using responsive design}\label{fig:responsive}
 \end{figure}
 
-The \tbcode{Responsive} package~\cite{responsive} is inspired by these principles. Its main function is to set the font size according to the page size and the approximate number of characters that should fit on the page. It also sets the typographic scale (affecting font sizes for headings or footnotes), the font baseline, and supports a simple version of media queries.
+The \tbcode{Responsive} package~\cite{responsive} is inspired by these
+principles. Its main function is to set the font size according to the page
+size and the approximate number of characters that should fit on the page. It
+also sets the typographic scale (affecting font sizes for headings or
+footnotes), the font baseline, and supports a simple version of media queries.
 
 \subsection{Setting up the \tbcode{Responsive} Package}
 
-\tbcode{Responsive} automatically sets the font size, line spacing, and typographic scale at the beginning of the document. Default values can be changed using package options (\verb|\usepackage[<options>]{responsive}|) or the \verb|\ResponsiveSetup{<options>}| command. The \verb|\ResponsiveSetup| command can also be used directly in the document text, for example, for local font settings changes.
+\tbcode{Responsive} automatically sets the font size, line spacing, and
+typographic scale at the beginning of the document. Default values can be
+changed using package options (\verb|\usepackage[<options>]{responsive}|) or
+the \verb|\ResponsiveSetup{<options>}| command. The \verb|\ResponsiveSetup|
+command can also be used directly in the document text, for example, for local
+font settings changes.
 
 The \tbcode{Responsive} package offers the following options:
 
@@ -170,9 +215,17 @@ The \tbcode{Responsive} package offers the following options:
 
 \subsection{Basic Font Size}
 
-The font size can be set using the \verb|\setsizes{<number of characters per|\allowbreak\verb|line>}| command. \tbcode{Responsive} tries to set the font size so that the desired number of characters fits on a line on average. The actual number of characters depends on the text used, as each letter has a different width when using proportional fonts. In reality, the number of characters displayed on a line may be slightly higher.
+The font size can be set using the \verb|\setsizes{<number of characters per|\allowbreak\verb|line>}| 
+command. \tbcode{Responsive} tries to set the font
+size so that the desired number of characters fits on a line on average. The
+actual number of characters depends on the text used, as each letter has a
+different width when using proportional fonts. In reality, the number of
+characters displayed on a line may be slightly higher.
 
-If the number of characters is not specified in the \verb|\setsizes| command, the value of the \texttt{characters} option is used. The following example uses this option setting. Figure~\ref{fig:fontsize} shows how the same text can be displayed differently within the same frame, depending on the settings.
+If the number of characters is not specified in the \verb|\setsizes| command,
+the value of the \texttt{characters} option is used. The following example uses
+this option setting. Figure~\ref{fig:fontsize} shows how the same text can be
+displayed differently within the same frame, depending on the settings.
 
 \begin{verbatim}
 \begin{minipage}{5cm}
@@ -218,13 +271,22 @@ a, magna. Donec vehicula augue eu neque.
 
 \subsection{Line Spacing}
 
-By default, \LaTeX\ sets the line spacing to the font size multiplied by 1.2. For different fonts and page sizes, a different line spacing may be appropriate. Similarly, different values may be suitable for the printed and electronic versions of the document.
+By default, \LaTeX\ sets the line spacing to the font size multiplied by 1.2.
+For different fonts and page sizes, a different line spacing may be
+appropriate. Similarly, different values may be suitable for the printed and
+electronic versions of the document.
 
-I was inspired by Edoardo Cavazza's article~\cite{cavazza} on readability and added support for setting line spacing based on the ratio of lowercase letter height and the \texttt{lineratio} variable. This ratio is obtained by the following calculation:
+I was inspired by Edoardo Cavazza's article~\cite{cavazza} on readability and
+added support for setting line spacing based on the ratio of lowercase letter
+height and the \texttt{lineratio} variable. This ratio is obtained by the
+following calculation:
 
 \[ \text{line spacing} = \frac{1\text{ex}}{\text{lineratio}/100} \]
 
-You can observe the impact of changing the \texttt{lineratio} value in Figure~\ref{fig:lineratio}. The choice of its optimal value depends on the font used and the page size. To achieve maximum output readability, it's advisable to compare the output using different values.
+You can observe the impact of changing the \texttt{lineratio} value in
+Figure~\ref{fig:lineratio}. The choice of its optimal value depends on the font
+used and the page size. To achieve maximum output readability, it's advisable
+to compare the output using different values.
 
 \begin{figure}[tbp]
   \begin{subfigure}[b]{0.45\textwidth}
@@ -254,11 +316,25 @@ You can observe the impact of changing the \texttt{lineratio} value in Figure~\r
 
 \subsection{Typographic Scale}
 
-A typographic scale is a set of pre-defined font sizes used to create a consistent visual style for a document or web page. These sizes are usually expressed in point units and progressively increase or decrease by a specific interval that lies on the scale.
+A typographic scale is a set of pre-defined font sizes used to create a
+consistent visual style for a document or web page. These sizes are usually
+expressed in point units and progressively increase or decrease by a specific
+interval that lies on the scale.
 
-A typographic scale may contain sizes for headings, footnotes, and regular text. Proper use of the typographic scale helps create a visual hierarchy that enhances text readability and aesthetic appeal. More information about typographic scales can be found in Spencer Mortensen's article~\cite{mortensen}.
+A typographic scale may contain sizes for headings, footnotes, and regular
+text. Proper use of the typographic scale helps create a visual hierarchy that
+enhances text readability and aesthetic appeal. More information about
+typographic scales can be found in Spencer Mortensen's
+article~\cite{mortensen}.
 
-In \LaTeX, the typographic scale is available through commands like \verb|\large|, \verb|\Large|, \verb|\LARGE|, \verb|\huge|, or \verb|\scriptsize|. Each of these commands is one interval away from the previous font size. The default scale in the \tbcode{Responsive} package is the nearest scale used in \LaTeX. In Mortensen's article, it's referred to as the "tetratonic" scale. The package also offers other scales described in the article, such as "golden," based on the golden ratio. The effect of using the scale is shown in Figure~\ref{fig:stupnice}.
+In \LaTeX, the typographic scale is available through commands like
+\verb|\large|, \verb|\Large|, \verb|\LARGE|, \verb|\huge|, or
+\verb|\scriptsize|. Each of these commands is one interval away from the
+previous font size. The default scale in the \tbcode{Responsive} package is the
+nearest scale used in \LaTeX. In Mortensen's article, it's referred to as the
+"tetratonic" scale. The package also offers other scales described in the
+article, such as "golden," based on the golden ratio. The effect of using the
+scale is shown in Figure~\ref{fig:stupnice}.
 
 \begin{figure}[bp]
   \begin{subfigure}[b]{0.45\textwidth}
@@ -288,7 +364,10 @@ In \LaTeX, the typographic scale is available through commands like \verb|\large
   \caption{Example of typographic scales (default font size is highlighted with lines)}\label{fig:stupnice}
 \end{figure}
 
-However, you can also define a custom scale. For example, the following code defines a scale where the text size is doubled (\verb|ratio=2|) in three steps (\verb|number=3|). When defining custom scale options, you need to specify \verb|scale=none|. The \verb|\setsizes| command then redefines the font sizes.
+However, you can also define a custom scale. For example, the following code
+defines a scale where the text size is doubled (\verb|ratio=2|) in three steps
+(\verb|number=3|). When defining custom scale options, you need to specify
+\verb|scale=none|. The \verb|\setsizes| command then redefines the font sizes.
 
 
 
@@ -299,11 +378,28 @@ However, you can also define a custom scale. For example, the following code def
 
 \subsection{Media Queries}
 
-Media queries are a technique that allows web developers to dynamically adapt the appearance and behavior of web pages based on various device properties, such as screen width and height, device orientation, color support, and many others. With these conditions, it is possible to create responsive and flexible web pages that can automatically adjust to different types and sizes of devices on which they are displayed.
+Media queries are a technique that allows web developers to dynamically adapt
+the appearance and behavior of web pages based on various device properties,
+such as screen width and height, device orientation, color support, and many
+others. With these conditions, it is possible to create responsive and flexible
+web pages that can automatically adjust to different types and sizes of devices
+on which they are displayed.
 
-How can this technique be useful for \LaTeX\ package authors? They could, for example, set the font size, line spacing, and other elements for specific page dimensions. After the user chooses the page size according to the device for which they want to compile the document, these elements are set automatically. The package author can define, for instance, that if the width of the text line is less than a certain size, fewer characters will be displayed on it than on longer lines. The result is shown in Figure~\ref{fig:mediaguery}.
+How can this technique be useful for \LaTeX\ package authors? They could, for
+example, set the font size, line spacing, and other elements for specific page
+dimensions. After the user chooses the page size according to the device for
+which they want to compile the document, these elements are set automatically.
+The package author can define, for instance, that if the width of the text line
+is less than a certain size, fewer characters will be displayed on it than on
+longer lines. The result is shown in Figure~\ref{fig:mediaguery}.
 
-A media query can be declared using the \verb|\mediaquery| command, which expects three parameters—the first is a list of tests, the next parameter expects the code to be executed if the tests evaluate to true, and the last one contains the code to be executed if the condition is not met. The code can include the \verb|\ResponsiveSetup| command, as well as any other commands. For example, setting the size of the text block, header, and footer using the \tbcode{Geometry} package.
+A media query can be declared using the \verb|\mediaquery| command, which
+expects three parameters—the first is a list of tests, the next parameter
+expects the code to be executed if the tests evaluate to true, and the last one
+contains the code to be executed if the condition is not met. The code can
+include the \verb|\ResponsiveSetup| command, as well as any other commands. For
+example, setting the size of the text block, header, and footer using the
+\tbcode{Geometry} package.
 
 \begin{figure}[btp]
 
@@ -347,11 +443,19 @@ A media query can be declared using the \verb|\mediaquery| command, which expect
   \caption{Media Query Example}\label{fig:mediaguery}
 \end{figure}
 
-We can test the following page properties: \texttt{paperwidth} and \texttt{paperheight} for page dimensions, \texttt{textwidth} and \texttt{textheight} for text dimensions, \texttt{orientation} for text orientation, and \texttt{twocolumn} for detecting the use of two-column text in the document.
+We can test the following page properties: \texttt{paperwidth} and
+\texttt{paperheight} for page dimensions, \texttt{textwidth} and
+\texttt{textheight} for text dimensions, \texttt{orientation} for text
+orientation, and \texttt{twocolumn} for detecting the use of two-column text in
+the document.
 
-Tests for text and page dimensions also support the prefixes \texttt{max-} and \texttt{min-}. Using these, we can test whether a given dimension is smaller or larger than a specified value.
+Tests for text and page dimensions also support the prefixes \texttt{max-} and
+\texttt{min-}. Using these, we can test whether a given dimension is smaller or
+larger than a specified value.
 
-For example, the following command changes the text color to blue if the document has landscape orientation, the text width is less than 20 cm, and two columns are used.
+For example, the following command changes the text color to blue if the
+document has landscape orientation, the text width is less than 20 cm, and two
+columns are used.
 
 \begin{verbatim}
 \mediaquery{orientation=landscape,
@@ -362,13 +466,27 @@ twocolumn=true}{\color{blue}}{}
 
 \section{Automatic Typesetting}
 
-Lua\TeX\ allows us to automatically address some issues that previously required manual intervention in the document. Because the typesetting process can be influenced using callbacks in the Lua language, we can, for example, limit the occurrence of typographical errors such as widows and orphans, single-character prepositions at the ends of lines, or poorly broken paragraphs. In this section, we will demonstrate several packages that address these errors.
+Lua\TeX\ allows us to automatically address some issues that previously
+required manual intervention in the document. Because the typesetting process
+can be influenced using callbacks in the Lua language, we can, for example,
+limit the occurrence of typographical errors such as widows and orphans,
+single-character prepositions at the ends of lines, or poorly broken
+paragraphs. In this section, we will demonstrate several packages that address
+these errors.
 
 \subsection{\tbcode{Luavlna} Package}
 
-According to Czech and Slovak typographical conventions, single-character prepositions or conjunctions should not appear at the ends of lines. In \TeX, this can be prevented by inserting the \verb|~| character between the preposition and the following word. To simplify this task, several tools exist, such as the \tbcode{Vlna} program by Petr Olšák or the \tbcode{Encxvlna} package also created by Petr Olšák and Zdeněk Wagner.
+According to Czech and Slovak typographical conventions, single-character
+prepositions or conjunctions should not appear at the ends of lines. In \TeX,
+this can be prevented by inserting the \verb|~| character between the
+preposition and the following word. To simplify this task, several tools exist,
+such as the \tbcode{Vlna} program by Petr Olšák or the \tbcode{Encxvlna}
+package also created by Petr Olšák and Zdeněk Wagner.
 
-The \tbcode{Luavlna} package \cite{luavlna} utilizes Lua\TeX's capabilities to modify fully processed text nodes before they are broken into paragraphs. At this stage, all macros are expanded, so non-breaking spaces can be easily inserted where they should be.
+The \tbcode{Luavlna} package \cite{luavlna} utilizes Lua\TeX's capabilities to
+modify fully processed text nodes before they are broken into paragraphs. At
+this stage, all macros are expanded, so non-breaking spaces can be easily
+inserted where they should be.
 
 \tbcode{Luavlna} prevents line breaks in the following situations:
 
@@ -448,7 +566,8 @@ A thing.
 
 \bigskip
 
-To process the entire document according to Czech rules regardless of the currently selected language, use the \verb|\preventsinglelang{czech}| command.
+To process the entire document according to Czech rules regardless of the
+currently selected language, use the \verb|\preventsinglelang{czech}| command.
 
 \begin{verbatim}
 \preventsinglelang{czech}
@@ -499,11 +618,21 @@ A thing.
   \end{subfigure}
 }
 
-The \tbcode{Linebreaker} package~\cite{linebreaker} prevents text from overflowing in boxes and paragraphs. An example of its usage can be seen in Figure~\ref{fig:linebreaker}, where it prevents several lines from overflowing when typeset into a narrow column.
+The \tbcode{Linebreaker} package~\cite{linebreaker} prevents text from
+overflowing in boxes and paragraphs. An example of its usage can be seen in
+Figure~\ref{fig:linebreaker}, where it prevents several lines from overflowing
+when typeset into a narrow column.
 
-\tbcode{Linebreaker} utilizes the Lua\TeX\ callback \verb|linebreak_filter|, which controls line breaking. \tbcode{Linebreaker} replaces the default line breaking function with a modified version that detects overflow or underflow in the broken text. Upon detecting this problem, it retypesets the text with increased values of \verb|\tolerance| and \verb|\emergencystretch| until the overflow is suppressed or the maximum \verb|\tolerance| limit is reached.
+\tbcode{Linebreaker} utilizes the Lua\TeX\ callback \verb|linebreak_filter|,
+which controls line breaking. \tbcode{Linebreaker} replaces the default line
+breaking function with a modified version that detects overflow or underflow in
+the broken text. Upon detecting this problem, it retypesets the text with
+increased values of \verb|\tolerance| and \verb|\emergencystretch| until the
+overflow is suppressed or the maximum \verb|\tolerance| limit is reached.
 
-The advantage is that these changes to \verb|\tolerance| and \verb|\emergencystretch| are local only to the currently broken paragraph and do not affect the rest of the text.
+The advantage is that these changes to \verb|\tolerance| and
+\verb|\emergencystretch| are local only to the currently broken paragraph and
+do not affect the rest of the text.
 
 \begin{figure}
   \label{fig:linebreaker}
@@ -518,8 +647,10 @@ create new nodes and manipulate the nodes links structure.
 
 \subsubsection{Configuration}
 
-The \tbcode{Linebreaker} package can be configured by specifying package options using 
-\texttt{\textbackslash usepackage[<options>]\{linebreaker\}} or later in the document body with the command 
+The \tbcode{Linebreaker} package can be configured by specifying package
+options using 
+\texttt{\textbackslash usepackage[<options>]\{linebreaker\}} or later in the
+document body with the command 
 \texttt{\textbackslash linebreakersetup\{<options>\}}:
 
 \begin{description}
