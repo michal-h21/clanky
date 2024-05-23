@@ -126,7 +126,7 @@ believe that readers will find it more useful to describe the methods for
 automated typesetting and responsive design, which they can use in typesetting
 their own documents.
 
-\begin{figure}[tbp]
+\begin{figure*}[tbp]
   \centering
   \caption{Example of using the \emph{reader view} mode in the \program{Firefox} browser}
   \label{fig:readermode}
@@ -139,7 +139,7 @@ their own documents.
     \includegraphics[width=\textwidth]{img/root-čtečka.png}
     \caption{Page in reader view}
   \end{subfigure}
-\end{figure}
+\end{figure*}
 
 \section{How to Convert a Web Page to PDF Using \LaTeX}
 
@@ -177,7 +177,7 @@ same page code can be well displayed on both large monitors and mobile devices
 or when printed. An example of real-world use can be seen in
 Figure~\ref{fig:responsive}.
 
-\begin{figure}[tbp]
+\begin{figure*}[tbp]
 \begin{subfigure}[t]{0.74\textwidth}
     \includegraphics[width=\textwidth]{img/pedf-web-big.png}
     \caption{Example of a page on a large monitor}
@@ -188,7 +188,7 @@ Figure~\ref{fig:responsive}.
     \caption{Example of a page on a small display}
 \end{subfigure}
   \caption{Example of displaying a web page using responsive design}\label{fig:responsive}
-\end{figure}
+\end{figure*}
 
 The \tbcode{Responsive} package~\cite{responsive} is inspired by these
 principles. Its main function is to set the font size according to the page
@@ -236,7 +236,7 @@ displayed differently within the same frame, depending on the settings.
 \end{minipage}
 \end{verbatim}
 
-\begin{figure}[tbp]
+\begin{figure*}[tbp]
   \begin{subfigure}[t]{0.45\textwidth}
 \fbox{%
 \begin{minipage}{5cm}
@@ -268,7 +268,7 @@ a, magna. Donec vehicula augue eu neque.
 \caption{\texttt{characters=25, lineratio=38}}
 \end{subfigure}
   \caption{Difference in font size depending on the number of characters per line}\label{fig:fontsize}
-\end{figure}
+\end{figure*}
 
 \subsection{Line Spacing}
 
@@ -289,7 +289,7 @@ Figure~\ref{fig:lineratio}. The choice of its optimal value depends on the font
 used and the page size. To achieve maximum output readability, it's advisable
 to compare the output using different values.
 
-\begin{figure}[tbp]
+\begin{figure*}[tbp]
   \begin{subfigure}[b]{0.45\textwidth}
 \fbox{%
 \begin{minipage}{5cm}
@@ -313,7 +313,7 @@ to compare the output using different values.
 \caption{\texttt{lineratio=34}}
 \end{subfigure}
   \caption{Change in line spacing by changing the \texttt{lineratio} value}\label{fig:lineratio}
-\end{figure}
+\end{figure*}
 
 \subsection{Typographic Scale}
 
@@ -337,7 +337,7 @@ nearest scale used in \LaTeX. In Mortensen's article, it's referred to as the
 article, such as "golden," based on the golden ratio. The effect of using the
 scale is shown in Figure~\ref{fig:stupnice}.
 
-\begin{figure}[bp]
+\begin{figure*}[bp]
   \begin{subfigure}[b]{0.45\textwidth}
 \fbox{%
 \begin{minipage}{5cm}
@@ -363,7 +363,7 @@ scale is shown in Figure~\ref{fig:stupnice}.
 \caption{Scale based on the golden ratio}
 \end{subfigure}
   \caption{Example of typographic scales (default font size is highlighted with lines)}\label{fig:stupnice}
-\end{figure}
+\end{figure*}
 
 However, you can also define a custom scale. For example, the following code
 defines a scale where the text size is doubled (\verb|ratio=2|) in three steps
@@ -402,7 +402,7 @@ include the \verb|\ResponsiveSetup| command, as well as any other commands. For
 example, setting the size of the text block, header, and footer using the
 \tbcode{Geometry} package.
 
-\begin{figure}[btp]
+\begin{figure*}[btp]
 
   \centering
 
@@ -442,7 +442,7 @@ example, setting the size of the text block, header, and footer using the
 \caption{Text width 3.9 cm}
 \end{subfigure}
   \caption{Media Query Example}\label{fig:mediaguery}
-\end{figure}
+\end{figure*}
 
 We can test the following page properties: \texttt{paperwidth} and
 \texttt{paperheight} for page dimensions, \texttt{textwidth} and
@@ -498,7 +498,7 @@ inserted where they should be.
   \item Between numbers and units
 \end{itemize}
 
-\begin{figure}
+\begin{figure*}
   \begin{minipage}{3in}
 
     \preventsingledebugon
@@ -518,7 +518,7 @@ inserted where they should be.
     \preventsingledebugoff
   \end{minipage}
   \caption{Example use of the Luavlna package}\label{fig:luavlna}
-\end{figure}
+\end{figure*}
 
 You can see an example of the package usage in Figure~\ref{fig:luavlna}.
 Options are specified using package options:
@@ -635,7 +635,7 @@ The advantage is that these changes to \verb|\tolerance| and
 \verb|\emergencystretch| are local only to the currently broken paragraph and
 do not affect the rest of the text.
 
-\begin{figure}
+\begin{figure*}
   \printtest{
     The example document given below creates two pages by using Lua code alone. You
 will learn how to access TeX's boxes and counters from the Lua side, shipout a
@@ -644,7 +644,7 @@ create new nodes and manipulate the nodes links structure.
   }
   \caption{Example of using the \tbcode{Linebreaker} package}
   \label{fig:linebreaker}
-\end{figure}
+\end{figure*}
 
 \subsubsection{Configuration}
 
