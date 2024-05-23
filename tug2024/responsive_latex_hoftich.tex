@@ -1,3 +1,4 @@
+%! TeX program = lualatex
 % při kompilaci dokumentu LuaLaTeXem dojde k chybě, protože
 % nedefinuje \pdfpagewidth a \pdfpageheight. 
 % Balíček luatex85 to napravuje
@@ -635,7 +636,6 @@ The advantage is that these changes to \verb|\tolerance| and
 do not affect the rest of the text.
 
 \begin{figure}
-  \label{fig:linebreaker}
   \printtest{
     The example document given below creates two pages by using Lua code alone. You
 will learn how to access TeX's boxes and counters from the Lua side, shipout a
@@ -643,6 +643,7 @@ page into the PDF file, create horizontal and vertical boxes (hbox and vbox),
 create new nodes and manipulate the nodes links structure. 
   }
   \caption{Example of using the \tbcode{Linebreaker} package}
+  \label{fig:linebreaker}
 \end{figure}
 
 \subsubsection{Configuration}
