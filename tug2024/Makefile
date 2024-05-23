@@ -7,7 +7,7 @@ source_files=$(tex_file) $(pdf_file) Makefile responsive.bib
 
 $(pdf_file): $(tex_file)
 	lualatex $<
-	biber $(article_name)
+	bibtex $(article_name)
 	lualatex $<
 
 
