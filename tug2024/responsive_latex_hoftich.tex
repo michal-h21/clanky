@@ -1,7 +1,4 @@
 %! TeX program = lualatex
-% při kompilaci dokumentu LuaLaTeXem dojde k chybě, protože
-% nedefinuje \pdfpagewidth a \pdfpageheight. 
-% Balíček luatex85 to napravuje
 \ifdefined\directlua
 \RequirePackage{luatex85}
 \fi
@@ -27,7 +24,7 @@
 
 \linebreakersetup{
 %   maxtolerance =90 ,
-  maxemergencystretch=1.3em,
+  maxemergencystretch=1em,
 %   maxcycles=4
 }
 
@@ -48,7 +45,6 @@
 ]{hyperref}
 
 
-\newcommand\program[1]{\tbcode{#1}}
 
 % pro případ, kdy je \lipsum moc velké 
 \newcommand\smalllipsum{%
@@ -121,13 +117,13 @@ intervention. Thanks to the capabilities of Lua\LaTeX, such a solution is
 already possible, as we will demonstrate in the following text.
 
 Because Lua\TeX\ includes the Lua programming language in \TeX\ distributions,
-I used it to create my project \program{Rmodepdf}~\cite{rmodepdf}. It uses the
+I used it to create my project \tbcode{Rmodepdf}~\cite{rmodepdf}. It uses the
 \tbcode{LuaXML} package~\cite{luaxml} to transform HTML into \TeX{} and few
-externall commands -- \program{Curl} for downloading of the web pages, 
-and \program{Rdrview} \cite{rdrview}, which removes navigation
+externall commands -- \tbcode{Curl} for downloading of the web pages, 
+and \tbcode{Rdrview} \cite{rdrview}, which removes navigation
 elements, advertisements, and other distractions from the page.
-The \program{Rdrview} is based on the JavaScript library used by the
-\program{Firefox} browser for its Reader Mode. However, it has been translated
+The \tbcode{Rdrview} is based on the JavaScript library used by the
+\tbcode{Firefox} browser for its Reader Mode. However, it has been translated
 from JavaScript to C, making it significantly faster and eliminating the need
 for any additional dependencies.
 
@@ -141,13 +137,13 @@ prevents line overflow, which is crucial in automated document typesetting
 where we neither want nor can manually correct such errors.
 
 In addition to saving articles for reading on an e-reader, there are other ways
-to utilize the \program{Rmodepdf} program. One such use is archiving web
+to utilize the \tbcode{Rmodepdf} program. One such use is archiving web
 content on paper. By removing all navigation elements, we obtain a document
 that can be easily printed, bound, and archived as a book.
 
-\section{Basic usage of \program{Rmodepdf}}
+\section{Basic usage of \tbcode{Rmodepdf}}
 
-The \program{Rmodepdf} accepts one or more URLs as arguments. It is also
+The \tbcode{Rmodepdf} accepts one or more URLs as arguments. It is also
 possible to use the addresses of local HTML files.
 
 \begin{verbatim}
@@ -187,10 +183,10 @@ $ rmodepdf -o foo.pdf -i /tmp/img <url>
 \end{verbatim}
 
 You can disable image downloading entirely with the \texttt{-n} option. 
-The \program{Rmodepdf} also detects and displays \LaTeX\ mathematical commands
-embedded in web pages that use \program{MathJax} or \program{KaTeX} for
+The \tbcode{Rmodepdf} also detects and displays \LaTeX\ mathematical commands
+embedded in web pages that use \tbcode{MathJax} or \tbcode{KaTeX} for
 rendering. This default behavior can be disabled using the \texttt{-N} option.
-Additionally, the removal of page elements using \program{Rdrview} can be
+Additionally, the removal of page elements using \tbcode{Rdrview} can be
 disabled with the \texttt{-R} option.
 
 
@@ -202,7 +198,7 @@ disabled with the \texttt{-R} option.
 
 It often happens that during conversion you encounter errors or wish to change
 how certain elements on the page are converted into \LaTeX. Therefore,
-\program{Rmodepdf} provides the option to use a Lua configuration script. This
+\tbcode{Rmodepdf} provides the option to use a Lua configuration script. This
 script allows you to modify the code of translated pages, define conversion
 rules, set variables, or change templates as needed. The configuration file is
 loaded using the option \texttt{-c}.
@@ -282,20 +278,20 @@ as follows:
 
 The most useful are the first three. The \texttt{preprocess\_content} function
 takes a string parameter with the HTML code of the page as it was downloaded
-from the original website, before any modifications by \program{Rdrview}. Here,
+from the original website, before any modifications by \tbcode{Rdrview}. Here,
 you can use Lua string functions to fix certain elements that may cause issues
-during processing with \program{Rdrview}. This method is quite limited and,
+during processing with \tbcode{Rdrview}. This method is quite limited and,
 especially when using regular expressions, it can cause more harm than good.
 Therefore, use it with caution.
 
 The difference between the next two callbacks is that with the first one, you
-can still influence image downloading or the processing of LaTeX commands. For
+can still influence image downloading or the processing of \LaTeX\ commands. For
 modifications to the final version of the document, it is best to use
 \texttt{postprocess\_dom}.
 
-Both functions receive a \program{LuaXML} DOM object as a parameter. This
+Both functions receive a \tbcode{LuaXML} DOM object as a parameter. This
 allows you to safely traverse and transform the entire document.
-\program{LuaXML} includes many functions for working with the DOM; here, we
+\tbcode{LuaXML} includes many functions for working with the DOM; here, we
 will introduce just a few basics. For example, the following example prints the
 resulting DOM object as HTML code:
 
@@ -314,7 +310,7 @@ document.
 
 
 
-Here's a slightly more complex example. Let's assume that \program{Rdrview} did
+Here's a slightly more complex example. Let's assume that \tbcode{Rdrview} did
 not remove a menu that might look like this:
 
 \begin{verbatim}
@@ -356,7 +352,7 @@ This ensures that any remaining menus are removed from the final document.
 
 \subsection{Transformation from HTML to \LaTeX}
 
-We perform the conversion of HTML elements to LaTeX using the
+We perform the conversion of HTML elements to \LaTeX\ using the
 \texttt{luaxml-transform} library. This library allows us to declare simple
 rules for transforming XML or HTML elements into text. Elements can be selected
 using CSS selectors, which is important because elements with the same name but
@@ -408,29 +404,83 @@ replacement text string is empty. However, for links whose \verb|href|
 attribute starts with \verb|'#easy-footnote'|, only their text content is
 displayed.
 
-Lua functions can also be used for transformations, using 
-\verb|htmlprocess.add_custom_action| instead of \verb|htmlprocess.add_action|:
-
-\begin{verbatim}
-htmlprocess.add_custom_action(".menu", 
-  function(el)
-  -- do some stuff using LuaXML DOM 
-  -- functions
-  local s = ...
-  return s .. htmlprocess.process_children(el)
-end)
-\end{verbatim}
-
 This was just a brief introduction to the transformation possibilities using
 \texttt{luaxml-transform}. You can find many more examples in the
-\program{LuaXML} manual.
+\tbcode{LuaXML} manual.
 
 
 
 
 
 \section{Template}
-\section{Responsive Design}
+
+After converting from HTML to \LaTeX, we need to combine the resulting code into
+a single document that can be compiled. Therefore, \tbcode{Rmodepdf} includes a
+simple templating system that allows us to merge individual pages and their
+metadata together.
+
+A basic template might look like this:
+
+\begin{verbatim}
+\documentclass{article}
+\usepackage{linebreaker,responsive}
+\usepackage[_{document.languages}%s/{,}]
+{babel}
+\usepackage[@{document.geometry}]{geometry}
+\pagestyle{@{document.pagestyle}}
+@{document.preamble_extras}
+\begin{document}
+_{pages}
+\selectlanguage{@{language}}
+?{title}{Title: @{title}}\par}{}
+?{author}{Author: @{author}\par}{}
+\href{@{url}}{@{url}}\par
+@{content}
+/{\clearpage}
+\end{document}
+\end{verbatim}
+
+
+Templates contain three syntactic constructs. The basic one is printing a
+variable using \verb|@{variablename}|. Variables are contained in the
+\verb|config| table, and using a dot, we can also print properties of
+sub-tables. For example, \texttt{@\{document.\allowbreak preamble\_extras\}} prints the
+\texttt{config.\allowbreak document.preamble\_extras} variable.
+
+The next construct is loops. They have the syntax 
+\verb|_{variablename}loop code/{separator}|. 
+Variables that can be used must be arrays. For example,
+\verb|document.languages| contains the languages of all translated documents in
+a format suitable for the Babel package, or \verb|pages|, which contains all
+converted documents. In the loop code, variables of the currently processed
+array are available. If the array contains only strings, we can use the
+placeholder \verb|%s|. This is used for \verb|document.languages|. If the
+current object is a table, we can access its fields directly using
+\verb|@{variablename}|.
+
+The last construct is conditions. Their syntax is
+\verb|?{variablename}{true}{false}|. In the example, we use them to insert the
+title and author, because not all pages have these items.
+
+Custom templates can be required using the \verb|-t| option.
+
+\begin{verbatim}
+$ rmodepdf -t mytemplate.tex <url>
+\end{verbatim}
+
+\section{Automatic Typesetting}
+
+This brings us to the next part. Since \verb|Rmodepdf| compiles web pages
+directly into PDF, we cannot easily intervene in the conversion process.
+Therefore, the conversion needs to be as automated and error-free as possible.
+The output PDF can also have various page sizes. The default size is adapted
+for e-book readers, but we might also want to create a PDF suitable for
+smartphones or, conversely, a standard A4 size. For all these sizes, we need to
+choose different font sizes or page margins. This can be achieved using two new
+packages, which we will demonstrate in this section.
+
+
+\subsection{Responsive Design}
 
 One of the issues that need to be addressed is setting the correct font size
 for readability. The default font size in \LaTeX\ is 10 points, regardless of
@@ -453,23 +503,9 @@ Another important element is \textit{media queries}. These allow defining rules
 that apply based on the properties of the display device, such as screen width
 and height or the type of output (paper, display). Thanks to these rules, the
 same page code can be well displayed on both large monitors and mobile devices
-or when printed. An example of real-world use can be seen in
-Figure~\ref{fig:responsive}.
+or when printed. 
 
 
-\begin{figure*}[tbp]
-\begin{subfigure}[t]{0.74\textwidth}
-    \includegraphics[width=\textwidth]{img/pedf-web-big.png}
-    \caption{Example of a page on a large monitor}
-\end{subfigure}
-\hfill
-\begin{subfigure}[t]{0.24\textwidth}
-    \includegraphics[width=\textwidth]{img/pedf-web-small.png}
-    \caption{Example of a page on a small display}
-\end{subfigure}
-  \caption{Example of displaying a web page using responsive
-  design}\label{fig:responsive}
-\end{figure*}
 
 The \tbcode{Responsive} package~\cite{responsive} is inspired by these
 principles. Its main function is to set the font size according to the page
@@ -477,12 +513,12 @@ size and the approximate number of characters that should fit on the page. It
 also sets the typographic scale (affecting font sizes for headings or
 footnotes), the font baseline, and supports a simple version of media queries.
 
-\subsection{Setting up the \tbcode{Responsive} Package}
+\subsubsection{Setting up the \tbcode{Responsive} Package}
 
 \tbcode{Responsive} automatically sets the font size, line spacing, and
 typographic scale at the beginning of the document. Default values can be
-changed using package options (\verb|\usepackage[<options>]{responsive}|) or
-the \verb|\ResponsiveSetup{<options>}| command. The \verb|\ResponsiveSetup|
+changed using package options (\cs{usepackage}\texttt{[<options>]\{responsive\}}) or
+the \cs{ResponsiveSetup}\texttt{\{<options>\}} command. The \cs{ResponsiveSetup}
 command can also be used directly in the document text, for example, for local
 font settings changes.
 
@@ -496,16 +532,16 @@ The \tbcode{Responsive} package offers the following options:
   \item[lineratio] – ratio used in line spacing calculation.
 \end{description}
 
-\subsection{Basic Font Size}
+\subsubsection{Basic Font Size}
 
-The font size can be set using the \verb|\setsizes{<number of characters
-per|\allowbreak\verb|line>}| command. \tbcode{Responsive} tries to set the font
-size so that the desired number of characters fits on a line on average. The
-actual number of characters depends on the text used, as each letter has a
+The font size can be set using the \cs{setsizes} command. 
+\tbcode{Responsive} tries to set the font size so that the desired number of
+characters fits on a line on average. The actual number of characters depends
+on the text used, as each letter has a
 different width when using proportional fonts. In reality, the number of
 characters displayed on a line may be slightly higher.
 
-If the number of characters is not specified in the \verb|\setsizes| command,
+If the number of characters is not specified in the \cs{setsizes} command,
 the value of the \texttt{characters} option is used. The following example uses
 this option setting. Figure~\ref{fig:fontsize} shows how the same text can be
 displayed differently within the same frame, depending on the settings.
@@ -518,8 +554,10 @@ displayed differently within the same frame, depending on the settings.
 \end{minipage}
 \end{verbatim}
 
-\begin{figure*}[tbp]
+\begin{figure*}[htbp]
+  \centering 
   \begin{subfigure}[t]{0.45\textwidth}
+  \centering 
 \fbox{%
 \begin{minipage}{5cm}
 \ResponsiveSetup{characters=55}
@@ -532,6 +570,7 @@ displayed differently within the same frame, depending on the settings.
 \end{subfigure}
 \hfill
 \begin{subfigure}[t]{0.45\textwidth}
+  \centering 
 \fbox{%
 \begin{minipage}{5cm}
 \ResponsiveSetup{lineratio=38,characters=25}
@@ -553,7 +592,7 @@ a, magna. Donec vehicula augue eu neque.
   line}\label{fig:fontsize}
 \end{figure*}
 
-\subsection{Line Spacing}
+\subsubsection{Line Spacing}
 
 By default, \LaTeX\ sets the line spacing to the font size multiplied by 1.2.
 For different fonts and page sizes, a different line spacing may be
@@ -572,8 +611,10 @@ Figure~\ref{fig:lineratio}. The choice of its optimal value depends on the font
 used and the page size. To achieve maximum output readability, it's advisable
 to compare the output using different values.
 
-\begin{figure*}[tbp]
+\begin{figure*}[htbp]
+  \centering 
   \begin{subfigure}[b]{0.45\textwidth}
+  \centering 
 \fbox{%
 \begin{minipage}{5cm}
 \ResponsiveSetup{lineratio=38}
@@ -585,6 +626,7 @@ to compare the output using different values.
 \caption{\texttt{lineratio=38}}
 \end{subfigure}
 \begin{subfigure}[b]{0.45\textwidth}
+  \centering 
 \fbox{%
 \begin{minipage}{5cm}
 \ResponsiveSetup{lineratio=34}
@@ -598,70 +640,7 @@ to compare the output using different values.
   \caption{Change in line spacing by changing the \texttt{lineratio} value}\label{fig:lineratio}
 \end{figure*}
 
-\subsection{Typographic Scale}
-
-A typographic scale is a set of pre-defined font sizes used to create a
-consistent visual style for a document or web page. These sizes are usually
-expressed in point units and progressively increase or decrease by a specific
-interval that lies on the scale.
-
-A typographic scale may contain sizes for headings, footnotes, and regular
-text. Proper use of the typographic scale helps create a visual hierarchy that
-enhances text readability and aesthetic appeal. More information about
-typographic scales can be found in Spencer Mortensen's
-article~\cite{mortensen}.
-
-In \LaTeX, the typographic scale is available through commands like
-\verb|\large|, \verb|\Large|, \verb|\LARGE|, \verb|\huge|, or
-\verb|\scriptsize|. Each of these commands is one interval away from the
-previous font size. The default scale in the \tbcode{Responsive} package is the
-nearest scale used in \LaTeX. In Mortensen's article, it's referred to as the
-"tetratonic" scale. The package also offers other scales described in the
-article, such as "golden," based on the golden ratio. The effect of using the
-scale is shown in Figure~\ref{fig:stupnice}.
-
-\begin{figure*}[bp]
-  \begin{subfigure}[b]{0.45\textwidth}
-\fbox{%
-\begin{minipage}{5cm}
-\setsizes{45}
-
-\showscale{}
-
-\end{minipage}}
-\caption{Default scale}
-\end{subfigure}
-\begin{subfigure}[b]{0.45\textwidth}
-\begin{verbatim}
-\ResponsiveSetup{scale=golden}
-\end{verbatim}
-\fbox{%
-\begin{minipage}{5cm}
-\ResponsiveSetup{scale=golden}
-\setsizes{45}
-
-\showscale
-
-\end{minipage}}
-\caption{Scale based on the golden ratio}
-\end{subfigure}
-  \caption{Example of typographic scales (default font size is highlighted with
-  lines)}\label{fig:stupnice}
-\end{figure*}
-
-However, you can also define a custom scale. For example, the following code
-defines a scale where the text size is doubled (\verb|ratio=2|) in three steps
-(\verb|number=3|). When defining custom scale options, you need to specify
-\verb|scale=none|. The \verb|\setsizes| command then redefines the font sizes.
-
-
-
-\begin{verbatim}
-\ResponsiveSetup{ratio=2, number=3, scale=none}
-\setsizes{}
-\end{verbatim}
-
-\subsection{Media Queries}
+\subsubsection{Media Queries}
 
 Media queries are a technique that allows web developers to dynamically adapt
 the appearance and behavior of web pages based on various device properties,
@@ -678,26 +657,28 @@ The package author can define, for instance, that if the width of the text line
 is less than a certain size, fewer characters will be displayed on it than on
 longer lines. The result is shown in Figure~\ref{fig:mediaguery}.
 
-A media query can be declared using the \verb|\mediaquery| command, which
-expects three parameters—the first is a list of tests, the next parameter
-expects the code to be executed if the tests evaluate to true, and the last one
-contains the code to be executed if the condition is not met. The code can
-include the \verb|\ResponsiveSetup| command, as well as any other commands. For
-example, setting the size of the text block, header, and footer using the
-\tbcode{Geometry} package.
-
-\begin{figure*}[btp]
-
-  \centering
-
-  Display fewer characters per line if the text width is less than 4 cm.
+This example will display fewer characters per line if the text width is less than 4 cm.
 
 \begin{verbatim}
 \mediaquery{max-textwidth=4cm}
 {\ResponsiveSetup{characters=45}}
 {\ResponsiveSetup{characters=60}}
 \end{verbatim}
+
+A media query can be declared using the \cs{mediaquery} command, which
+expects three parameters -- the first is a list of tests, the next parameter
+expects the code to be executed if the tests evaluate to true, and the last one
+contains the code to be executed if the condition is not met. The code can
+include the \cs{ResponsiveSetup} command, as well as any other commands. For
+example, setting the size of the text block, header, and footer using the
+\tbcode{Geometry} package.
+
+\begin{figure*}[htpb]
+
+  \centering
+
 \begin{subfigure}[b]{0.45\textwidth}
+    \centering
 \fbox{%
 \begin{minipage}{5cm}
 \mediaquery{max-textwidth=4cm}
@@ -749,133 +730,10 @@ twocolumn=true}{\color{blue}}{}
 \end{verbatim}
 
 
-\section{Automatic Typesetting}
-
-Lua\TeX\ allows us to automatically address some issues that previously
-required manual intervention in the document. Because the typesetting process
-can be influenced using callbacks in the Lua language, we can, for example,
-limit the occurrence of typographical errors such as widows and orphans,
-single-character prepositions at the ends of lines, or poorly broken
-paragraphs. In this section, we will demonstrate several packages that address
-these errors.
-
-\subsection{\tbcode{Luavlna} Package}
-
-According to Czech and Slovak typographical conventions, single-character
-prepositions or conjunctions should not appear at the ends of lines. In \TeX,
-this can be prevented by inserting the \verb|~| character between the
-preposition and the following word. To simplify this task, several tools exist,
-such as the \tbcode{Vlna} program by Petr Olšák or the \tbcode{Encxvlna}
-package also created by Petr Olšák and Zdeněk Wagner.
-
-The \tbcode{Luavlna} package \cite{luavlna} utilizes Lua\TeX's capabilities to
-modify fully processed text nodes before they are broken into paragraphs. At
-this stage, all macros are expanded, so non-breaking spaces can be easily
-inserted where they should be.
-
-\tbcode{Luavlna} prevents line breaks in the following situations:
-
-\begin{itemize}
-  \item After single-character prepositions
-  \item With initials
-  \item With academic titles
-  \item Between numbers and units
-\end{itemize}
-
-\begin{figure*}
-  \begin{minipage}{3in}
-
-    \preventsingledebugon
-
-    Text with short consonants and vowels, along with other phenomena from the
-    range of possibilities (as possible in the text).
-
-    How about characters with diacritics like í?
-
-    Various possibilities [in brackets \textless and other characters
-
-    Support for initials and titles: M. J. Hegel, Ing. Běháková, Ph.D., Ž. Zíbrt, Ch. Borner.
-
-    Support for units: 100.5 MN\cdot{}s, 100.5 kJ, 200 µA, $-1$ dag, 1 MB. 
-
-    Within mathematics, processing should be disabled: $k \in \mathbb N$.
-
-    \preventsingledebugoff
-  \end{minipage}
-  \caption{Example use of the Luavlna package}\label{fig:luavlna}
-\end{figure*}
-
-You can see an example of the package usage in Figure~\ref{fig:luavlna}.
-Options are specified using package options:
-\verb|\usepackage[<options>]{luavlna}|. Non-breaking spaces are highlighted in
-pink using the \texttt{debug} option. The package offers several other options,
-such as disabling the insertion of non-breaking spaces in certain situations:
-
-\begin{description}
-  \item [noprocess] – do not automatically process the document
-  \item [noinitials] – do not process initials
-  \item [nounits] – do not process SI units
-  \item [nopredegrees] – do not process titles before names
-  \item [nosufdegrees] – do not process titles after names
-\end{description}
-
-Language settings are configured using these commands:
-
-\begin{itemize}
-  \item\verb|\singlechars{language}{letters}| – a list of letters for which
-    line breaks are suppressed.
-  \item\verb|\enablesplithyphens{language}| – enable support for hyphenation in
-    the given language.
-  \item\verb|\preventsinglelang{language}| – set rules for the given language
-    for the entire document.
-\end{itemize}
-
-The language can be selected using the \tbcode{Babel} or \tbcode{Polyglossia}
-packages. The following example shows that a non-breaking space is inserted in
-the Czech text, and processing of spaces is disabled after switching to English
-using \verb|\selectlanguage{english}|.
-
-\begin{verbatim}
-A příklad česky.
-\selectlanguage{english}
-A thing.
-\end{verbatim}
-
-\preventsingledebugon
-
-\noindent 
-A příklad česky.
-\selectlanguage{english}
-A thing.
-
-\preventsingledebugoff
-
-\selectlanguage{czech}
 
 
-\bigskip
+\subsection{The \tbcode{Linebreaker} Package}
 
-To process the entire document according to Czech rules regardless of the
-currently selected language, use the \verb|\preventsinglelang{czech}| command.
-
-\begin{verbatim}
-\preventsinglelang{czech}
-Příklad v češtině
-\selectlanguage{english}
-A thing.
-\end{verbatim}
-
-\preventsingledebugon
-
-\selectlanguage{czech}
-\preventsinglelang{czech}
-\noindent Příklad v češtině
-\selectlanguage{english}
-A thing.
-
-\preventsingledebugoff
-
-\subsection{\tbcode{Linebreaker} Package}
 
 \newcommand\testbox[1]{%
   \parbox{120pt}{%
@@ -912,18 +770,47 @@ overflowing in boxes and paragraphs. An example of its usage can be seen in
 Figure~\ref{fig:linebreaker}, where it prevents several lines from overflowing
 when typeset into a narrow column.
 
+
 \tbcode{Linebreaker} utilizes  Lua\TeX's callback 
 which controls line breaking. It replaces the default line
 breaking function with a modified version that detects overflow or underflow in
 the broken text. Upon detecting this problem, it retypesets the text with
-increased values of \verb|\tolerance| and \verb|\emergencystretch| until the
-overflow is suppressed or the maximum \verb|\tolerance| limit is reached.
+increased values of \cs{tolerance} and \cs{emergencystretch} until the
+overflow is suppressed or the maximum \cs{tolerance} limit is reached.
 
-The advantage is that these changes to \verb|\tolerance| and
-\verb|\emergencystretch| are local only to the currently broken paragraph and
+The advantage is that these changes to \cs{tolerance} and
+\cs{emergencystretch} are local only to the currently broken paragraph and
 do not affect the rest of the text.
 
-\begin{figure*}
+
+\subsubsection{\tbcode{Linebreaker} Configuration}
+
+The \tbcode{Linebreaker} package can be configured by specifying package
+options using 
+\cs{usepackage}\allowbreak\texttt{[<options>]\allowbreak\{linebreaker\}} or later in the
+document body with the command 
+\cs{linebreakersetup}\allowbreak\texttt{\{<options>\}}:
+
+\begin{description}
+  \item[maxcycles] – the number of attempts to re-typeset a paragraph.
+  \item[maxemergencystretch] – the maximum value of \cs{emergencystretch}.
+  \item[maxtolerance] – the maximum value of \cs{tolerance}.
+\end{description}
+
+\begin{verbatim}
+\linebreakersetup{
+% default 8189
+maxtolerance = 90, 
+% default 3em
+maxemergencystretch = 1em, 
+% default 30
+maxcycles = 4              
+}
+\end{verbatim}
+
+
+
+\begin{figure*}[htbp]
   \printtest{
 The example document given below creates two pages by using Lua code alone. You
 will learn how to access TeX's boxes and counters from the Lua side, shipout a
@@ -934,30 +821,29 @@ create new nodes and manipulate the nodes links structure.
   \label{fig:linebreaker}
 \end{figure*}
 
-\subsubsection{Configuration}
+\subsection{Other Packages Useful for the Automatic Typesetting}
 
-The \tbcode{Linebreaker} package can be configured by specifying package
-options using 
-\texttt{\textbackslash usepackage[<options>]\{linebreaker\}} or later in the
-document body with the command 
-\texttt{\textbackslash linebreakersetup\{<options>\}}:
-
-\begin{description}
-  \item[maxcycles] – the number of attempts to re-typeset a paragraph.
-  \item[maxemergencystretch] – the maximum value of \verb|\emergencystretch|.
-  \item[maxtolerance] – the maximum value of \verb|tolerance|.
-\end{description}
-
-\begin{verbatim}
-\linebreakersetup{
-% maxtolerance = 90,         % default 8189
-maxemergencystretch = 1em, % default 3em
-% maxcycles = 4              % default 30
-}
-\end{verbatim}
+We have demonstrated the use of the \tbcode{Responsive} and
+\tbcode{Linebreaker} packages for automatic typesetting. These are not the only
+useful packages that leverage the power of LuaTeX for automatic typesetting.
+Noteworthy examples include \tbcode{Lua-widow-control} for suppressing widows
+and orphans, and \tbcode{Luavlna}, which addresses certain typographical issues
+for Czech and Slovak, while also preventing line breaks in SI units or academic
+titles.
 
 \section{Summary}
 
+
+I hope the demonstration of the \tbcode{Rmodepdf} program caught your interest.
+Even if it didn't, I believe that the side products developed alongside it are
+useful on their own. 
+
+This includes the capability to process HTML files using the \tbcode{LuaXML}
+package and convert them to \LaTeX\ using its \tbcode{luaxml-transform}
+library. The \tbcode{Responsive} package allows you to declaratively set the
+document design depending on the currently chosen page size. Lastly, the
+\tbcode{Linebreaker} package prevents line overflow, which is a common issue
+especially in documents with fewer characters per line.
 
 
 
