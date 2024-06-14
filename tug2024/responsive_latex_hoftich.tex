@@ -16,7 +16,7 @@
 \usepackage[noautomatic]{responsive}
 \usepackage{lua-widow-control}
 \usepackage{csquotes}
-\usepackage{linebreaker}
+\usepackage[]{linebreaker}
 \usepackage{amsmath,amsfonts}
 
 \usepackage{graphicx}
@@ -24,6 +24,12 @@
 \usepackage{subcaption}
 \usepackage{lipsum}
 
+
+% \linebreakersetup{
+%   maxtolerance =90 ,
+%   maxemergencystretch=1em,
+%   maxcycles=4
+% }
 
 % \usepackage[
 %   backend=biber,
@@ -71,7 +77,7 @@ a, magna. Donec vehicula augue eu neque.
 }
 
 
-\title{Responzivní design a automatická sazba s Lua\LaTeX em}
+\title{Web page to PDF conversion with Rmodepdf: Leveraging Lua\LaTeX\ for e-book reader-friendly documents}
 
 % repeat info for each author; comment out items that don't apply.
 \author{Michal Hoftich}
@@ -88,10 +94,13 @@ of Lua\LaTeX\ for automatic document typesetting intended for various target out
 both printed and electronic, such as mobile phones, tablets, or e-readers.
 
 Specifically, it focuses on the use of Lua\LaTeX\ for automated
-typesetting with the help of the \tbcode{Responsive} package~\cite{responsive} for setting font size and line spacing
-according to page size, the \tbcode{Luavlna} package~\cite{luavlna} to prevent single-character prepositions
-at the ends of lines, the \tbcode{Lua-widow-control} package~\cite{lua-widow-control} to minimize widows and orphans at the ends and
-beginnings of pages, and the \tbcode{Linebreaker} package~\cite{linebreaker} to prevent line overflow.
+typesetting with the help of the \tbcode{Responsive} package~\cite{responsive}
+for setting font size and line spacing according to page size, the
+\tbcode{Luavlna} package~\cite{luavlna} to prevent single-character
+prepositions at the ends of lines, the \tbcode{Lua-widow-control}
+package~\cite{lua-widow-control} to minimize widows and orphans at the ends and
+beginnings of pages, and the \tbcode{Linebreaker} package~\cite{linebreaker} to
+prevent line overflow.
 
 \end{abstract}
 
@@ -112,45 +121,149 @@ intervention. Thanks to the capabilities of Lua\LaTeX, such a solution is
 already possible, as we will demonstrate in the following text.
 
 Because Lua\TeX\ includes the Lua programming language in \TeX\ distributions,
-I used it to create my project \program{Rmodepdf} \cite{rmodepdf}. It uses the
-\tbcode{LuaXML} package \cite{luaxml} to transform HTML into \TeX{} and the
-\program{Curl} commands to download the page, \program{Tidy} to fix HTML
-errors, and \program{Rdrview} \cite{rdrview}, which removes navigation
+I used it to create my project \program{Rmodepdf}~\cite{rmodepdf}. It uses the
+\tbcode{LuaXML} package~\cite{luaxml} to transform HTML into \TeX{} and few
+externall commands -- \program{Curl} for downloading of the web pages, 
+and \program{Rdrview} \cite{rdrview}, which removes navigation
 elements, advertisements, and other distractions from the page.
-\program{Rdrview} works similarly to the reader mode in the \program{Firefox}
-browser (illustrated in Figure~\ref{fig:readermode}).
+The \program{Rdrview} is based on the JavaScript library used by the
+\program{Firefox} browser for its Reader Mode. However, it has been translated
+from JavaScript to C, making it significantly faster and eliminating the need
+for any additional dependencies.
 
-However, in the following text, I will not focus on the \program{Rmodepdf}
-program itself, which is still not in a state suitable for general users. I
-believe that readers will find it more useful to describe the methods for
-automated typesetting and responsive design, which they can use in typesetting
-their own documents.
+During the development of the program, I also created or significantly expanded
+three \LaTeX\ packages that may be useful on their own. For the \tbcode{LuaXML}
+package, I created an HTML parser that allows web pages to be processed
+directly from the Lua language. The \tbcode{Responsive} package enables the
+creation of templates that adjust font size, page margins, and other parameters
+according to the current page size. Finally, the \tbcode{Linebreaker} package
+prevents line overflow, which is crucial in automated document typesetting
+where we neither want nor can manually correct such errors.
 
-\begin{figure*}[tbp]
-  \centering
-  \caption{Example of using the \emph{reader view} mode in the \program{Firefox} browser}
-  \label{fig:readermode}
-  \begin{subfigure}[t]{0.45\textwidth}
-    \includegraphics[width=\textwidth]{img/root-balast.png}
-    \caption{Page with control elements and ads}
-  \end{subfigure}
-  \hfill
-  \begin{subfigure}[t]{0.45\textwidth}
-    \includegraphics[width=\textwidth]{img/root-čtečka.png}
-    \caption{Page in reader view}
-  \end{subfigure}
-\end{figure*}
+In addition to saving articles for reading on an e-reader, there are other ways
+to utilize the \program{Rmodepdf} program. One such use is archiving web
+content on paper. By removing all navigation elements, we obtain a document
+that can be easily printed, bound, and archived as a book.
 
-\section{How to Convert a Web Page to PDF Using \LaTeX}
+\section{Basic usage of \program{Rmodepdf}}
 
-% https://github.com/eafer/rdrview
+The \program{Rmodepdf} accepts one or more URLs as arguments. It is also
+possible to use the addresses of local HTML files.
 
 \begin{verbatim}
-$ rdrview -H <url> | pandoc -f html -t latex -V lang=cs \
-  --template template.tex output.html > output.tex
+$ rmodepdf <url1> <url2>
 \end{verbatim}
 
 
+The output file is named based on the title of the first document. If the title
+cannot be found, a name based on the current date and time is chosen. The
+generated name is displayed in the terminal output. You can specify a custom
+file name using the \texttt{-o} option.
+
+If you prefer not to compile the document directly but only to display the text
+generated by the LaTeX document, you can use the \texttt{-p} option.
+
+\begin{verbatim}
+$ rmodepdf -p <url> > foo.tex
+\end{verbatim}
+
+You can choose a different page size using the \texttt{-P} option. By default,
+the page size and margins are set for e-book readers, but you can also select
+other sizes, such as A4 paper size. The page style is currently set to empty
+(\textit{blank}), but you can change it using the \texttt{-s} option.
+
+\begin{verbatim}
+$ rmodepdf -P a4paper -s plain <url>
+\end{verbatim}
+
+To enhance speed, images are stored in a local directory. By default, this is
+the \texttt{img/} subdirectory within the current directory, but you can
+specify a different directory using the \texttt{-i} option. 
+
+\begin{verbatim}
+# save the document as foo.pdf and 
+# save images in the temp dir
+$ rmodepdf -o foo.pdf -i /tmp/img <url>
+\end{verbatim}
+
+You can disable image downloading entirely with the \texttt{-n} option. 
+The \program{Rmodepdf} also detects and displays LaTeX mathematical commands
+embedded in web pages that use \program{MathJax} or \program{KaTeX} for
+rendering. This default behavior can be disabled using the \texttt{-N} option.
+Additionally, the removal of page elements using \program{Rdrview} can be
+disabled with the \texttt{-R} option.
+
+
+
+
+\section{Configuration}
+
+\subsection{Settings}
+
+It often happens that during conversion you encounter errors or wish to change
+how certain elements on the page are converted into LaTeX. Therefore,
+\program{Rmodepdf} provides the option to use a Lua configuration script. This
+script allows you to modify the code of translated pages, define conversion
+rules, set variables, or change templates as needed. The configuration file is
+loaded using the option \texttt{-c}.
+
+\begin{verbatim}
+$ rmodepdf -c script.lua <url>
+\end{verbatim}
+
+The script might look like this, for example:
+
+\begin{verbatim}
+add_to_config {
+  document = {
+    preamble_extras = [[
+    \setmainfont{Linux Libertine O}
+    ]],
+  },
+  img_convert = {
+    -- modify the command used for 
+    -- conversion of SVG images to PDF
+    svg = "cairosvg -o ${dest} -",
+  },
+}
+\end{verbatim}
+
+
+This example uses the command \texttt{add\_to\_config}, which safely copies new
+configuration values into the original configuration. If you only want to set a
+single configuration value, you can also directly write to the \texttt{config}
+table:
+
+\begin{verbatim}
+config.document.geometry = "a6paper"
+\end{verbatim}
+
+The \texttt{config} table contains several subtables that you can configure.
+The \texttt{document} subtable includes properties of the output document, such
+as \texttt{preamble\_extras} for adding additional code to the document
+preamble, or \texttt{geometry}, which allows you to directly specify the
+dimensions of the page or margins of the output document.
+
+The subtable \texttt{img\_convert} defines commands for converting image formats
+used on the converted web pages that are not supported in LuaLaTeX to one of
+the supported formats. For example, in the sample, we define a command to
+convert from SVG format to PDF. This command must support reading from standard
+input, and you can specify the output file name using the template \verb|${dest}|.
+
+The subtable \texttt{html\_latex} contains settings for translating LaTeX code
+embedded in web pages. The \texttt{ignored} item contains a list of HTML
+elements where embedded LaTeX code should not be searched for. Typically, this
+includes elements like \verb|<pre>|, which contain source code that should
+not be processed in our document.
+
+
+\subsection{Callbacks}
+
+
+
+
+
+\section{Template}
 \section{Responsive Design}
 
 One of the issues that need to be addressed is setting the correct font size
@@ -177,6 +290,7 @@ same page code can be well displayed on both large monitors and mobile devices
 or when printed. An example of real-world use can be seen in
 Figure~\ref{fig:responsive}.
 
+
 \begin{figure*}[tbp]
 \begin{subfigure}[t]{0.74\textwidth}
     \includegraphics[width=\textwidth]{img/pedf-web-big.png}
@@ -187,7 +301,8 @@ Figure~\ref{fig:responsive}.
     \includegraphics[width=\textwidth]{img/pedf-web-small.png}
     \caption{Example of a page on a small display}
 \end{subfigure}
-  \caption{Example of displaying a web page using responsive design}\label{fig:responsive}
+  \caption{Example of displaying a web page using responsive
+  design}\label{fig:responsive}
 \end{figure*}
 
 The \tbcode{Responsive} package~\cite{responsive} is inspired by these
@@ -208,7 +323,8 @@ font settings changes.
 The \tbcode{Responsive} package offers the following options:
 
 \begin{description}
-  \item[noautomatic] – prevents automatic setting of font size and line spacing at the beginning of the document.
+  \item[noautomatic] – prevents automatic setting of font size and line spacing
+    at the beginning of the document.
   \item[characters] – number of characters for automatic font size setting.
   \item[scale] – typographic scale used for font sizes.
   \item[lineratio] – ratio used in line spacing calculation.
@@ -216,8 +332,8 @@ The \tbcode{Responsive} package offers the following options:
 
 \subsection{Basic Font Size}
 
-The font size can be set using the \verb|\setsizes{<number of characters per|\allowbreak\verb|line>}| 
-command. \tbcode{Responsive} tries to set the font
+The font size can be set using the \verb|\setsizes{<number of characters
+per|\allowbreak\verb|line>}| command. \tbcode{Responsive} tries to set the font
 size so that the desired number of characters fits on a line on average. The
 actual number of characters depends on the text used, as each letter has a
 different width when using proportional fonts. In reality, the number of
@@ -267,7 +383,8 @@ a, magna. Donec vehicula augue eu neque.
 \end{minipage}}
 \caption{\texttt{characters=25, lineratio=38}}
 \end{subfigure}
-  \caption{Difference in font size depending on the number of characters per line}\label{fig:fontsize}
+  \caption{Difference in font size depending on the number of characters per
+  line}\label{fig:fontsize}
 \end{figure*}
 
 \subsection{Line Spacing}
@@ -362,7 +479,8 @@ scale is shown in Figure~\ref{fig:stupnice}.
 \end{minipage}}
 \caption{Scale based on the golden ratio}
 \end{subfigure}
-  \caption{Example of typographic scales (default font size is highlighted with lines)}\label{fig:stupnice}
+  \caption{Example of typographic scales (default font size is highlighted with
+  lines)}\label{fig:stupnice}
 \end{figure*}
 
 However, you can also define a custom scale. For example, the following code
@@ -503,7 +621,8 @@ inserted where they should be.
 
     \preventsingledebugon
 
-    Text with short consonants and vowels, along with other phenomena from the range of possibilities (as possible in the text).
+    Text with short consonants and vowels, along with other phenomena from the
+    range of possibilities (as possible in the text).
 
     How about characters with diacritics like í?
 
@@ -537,9 +656,12 @@ such as disabling the insertion of non-breaking spaces in certain situations:
 Language settings are configured using these commands:
 
 \begin{itemize}
-  \item\verb|\singlechars{language}{letters}| – a list of letters for which line breaks are suppressed.
-  \item\verb|\enablesplithyphens{language}| – enable support for hyphenation in the given language.
-  \item\verb|\preventsinglelang{language}| – set rules for the given language for the entire document.
+  \item\verb|\singlechars{language}{letters}| – a list of letters for which
+    line breaks are suppressed.
+  \item\verb|\enablesplithyphens{language}| – enable support for hyphenation in
+    the given language.
+  \item\verb|\preventsinglelang{language}| – set rules for the given language
+    for the entire document.
 \end{itemize}
 
 The language can be selected using the \tbcode{Babel} or \tbcode{Polyglossia}
@@ -624,8 +746,8 @@ overflowing in boxes and paragraphs. An example of its usage can be seen in
 Figure~\ref{fig:linebreaker}, where it prevents several lines from overflowing
 when typeset into a narrow column.
 
-\tbcode{Linebreaker} utilizes the Lua\TeX\ callback \verb|linebreak_filter|,
-which controls line breaking. \tbcode{Linebreaker} replaces the default line
+\tbcode{Linebreaker} utilizes  Lua\TeX's callback 
+which controls line breaking. It replaces the default line
 breaking function with a modified version that detects overflow or underflow in
 the broken text. Upon detecting this problem, it retypesets the text with
 increased values of \verb|\tolerance| and \verb|\emergencystretch| until the
@@ -637,7 +759,7 @@ do not affect the rest of the text.
 
 \begin{figure*}
   \printtest{
-    The example document given below creates two pages by using Lua code alone. You
+The example document given below creates two pages by using Lua code alone. You
 will learn how to access TeX's boxes and counters from the Lua side, shipout a
 page into the PDF file, create horizontal and vertical boxes (hbox and vbox),
 create new nodes and manipulate the nodes links structure. 
@@ -662,9 +784,9 @@ document body with the command
 
 \begin{verbatim}
 \linebreakersetup{
-maxtolerance = 90,         % default 8189
+% maxtolerance = 90,         % default 8189
 maxemergencystretch = 1em, % default 3em
-maxcycles = 4              % default 30
+% maxcycles = 4              % default 30
 }
 \end{verbatim}
 
