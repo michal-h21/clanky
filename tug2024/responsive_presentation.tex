@@ -23,6 +23,45 @@
   \caption{#3}%
 \endfigure}
 
+% copy from presentation-text.tex, because the \mode* ignores everything outside of frames, 
+% where it is defined, so it's use produced compilation errors
+\newcommand\printsize[1]{\csname #1\endcsname\par\noindent Sample\par}
+\newcommand\showscale[2][.5\textwidth]{%
+      % \setsizes[38]{25}
+      \printsize{huge}
+      \printsize{LARGE}
+      \printsize{Large}
+      \printsize{large}
+      \hrule
+      \printsize{normalsize}
+      \hrule
+      \printsize{small}
+      \printsize{footnotesize}
+}
+
+\newcommand\printtest[1]{%
+  \linebreakerdisable%
+  \noindent\testbox{%
+    #1
+    \par\medskip\noindent\hfill\textbf{Without Linebreaker}\hfill\null
+  }%
+  \linebreakerenable%
+  \hfill%
+  \testbox{%
+    #1
+    \par\medskip\noindent\hfill\textbf{With Linebreaker}\hfill\null
+  }%
+}
+
+\newcommand\testbox[1]{%
+  \parbox{150pt}{%
+    \parindent=15pt%
+    \tolerance=1%
+    \pretolerance=1%
+    #1
+  }%
+}
+
 
 \input{bio}
 \begin{document}
