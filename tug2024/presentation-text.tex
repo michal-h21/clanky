@@ -1,5 +1,6 @@
 %! TeX program = lualatex
 \section{Introduction}
+\frenchspacing
 
 \begin{frame}
   \frametitle{Whad do we want to achieve?}
@@ -28,7 +29,7 @@
 \begin{frame}
   \frametitle{Rmodepdf}
 
-  A script that converts a web page or ePub file to PDF.
+  A script that converts  web pages to PDF.
 
   \begin{itemize}
     \item extracts clean text from articles, without ads and navigation elements on the pages
@@ -39,20 +40,6 @@
   % Work in progress code is located here:
 
   \url{https://github.com/michal-h21/rmodepdf/}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Reader mode for scripts}
-  Reader mode is a feature in web browsers that removes control elements from the page and displays only the article text.
-
-  \bigskip
-
-  \begin{tabular}{ll}
-    Readability.js & \url{https://github.com/mozilla/readability}\\
-    Python-readability & \url{https://github.com/buriy/python-readability}\\
-    Rdrview: & \url{https://github.com/eafer/rdrview}\\
-  \end{tabular}
-
 \end{frame}
 
 \begin{frame}
@@ -70,30 +57,47 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{How do we load HTML and ePub files?}
-  In Lua\TeX, we have several tools:
+  \frametitle{Reader mode for scripts}
+  Reader mode is a feature in web browsers that removes control elements from the page and displays only the article text.
+
+  \bigskip
+
+  \begin{tabular}{ll}
+    Readability.js & \url{https://github.com/mozilla/readability}\\
+    Python-readability & \url{https://github.com/buriy/python-readability}\\
+    Rdrview: & \url{https://github.com/eafer/rdrview}\\
+  \end{tabular}
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{How do we load and transform HTML files?}
+  LuaXML contains two libraries for HTML processing and transforming
   \begin{itemize}
-    \item a library for reading ZIP files
     \item LuaXML contains a Transform library for converting XML to other formats, such as \TeX
       \begin{itemize}
         \item allows rules for specific elements selected using CSS selectors
       \end{itemize}
-    \item support for HTML in LuaXML is under development
+    \item the DOM library can now load HTML files
   \end{itemize}
 \end{frame}
 
-\begin{frame}
-  \frametitle{What's next?}
-  \begin{itemize}
-  \item automate the design of the output document for different display sizes
-  \item automatically prevent typesetting errors:
-    \begin{itemize}
-      \item widows and orphans
-      \item line breaks with single-letter prepositions, units, or academic titles
-      \item overflow lines when typesetting narrow columns
-    \end{itemize}
-  \end{itemize}
-\end{frame}
+\section{Rmodepdf usage}
+
+
+% \begin{frame}
+%   \frametitle{What's next?}
+%   \begin{itemize}
+%   \item automate the design of the output document for different display sizes
+%   \item automatically prevent typesetting errors:
+%     \begin{itemize}
+%       \item widows and orphans
+%       \item line breaks with single-letter prepositions, units, or academic titles
+%       \item overflow lines when typesetting narrow columns
+%     \end{itemize}
+%   \end{itemize}
+% \end{frame}
 
 
 \section{Responsive Design in \LaTeX}
