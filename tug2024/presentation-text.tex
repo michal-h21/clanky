@@ -1,4 +1,5 @@
 %! TeX program = lualatex
+\mode*
 \section{Introduction}
 \frenchspacing
 
@@ -85,6 +86,45 @@
 
 \section{Rmodepdf usage}
 
+\begin{frame}[fragile]
+  \frametitle{Basic usage}
+
+  Rmodepdf accepts multiple URL or filenames as an argument
+
+\begin{verbatim}
+$ rmodepdf <url1> <url2>
+\end{verbatim}
+
+It can also read from the standard input
+
+\begin{verbatim}
+$ cat foo.html | rmodepdf --baseurl foo - 
+\end{verbatim}
+
+The \verb|--baseurl| option is necessary for downloading of images. If the document don't contain any external images, 
+use a bogus value for the base URL.
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Print transformed \LaTeX\ code}
+\begin{verbatim}
+$ rmodepdf -p <url> > foo.tex
+\end{verbatim}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Output file name}
+
+\end{frame}
+
+The output file name is based on the first page title. If no title was detected on the page, the output file name 
+is named using the following template: \verb|rmodepdf-%Y%m%d-%H-%M|. You can choose another name using 
+the \verb|-o| or \verb|--output| option.
+
+
+
 
 % \begin{frame}
 %   \frametitle{What's next?}
@@ -101,6 +141,8 @@
 
 
 \section{Responsive Design in \LaTeX}
+
+
 
 \begin{frame}
    \frametitle{What is Responsive Design}
