@@ -25,6 +25,22 @@
 
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitle{What will I show?}
+  \begin{itemize}
+    \item usage and configuration of the Rmodepdf command
+    \item HTML processing using LuaXML
+    \item Two packages that simplify automatic typesetting
+      \begin{itemize}
+        \item responsive design in \LaTeX\ with the package Responsive
+        \item prevention of overflow boxes in narrow lines with the package Linebreaker
+      \end{itemize}
+
+  \end{itemize}
+
+\end{frame}
+
+
 \section{How do we convert HTML to PDF for an e-reader?}
 
 \begin{frame}
@@ -46,20 +62,23 @@
 \begin{frame}
   \frametitle{Page with control elements and ads}
   \begin{center}
-    \includegraphics[height=.9\textheight]{img/root-balast.png}
+    \includegraphics[height=.7\textheight]{img/root-balast.png}
   \end{center}
 \end{frame}
 
 \begin{frame}
   \frametitle{Page in reader mode}
   \begin{center}
-    \includegraphics[height=.9\textheight]{img/root-čtečka.png}
+    \includegraphics[height=.7\textheight]{img/root-čtečka.png}
   \end{center}
 \end{frame}
 
 \begin{frame}
   \frametitle{Reader mode for scripts}
-  Reader mode is a feature in web browsers that removes control elements from the page and displays only the article text.
+  \begin{itemize}
+    \item Reader mode is a feature in web browsers that removes control elements from the page and displays only the article text.
+    \item The projects listed below enable the use of reader mode in scripts.
+  \end{itemize}
 
   \bigskip
 
@@ -71,16 +90,21 @@
 
 \end{frame}
 
+For our purpose, Rdrview is the most suitable of these projects because it is a
+simple C program that is fast and does not require installing additional
+dependencies.
 
-\begin{frame}
+
+
+\begin{frame}[fragile]
   \frametitle{How do we load and transform HTML files?}
   LuaXML contains two libraries for HTML processing and transforming
   \begin{itemize}
-    \item LuaXML contains a Transform library for converting XML to other formats, such as \TeX
+    \item the \verb|luaxml-transform| library for converting XML to other formats, such as \TeX
       \begin{itemize}
         \item allows rules for specific elements selected using CSS selectors
       \end{itemize}
-    \item the DOM library can now load HTML files
+    \item the \verb|luaxml-domobject| library can now load HTML files
   \end{itemize}
 \end{frame}
 
@@ -89,33 +113,65 @@
 \begin{frame}[fragile]
   \frametitle{Basic usage}
 
-  Rmodepdf accepts multiple URL or filenames as an argument
+  Rmodepdf accepts multiple URL or filenames as an argument:
 
 \begin{verbatim}
+# process url1 and url2
 $ rmodepdf <url1> <url2>
 \end{verbatim}
+\end{frame}
 
-It can also read from the standard input
+\begin{frame}[fragile]
+  \frametitle{Basic usage}
+It can also read from the standard input:
 
 \begin{verbatim}
+# process local foo.html passed from the standard input
+# "-" will tell rmodepdf to read from stdin
 $ cat foo.html | rmodepdf --baseurl foo - 
 \end{verbatim}
+\end{frame}
 
 The \verb|--baseurl| option is necessary for downloading of images. If the document don't contain any external images, 
 use a bogus value for the base URL.
+
+Rmodepdf merges downloaded pages into a single output TeX document, which is then immediately compiled.
+
+
+\begin{frame}[fragile]
+  \frametitle{Example output}
+  \begin{figure}
+    \begin{center}
+      \includegraphics[height=0.7\textheight]{img/rmodepdf-article.png}
+    \end{center}
+    % \caption{Header of a processed page}\label{fig:rmodepdf-article}
+  \end{figure}
+  
 \end{frame}
+
+For each page, it displays a header with basic document information and a table
+of contents. This is followed by the text of the document.
+
 
 
 \begin{frame}[fragile]
   \frametitle{Print transformed \LaTeX\ code}
 \begin{verbatim}
+# pipe the generated TeX code to foo.tex
 $ rmodepdf -p <url> > foo.tex
 \end{verbatim}
 \end{frame}
 
+If we print the page using the \verb|-p| option, the generated TeX code is output to the standard output, and no compilation occurs.
+
+
 
 \begin{frame}[fragile]
   \frametitle{Output file name}
+  \begin{verbatim}
+# save as foo.pdf
+$ rmodepdf -o foo.pdf <url>
+  \end{verbatim}
 
 \end{frame}
 
@@ -123,7 +179,192 @@ The output file name is based on the first page title. If no title was detected 
 is named using the following template: \verb|rmodepdf-%Y%m%d-%H-%M|. You can choose another name using 
 the \verb|-o| or \verb|--output| option.
 
+\begin{frame}[fragile]
+  \frametitle{Choose page format and style}
+\begin{verbatim}
+# use A4 format for the paper size 
+# use plain page style
+$ rmodepdf -P a4paper -s plain <url>
+\end{verbatim}
+\end{frame}
 
+
+You can choose a different page size using the \texttt{-P} option. By default,
+the page size and margins are set for e-book readers, but you can also select
+other sizes, such as A4 paper size. The page style is currently set to empty
+(\textit{blank}), but you can change it using the \texttt{-s} option.
+
+\begin{frame}[fragile]
+  \frametitle{Change image directory}
+\begin{verbatim}
+# save the document as foo.pdf and 
+# save images in the temp dir
+$ rmodepdf -o foo.pdf -i /tmp/img <url>
+\end{verbatim}
+
+\end{frame}
+
+
+To enhance speed, images are stored in a local directory. By default, this is
+the \texttt{img/} subdirectory within the current directory, but you can
+specify a different directory using the \texttt{-i} option. 
+
+\begin{frame}[fragile]
+  \frametitle{Other options}
+  \begin{description}
+    \item[-n] don't download images
+    \item[-N] don't process \LaTeX\ math in pages
+    \item[-R] don't run Rdrview
+    \item[-l] debug messages log level
+  \end{description}
+\end{frame}
+
+
+You can disable image downloading entirely with the \texttt{-n} option. 
+The Rmodepdf also detects and displays \LaTeX\ mathematical commands
+embedded in web pages that use MathJax or KaTeX for
+rendering. This default behavior can be disabled using the \texttt{-N} option.
+Additionally, the removal of page elements using Rdrview can be
+disabled with the \texttt{-R} option.
+
+
+\section{Configuration}
+
+\begin{frame}[fragile]
+  \frametitle{Loading of the configuration file}
+
+\begin{verbatim}
+# load script.lua as the configuration file
+$ rmodepdf -c script.lua <url>
+\end{verbatim}
+\end{frame}
+
+Using a configuration file, we can declare custom rules for transforming HTML
+to \LaTeX, change the document template, load extra packages, or modify the
+processed page before transformation.
+
+
+\begin{frame}[fragile]
+  \frametitle{Change settings}
+\begin{verbatim}
+add_to_config {
+  document = {
+    preamble_extras = [[
+    \setmainfont{Linux Libertine O}
+    ]],
+  },
+  img_convert = {
+    -- modify the command used for 
+    -- conversion of SVG images to PDF
+    svg = "cairosvg -o ${dest} -",
+  },
+}
+\end{verbatim}
+
+
+\end{frame}
+
+This example uses the command \texttt{add\_to\_config}, which safely copies new
+configuration values into the original configuration. If you only want to set a
+single configuration value, you can also directly write to the \texttt{config}
+table:
+
+\begin{frame}[fragile]
+  \frametitle{Direct settings}
+\begin{verbatim}
+# change settings for the Geometry package
+config.document.geometry = "a6paper"
+\end{verbatim}
+\end{frame}
+
+\section{Callbacks}
+
+The configuration script is executed before the actual conversion, so it cannot
+directly influence the conversion process. However, we can define several
+callback functions that allow us to affect the conversion. These functions are
+as follows:
+
+\begin{frame}[fragile]
+  \frametitle{Available callbacks}
+  \begin{description}[\texttt{preprocess\_content}]
+  \item[\texttt{preprocess\_content}] modify string with the raw HTML before
+    readability and DOM parsing.
+  \item[\texttt{preprocess\_dom}] modify DOM object before fetchching of images
+    or handling of MathJax.
+  \item[\texttt{postprocess\_dom}] modify DOM after all processing by Rmodepdf.
+  \item[\texttt{postprocess}] late post-processing of the config table.
+\end{description}
+
+\end{frame}
+
+In the following text, we will introduce some new features provided by LuaXML, 
+namely DOM processing and transforming to other formats.
+
+\begin{frame}[fragile]
+  \frametitle{Example: print the HTML code}
+
+
+\begin{verbatim}
+function postprocess_dom(dom)
+  print(dom:serialize())
+  return dom
+end
+\end{verbatim}
+\end{frame}
+
+This example is useful in that it allows you to view the DOM serialized back
+into HTML. You can see all the elements that were transferred from the original
+HTML document after being processed by Rdrview and the functions of Rmodepdf.
+It is important to return the DOM at the end of the function, this ensures that
+any modifications made to the DOM are preserved and applied to the final
+document.
+
+Here's a slightly more complex example. Let's assume that Rdrview did
+not remove a menu that might look like this:
+
+\begin{frame}[fragile]
+  \frametitle{Example: remove HTML elements}
+\begin{verbatim}
+<div class="menu">
+... menu contents ...
+</div>
+\end{verbatim}
+\end{frame}
+
+
+We can use the \texttt{postprocess\_dom} function to remove this menu:
+
+\begin{frame}[fragile]
+  \frametitle{Example: remove HTML elements}
+\begin{verbatim}
+function postprocess_dom(dom)
+  -- Find the menu using a CSS selector
+  local menu = dom:query_selector(".menu")
+
+  -- Iterate over the menu elements 
+  -- and remove each one
+  for _, el in ipairs(menu) do
+    el:remove_node()
+  end
+  
+  -- Return the modified DOM
+  return dom
+end
+\end{verbatim}
+\end{frame}
+
+In this example:
+
+\begin{enumerate}
+  \item We use the \texttt{query\_selector} method to find all elements with
+    the class \texttt{menu}.
+  \item Iterate over each element retrieved in the previous step
+    using a \texttt{for} loop.
+  \item Remove each menu element using the \texttt{remove\_node} method.
+  \item Return the modified DOM at the end of the function.
+\end{enumerate}
+
+This ensures that any remaining menus are removed from the final document.
 
 
 % \begin{frame}
@@ -139,8 +380,121 @@ the \verb|-o| or \verb|--output| option.
 %   \end{itemize}
 % \end{frame}
 
+\section{Transformation rules}
+
+
+LuaXML allows us to create rules for transforming the DOM into various formats.
+Rmodepdf includes rules for transforming basic HTML elements into \LaTeX.
+
+
+\begin{frame}[fragile]
+
+\frametitle{LuaXML DOM tranformations}
+\begin{description}[\texttt{htmlprocess.reset\_actions}]
+  \item[\texttt{htmlprocess.add\_action}] add a new rule
+  \item[\texttt{htmlprocess.add\_custom\_action}] process element using Lua
+  \item[\texttt{htmlprocess.reset\_actions}] remove rules for the given selector
+  \item[\texttt{\%s}] insert transformed contents of the element
+  \item[\texttt{@\{<attribute name>\}}] insert value of an attribute
+\end{description}
+\end{frame}
+
+In the configuration file, the variable \texttt{htmlprocess} contains an object with
+rules for converting HTML elements. It provides two main functions:
+\texttt{htmlprocess.reset\_actions}, which clears all rules for a given selector, and
+\texttt{htmlprocess.add\_action}, which adds new rules.
+
+A more powerful tool is the htmlprocess.add_custom_action function, which
+enables processing of elements in Lua. For an example of its usage, consult the
+LuaXML documentation.
+
+The following code displays some basic usage of the transformation library:
+
+\begin{frame}[fragile]
+  \frametitle{Rules example}
+
+\begin{verbatim}
+htmlprocess.reset_actions("figure")
+htmlprocess.reset_actions("img")
+htmlprocess.add_action("img", 
+[[\includegraphics[max width=\textwidth]{@{src}}]])
+htmlprocess.add_action("figure", 
+"\n\n\\medskip\n\n\\noindent %s")
+\end{verbatim}
+\end{frame}
+
+In this example, we change the default formatting for the \verb|<figure>| element and include the 
+text that is contained inside using the \verb|%s| instruction. For the \verb|<img>| element, we use 
+the \verb|src| attribute to get the image file name. As this element cannot contain any child elements,
+we don't need to use \verb|%s| in this action. 
+
+\section{Templates}
+
+\begin{frame}[fragile]
+  \frametitle{Template basics}
+
+\begin{itemize}
+  \item Templates can access variables from the configuration.
+  \item Simple custom syntax
+\end{itemize}
+
+\begin{verbatim}
+# require template
+$ rmodepdf -t mytemplate.tex <url>
+\end{verbatim}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+\frametitle{Template syntax}
+\begin{description}[Variable Printing]
+  \item[Variable Printing] \verb|@{variablename}|: Prints a variable from the \verb|config| table or its sub-tables.
+  
+  \item[Loops] \verb|_{variablename}loop code/{separator}|: Iterates over array variables, using \verb|%s| placeholders or accessing fields directly.
+  
+  \item[Conditions] \verb|?{variablename}{true}{false}|: Evaluates a condition to insert content based on the presence of variables.
+\end{description}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Sample template snippet}
+\begin{verbatim}
+% loop over languages
+\usepackage[_{document.languages}%s/{,}]{babel}
+% use geometry settings
+\usepackage[@{document.geometry}]{geometry}
+@{document.preamble_extras}
+\begin{document}
+% loop over documents
+_{pages}
+\selectlanguage{@{language}}
+% conditionaly print title
+?{title}{Title: @{title}}\par}{}
+% document contents
+@{content}
+/{\clearpage}
+\end{document}
+\end{verbatim}
+\end{frame}
+
+Although this example is not complete, it demonstrates the available syntax in templates.
+Note that when processing an array, we must distinguish whether it contains
+strings or tables. Strings are displayed using \verb|%s|. If it is a table, its
+elements become active variables and can be displayed using
+\verb|@{variablename}|. You can see the difference in processing the array
+\verb|document.languages|, which contains languages as strings, and
+\verb|pages|, which contains tables with metadata from processed pages.
+
+
 
 \section{Responsive Design in \LaTeX}
+
+
+So far, we have explored the features of Rmodepdf and LuaXML. Now, we will
+focus on additional packages that can be used independently to facilitate
+automated typesetting of documents.
 
 
 
@@ -265,13 +619,22 @@ felis.
   Important options:
 
   \begin{description}
-    \item[noautomatic] -- do not set font size automatically at the beginning of the document
-    \item[characters] -- number of characters when automatically setting the font size
-    \item[scale] -- typographic scale used for font sizes
-    \item[lineratio] -- ratio used when calculating line height
+    \item[noautomatic] do not set font size automatically at the beginning of the document
+    \item[characters] number of characters when automatically setting the font size
+    \item[scale] typographic scale used for font sizes
+    \item[lineratio] ratio used when calculating line height
   \end{description}
 
 \end{frame}
+
+When the Responsive package changes the base font size, it automatically
+adjusts the sizes used for \verb|\large|, \verb|\small|, and other commands, as well as line
+height and other fundamental dimensions.
+
+% trick for TeX4ht to show examples as images
+\ifdefined\HCode
+  \long\def\fbox#1{\Picture*{}#1\EndPicture}
+\fi
 
 \begin{frame}[fragile]
   \frametitle{Line Height}
@@ -308,102 +671,103 @@ The higher its value, the smaller the distance between lines.
 \end{minipage}}
 \end{column}
 \end{columns}
+
 \url{https://www.smashingmagazine.com/2020/07/css-techniques-legibility/}
 
 \end{frame}
 
-\newcommand\printsize[1]{\csname #1\endcsname\par\noindent Sample\par}
-\newcommand\showscale[2][.5\textwidth]{%
-      % \setsizes[38]{25}
-      \printsize{huge}
-      \printsize{LARGE}
-      \printsize{Large}
-      \printsize{large}
-      \hrule
-      \printsize{normalsize}
-      \hrule
-      \printsize{small}
-      \printsize{footnotesize}
-}
+% \newcommand\printsize[1]{\csname #1\endcsname\par\noindent Sample\par}
+% \newcommand\showscale[2][.5\textwidth]{%
+%       % \setsizes[38]{25}
+%       \printsize{huge}
+%       \printsize{LARGE}
+%       \printsize{Large}
+%       \printsize{large}
+%       \hrule
+%       \printsize{normalsize}
+%       \hrule
+%       \printsize{small}
+%       \printsize{footnotesize}
+% }
 
-\begin{frame}[fragile]
-  \frametitle{Font Styles}
+% \begin{frame}[fragile]
+%   \frametitle{Font Styles}
 
-  The sizes of individual font styles are chosen based on the typographic scale
+%   The sizes of individual font styles are chosen based on the typographic scale
 
-\begin{columns}
-  \begin{column}{0.5\textwidth}
-Default scale (pentatonic)
+% \begin{columns}
+%   \begin{column}{0.5\textwidth}
+% Default scale (pentatonic)
 
-\fbox{%
-\begin{minipage}{5cm}
-\setsizes{45}
+% \fbox{%
+% \begin{minipage}{5cm}
+% \setsizes{45}
 
-\showscale{}
+% \showscale{}
 
-\end{minipage}}
-\end{column}
-  \begin{column}{0.5\textwidth}
-\begin{verbatim}
-\ResponsiveSetup{scale=golden}
-\end{verbatim}
+% \end{minipage}}
+% \end{column}
+%   \begin{column}{0.5\textwidth}
+% \begin{verbatim}
+% \ResponsiveSetup{scale=golden}
+% \end{verbatim}
 
-\fbox{%
-\begin{minipage}{5cm}
-\ResponsiveSetup{scale=golden}
-\setsizes{45}
+% \fbox{%
+% \begin{minipage}{5cm}
+% \ResponsiveSetup{scale=golden}
+% \setsizes{45}
 
-\showscale
+% \showscale
 
-\end{minipage}}
-\end{column}
-\end{columns}
-\url{https://spencermortensen.com/articles/typographic-scale/}
+% \end{minipage}}
+% \end{column}
+% \end{columns}
+% \url{https://spencermortensen.com/articles/typographic-scale/}
 
-\end{frame}
+% \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Finer Scale Adjustment}
+% \begin{frame}[fragile]
+%   \frametitle{Finer Scale Adjustment}
 
-  We can also directly set the ratio and number of steps by which the scale increases by this ratio.
+%   We can also directly set the ratio and number of steps by which the scale increases by this ratio.
 
-\begin{columns}
-  \begin{column}{0.5\textwidth}
-\begin{verbatim}
-\ResponsiveSetup{ratio=2,
-number=2,scale=none}
-\end{verbatim}
+% \begin{columns}
+%   \begin{column}{0.5\textwidth}
+% \begin{verbatim}
+% \ResponsiveSetup{ratio=2,
+% number=2,scale=none}
+% \end{verbatim}
 
-\fbox{%
-\begin{minipage}{5cm}
-\ResponsiveSetup{ratio=2,
-number=2,scale=none}
-\setsizes{45}
+% \fbox{%
+% \begin{minipage}{5cm}
+% \ResponsiveSetup{ratio=2,
+% number=2,scale=none}
+% \setsizes{45}
 
-\showscale{}
+% \showscale{}
 
-\end{minipage}}
-\end{column}
-  \begin{column}{0.5\textwidth}
-\begin{verbatim}
-\ResponsiveSetup{ratio=1.3,
-number=2,scale=none}
-\end{verbatim}
+% \end{minipage}}
+% \end{column}
+%   \begin{column}{0.5\textwidth}
+% \begin{verbatim}
+% \ResponsiveSetup{ratio=1.3,
+% number=2,scale=none}
+% \end{verbatim}
 
-\fbox{%
-\begin{minipage}{5cm}
-\ResponsiveSetup{ratio=1.3,
-number=2,scale=none}
+% \fbox{%
+% \begin{minipage}{5cm}
+% \ResponsiveSetup{ratio=1.3,
+% number=2,scale=none}
 
-\setsizes{45}
+% \setsizes{45}
 
-\showscale
+% \showscale
 
-\end{minipage}}
-\end{column}
-\end{columns}
+% \end{minipage}}
+% \end{column}
+% \end{columns}
 
-\end{frame}
+% \end{frame}
 
 \begin{frame}[fragile]
 \frametitle{CSS Media Query Example}
@@ -418,6 +782,10 @@ body {
 }
 \end{verbatim}
 \end{frame}
+
+This example sets a different text color for documents on screens with a maximum width of 600 pixels.
+
+
           
 \begin{frame}[fragile]
   \frametitle{Media Queries in \LaTeX}
@@ -433,11 +801,12 @@ Additional tests can be easily added.
 
 \end{frame}
 
+
 \begin{frame}[fragile]
 
   \frametitle{Media Query Example}
 
-  This example displays fewer characters if the text width is less than 4 cm.
+  This example displays fewer characters if the text width is less or equal to 4~cm.
 
 \begin{verbatim}
 \mediaquery{max-textwidth=4cm}
@@ -480,161 +849,8 @@ Additional tests can be easily added.
   \end{itemize}
 \end{frame}
 
-\section{Automatic Typesetting}
+\section{The \texttt{linebreaker} Package}
 
-\begin{frame}
-  \frametitle{\texttt{lua-widow-control} Package}
-  Suppression of widows and orphans using Lua callbacks
-  \begin{itemize}
-    \item Each paragraph is typeset twice -- once with normal parameters, the second time with one extra line
-    \item The impact on speed should be minimal
-    \item If an orphan is found, the previous paragraph is replaced with the version with the extra line
-  \end{itemize}
-  \url{https://ctan.org/pkg/lua-widow-control}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Example of an Orphan}
-  \begin{center}
-    \includegraphics[height=\textheight,page=1]{examples/widow.pdf}
-  \end{center}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Suppressed Orphan}
-  \begin{center}
-    \includegraphics[height=\textheight,page=2]{examples/widow.pdf}
-  \end{center}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Comparison of Different Methods to Reduce Orphans}
-  \begin{priklad}
-  \begin{center}
-  \includegraphics[height=.95\textheight]{img/lua-widow.pdf}
-  \end{center}
-  \end{priklad}
-  % \myfig[height=0.8\textheight]{img/lua-widow.pdf}{}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Configuration Options}
- \begin{verbatim}
- \lwcsetup{...}
- \end{verbatim}
- \begin{description}
-   \item[default] -- does not add any vertical spaces but may lead to overly airy paragraphs
-   \item[strict] -- primarily uses vertical spaces and does not create bad paragraphs,  
-     \begin{itemize}
-       \item but only removes a third of orphans
-       \item works poorly mainly for documents that contain only text, fiction, etc.
-     \end{itemize}
-   \item[balanced] -- combines both methods, removes 90\% of orphans
-  \end{description}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Limitations}
-    \begin{itemize}
-      \item \verb|\clubpenalty| and \verb|\widowpenalty| have no effect, and can even cause side effects
-      \item Support for multi-column typesetting is limited, the Multicol package does not work
-  \end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{\texttt{luavlna} Package}
-    Prevents line breaks:
-      \begin{itemize}
-        \item After single-word prepositions
-        \item At initials
-        \item At academic titles
-        \item Between numbers and units
-      \end{itemize}
-  \url{https://ctan.org/pkg/luavlna}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Usage Example of Luavlna}
-  \begin{minipage}{3in}
-
-    \preventsingledebugon
-
-    Text with short consonants and vowels and other phenomena
-    from the range of possibilities (possible in text).
-
-    How about characters with diacritics?
-
-    Various possibilities [in brackets \textless and other characters
-
-    Support for initials and titles: M. J. Hegel, Ing. Běháková, Ph.D., Ž. Zíbrt,
-    Ch. Borner.
-
-    Support for units: 100.5 MN\cdot{}s, 100.5 kJ, 200 µA, $-1$ dag, 1 MB. 1 kJ.
-
-    Inside mathematics, processing should be disabled: $k \in \mathbb N$.
-
-    \preventsingledebugoff
-  \end{minipage}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Hyphenation of Compound Words}
-    \begin{center}
-    \begin{minipage}{2in}
-      Sedlec-Prčice, blue-green, translator-interpreter, cook-waiter, propane-butane, Otýlie Sklenářová-Malá, František Jílek-Oberpfalcer.
-    \end{minipage}
-  \end{center}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Package Options}
-  Using options, we can disable certain features
-  \begin{description}
-    \item [noprocess] – do not process the document automatically
-    \item [noinitials] – initials
-    \item [nounits] – SI units
-    \item [nopredegrees] – titles before the name
-    \item [nosufdegrees] – titles after the name
-  \end{description}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Useful Commands}
-  \begin{itemize}
-    \item \verb|\singlechars{language}{letters}| -- list of letters for which line breaking is suppressed
-    \item \verb|\enablesplithyphens{language}| -- sets support for hyphenation of compound words for the given language
-    \item \verb|\preventsinglelang{language}| -- sets the rules for the given language for the entire document
-  \end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Supported Languages}
-  Built-in support is only for Czech and Slovak:
-
-\begin{verbatim}
-\singlechars{czech}{AIiVvOoUuSsZzKk}
-\singlechars{slovak}{AIiVvOoUuSsZzKk}
-\end{verbatim}
-
-The language needs to be selected using the Babel or Polyglossia packages
-
-\begin{verbatim}
-An example in Czech.
-\selectlanguage{english}
-An example in English.
-\end{verbatim}
-
-    \preventsingledebugon
-
-An example in Czech.
-\selectlanguage{english}
-An example in English.
-
-    \preventsingledebugoff
-
-    \selectlanguage{czech}
-
-\end{frame}
 
 \newcommand\testbox[1]{%
   \parbox{150pt}{%
@@ -660,7 +876,7 @@ An example in English.
 }
 
 \begin{frame}[fragile]
-  \frametitle{\texttt{linebreaker} Package}
+  \frametitle{The \texttt{linebreaker} Package}
   Prevents the occurrence of overfull lines
   \begin{itemize}
     \item Affects only the typesetting of paragraphs where such a line occurs
@@ -685,9 +901,9 @@ create new nodes and manipulate the nodes links structure.
   \frametitle{Configuration}
   Linebreaker can be configured using the \verb|\linebreakersetup| command:
   \begin{description}
-    \item[maxcycles] -- number of attempts to retypeset a paragraph
-    \item[maxemergencystretch] -- maximum value of \verb|\emergencystretch|
-    \item[maxtolerance]  -- maximum value of \verb|tolerance|
+    \item[maxcycles] number of attempts to retypeset a paragraph
+    \item[maxemergencystretch] maximum value of \verb|\emergencystretch|
+    \item[maxtolerance]  maximum value of \verb|tolerance|
   \end{description}
 \begin{verbatim}
 \linebreakersetup{
@@ -698,6 +914,36 @@ maxcycles = 4              % default 30
 \end{verbatim}
 
 \end{frame}
+
+When Linebreaker detects paragraph overflow, it attempts to typeset it again
+with increasing tolerance and emergencystretch values. These values are
+incremented by a specified number of steps until they reach the maximum values
+configured in Linebreaker. If a value is found where the paragraph no longer
+overflows, processing stops, and those values are used.
+
+\section{Conclusion}
+
+
+\begin{frame}[fragile]
+  \frametitle{Rmodepdf status}
+
+  \begin{itemize}
+    \item It is still work in progress, so features can change.
+    \item Even if it isn't useful to you, it led to the development of the HTML parser for LuaXML, Linebreaker, and Responsive packages, each of which can be useful independently.
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Other useful packages for automatic typesetting}
+  \begin{description}[lua-widow-control]
+    \item[lua-widow-control] prevents widows and orphans.
+    \item[luavlna]  prevents single chars at end of lines for Czech and Slovak, prevents line breaks in SI units and academic titles.
+  \end{description}
+\end{frame}
+
+
+
 
 % \section{Conclusion}
 
