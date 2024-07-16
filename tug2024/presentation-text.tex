@@ -55,6 +55,7 @@
   \end{itemize}
 
   % Work in progress code is located here:
+  \bigskip
 
   \url{https://github.com/michal-h21/rmodepdf/}
 \end{frame}
@@ -563,14 +564,24 @@ automated typesetting of documents.
 
   A package inspired by responsive design methods for web pages
   \begin{itemize}
-  \item adjusting font size to display size
+  \item adjusting font size to match the display size
+  \item sets basic document dimensions to match the new font size
   \item typographic scale for font sizes
   \item media queries
   \end{itemize}
-  \url{https://github.com/michal-h21/responsive-latex}
+
+  \bigskip
+
+  \url{https://ctan.org/pkg/responsive}
     % - changes in the number of characters per line
     % - margins using newgeometry
 \end{frame}
+
+Various sizes of spaces and other elements depend on the font size, so the
+Responsive package adjusts them with each font size change to match the new
+size.
+
+
 
 \begin{frame}[fragile]
   \frametitle{Setting Font Size Based on Display Size}
@@ -651,6 +662,8 @@ felis.
 \begin{frame}[fragile]
   \frametitle{Configuration}
   Options can be set when calling the package or later using the command \verb|\ResponsiveSetup|.
+
+  \bigskip
 
   Important options:
 
@@ -915,6 +928,9 @@ Additional tests can be easily added.
     \item If it detects an overfull line in a paragraph, it retypesets it with larger values for
       \verb|tolerance| and \verb|emergencystretch|.
   \end{itemize}
+
+  \bigskip
+
   \url{https://ctan.org/pkg/linebreaker}
 \end{frame}
 
@@ -932,11 +948,17 @@ create new nodes and manipulate the nodes links structure.
 \begin{frame}[fragile]
   \frametitle{Configuration}
   Linebreaker can be configured using the \verb|\linebreakersetup| command:
+
+  \bigskip
+
   \begin{description}[maxemergencystretch]
     \item[maxcycles] number of attempts to retypeset a paragraph
     \item[maxemergencystretch] maximum value of \verb|\emergencystretch|
     \item[maxtolerance]  maximum value of \verb|tolerance|
   \end{description}
+
+  \bigskip
+
 \begin{verbatim}
 \linebreakersetup{
 maxtolerance = 90,         % default 9999
