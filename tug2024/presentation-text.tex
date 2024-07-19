@@ -473,6 +473,40 @@ commands without the need for backslash doubling. When using regular quotes, as
 you can see in the rule declaration for \verb|figure|, backslashes must be
 doubled.
 
+\begin{frame}[fragile]
+  \frametitle{Transformation example}
+  \begin{example}{HTML document}
+     \begin{verbatim}
+<figure>
+<img src="hello.png" />
+</figure>
+<p class="sample"><span class="foo">Matched
+<p><span class="foo">Not matched
+     \end{verbatim}
+  \end{example}
+\end{frame}
+
+This is an small HTML snippet that shows usage of our transformation rules.
+Note the use of unclosed \verb|<p>| elements, which would cause errors in XML.
+Thanks to CSS selectors, only the text in the first paragraph is selected, 
+the second one is not, because the span element with the foo class is not child 
+element of an element with the sample class.
+
+\begin{frame}[fragile]
+\frametitle{Transformation example}
+\begin{example}{Transformed result}
+\begin{verbatim}
+ \noindent 
+\includegraphics[max width=\textwidth]{hello.png}
+
+hello: Matched
+
+Not matched
+\end{verbatim}
+\end{example}
+\end{frame}
+
+
 \section{Templates}
 
 \begin{frame}[fragile]
