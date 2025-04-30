@@ -24,7 +24,18 @@
 
 \begin{frame}
 \frametitle{Abstrakt}
-V přednášce se podíváme na praktickou práci se třemi šablonami pro nástroj TeX4ht, který slouží k převodu LaTeXu na HTML. Ukážeme si, jak pomocí jednoduchých šablon generovat webové stránky, blogové příspěvky a HTML verze prezentací. Představíme konkrétní příklady konverze LaTeX dokumentů pro různé účely: tvorbu webu pro knihu, publikování článků na blogu a generování handoutů z Beamer prezentací. Všechny ukázky budou zaměřeny na jednoduchost a efektivitu, takže i ti, kteří nemají hlubší znalosti HTML nebo CSS, si budou moci snadno přizpůsobit LaTeX pro své potřeby. Naučíte se, jak si přizpůsobit šablony, aby odpovídaly konkrétním požadavkům a jak jednoduše převádět různé typy dokumentů do formátu HTML bez nutnosti ručního zásahu do kódu. Přednáška je určena pro všechny, kteří chtějí efektivně pracovat s LaTeXem a získat praktické dovednosti pro publikování na webu.
+V přednášce se podíváme na praktickou práci se třemi šablonami pro nástroj
+TeX4ht, který slouží k převodu LaTeXu na HTML. Ukážeme si, jak pomocí
+jednoduchých šablon generovat webové stránky, blogové příspěvky a HTML verze
+rezentací. Představíme konkrétní příklady konverze LaTeX dokumentů pro různé
+účely: tvorbu webu pro knihu, publikování článků na blogu a generování handoutů
+z Beamer prezentací. Všechny ukázky budou zaměřeny na jednoduchost a
+efektivitu, takže i ti, kteří nemají hlubší znalosti HTML nebo CSS, si budou
+moci snadno přizpůsobit LaTeX pro své potřeby. Naučíte se, jak si přizpůsobit
+šablony, aby odpovídaly konkrétním požadavkům a jak jednoduše převádět různé
+typy dokumentů do formátu HTML bez nutnosti ručního zásahu do kódu. Přednáška
+je určena pro všechny, kteří chtějí efektivně pracovat s LaTeXem a získat
+praktické dovednosti pro publikování na webu.
 
 Prakticky se zaměříme na tři šablony:
 \begin{itemize}
@@ -77,6 +88,19 @@ Přednáška je určena i pro ty, kteří nemají hlubší znalosti HTML nebo CS
     \item Výsledná podoba webu.
 \end{itemize}
 \end{frame}
+
+\begin{frame}[fragile]
+\begin{itemize}
+  \item obsah na hlavní stránce má navíc třídu \verb|bookTOC|, aby se umožnilo konfigurovat ho zvlášť
+  \item konfigurovat seznam sekcí pro obsah pomocí 
+\end{itemize}
+\begin{verbatim}
+\Configure{fulltocsections}{chapter,likechapter,section,likesection,subsection,likesubsection}
+\end{verbatim}
+\end{frame}
+
+- 
+
 
 \subsection{Blogové příspěvky}
 \begin{frame}
