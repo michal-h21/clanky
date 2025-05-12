@@ -3,6 +3,7 @@
 \usepackage[czech]{babel}
 
 \title{LaTeX na web: Tvorba HTML pro knihy, blogy a prezentace s TeX4ht}
+% \title{Publikace LaTeXových dokumentů na web pomocí TeX4ht a GitHub Actions}
 
 
 %    "LaTeX na web: Tvorba HTML pro knihy, blogy a prezentace s TeX4ht"
@@ -25,39 +26,33 @@
 \begin{frame}
 \frametitle{Abstrakt}
 
-Novej abstrakt:
+Přednáška představí sadu šablon pro nástroj TeX4ht, který slouží k převodu
+LaTeXových dokumentů do HTML. Tyto šablony výrazně usnadňují publikaci různých
+typů dokumentů na webu a přinášejí moderní možnosti zpracování a automatizace.
 
-Přednáška představí šablony pro TeX4ht (nástroj pro převod LaTeXu do HTML), které umožní snadné generování tří typů dokumentů. První je
-šablona pro vytváření webových verzí knižních dokumentů, druhá pro tvorbu blogů z publikovaných z jednotlivých článků a poslední je určena 
-pro tvorbu handoutů z prezentací v Beameru.
+První šablona je určena pro převod knižních dokumentů do webové podoby.
+Umožňuje rozdělení textu do jednotlivých kapitol s automaticky generovanou
+navigací a podporou responzivního designu, takže je výsledek dobře čitelný i na
+mobilních zařízeních.
 
-Přednáška představí šablony pro TeX4ht (nástroj pro převod LaTeXu do HTML), které umožní snadné generování tří typů dokumentů. První je šablona pro vytváření webových verzí knižních dokumentů s automatickou navigací a responzivním designem. Druhá šablona slouží pro tvorbu blogů z jednotlivých článků, včetně podpory tags a kategorie. Poslední šablona je určena pro efektivní tvorbu handoutů z prezentací v Beameru s optimalizovaným formátováním pro tisk.
+Druhá šablona slouží k tvorbě staticky generovaných blogů. Každý příspěvek je
+psán jako samostatný LaTeXový dokument, který je pomocí TeX4ht převeden do
+HTML. Následně jsou tyto články zpracovány statickým generátorem webů, jako je
+například Jekyll, který se postará o sestavení celého blogu, vytvoření
+rozcestníků, archivů a další navigace.
 
-Všechny šablony pracují na principu "plug and play" - stačí použít standardní LaTeXový kód a HTML se generuje automaticky bez nutnosti ručních zásahů. Ukážeme si konkrétní příklady fungujících výstupů a možnosti jejich dalšího přizpůsobení. Přednáška je určena všem uživatelům LaTeXu, kteří potřebují publikovat své dokumenty online, ale chtějí se vyhnout složitostem webového vývoje.
+Třetí šablona je zaměřena na převod prezentací vytvořených v prostředí Beamer
+do formy tzv. handoutů – přehledových materiálů pro posluchače. Výsledkem je
+čitelný a dobře strukturovaný webový dokument vhodný pro sdílení po přednášce.
+
+Všechny šablony jsou navrženy tak, aby fungovaly v rámci GitHub Actions. To
+znamená, že dokumenty mohou být automaticky zkompilovány a publikovány online
+pokaždé, když dojde ke změně v repozitáři. Tento přístup zajišťuje, že je
+webová verze dokumentu vždy aktuální.
 
 
-Starej abstrakt:
 
-V přednášce se podíváme na praktickou práci se třemi šablonami pro nástroj
-TeX4ht, který slouží k převodu LaTeXu na HTML. Ukážeme si, jak pomocí
-jednoduchých šablon generovat webové stránky, blogové příspěvky a HTML verze
-rezentací. Představíme konkrétní příklady konverze LaTeX dokumentů pro různé
-účely: tvorbu webu pro knihu, publikování článků na blogu a generování handoutů
-z Beamer prezentací. Všechny ukázky budou zaměřeny na jednoduchost a
-efektivitu, takže i ti, kteří nemají hlubší znalosti HTML nebo CSS, si budou
-moci snadno přizpůsobit LaTeX pro své potřeby. Naučíte se, jak si přizpůsobit
-šablony, aby odpovídaly konkrétním požadavkům a jak jednoduše převádět různé
-typy dokumentů do formátu HTML bez nutnosti ručního zásahu do kódu. Přednáška
-je určena pro všechny, kteří chtějí efektivně pracovat s LaTeXem a získat
-praktické dovednosti pro publikování na webu.
 
-Prakticky se zaměříme na tři šablony:
-\begin{itemize}
-    \item Webové stránky pro knihy
-    \item Blogové příspěvky
-    \item Handouty z Beamer prezentací
-\end{itemize}
-Přednáška je určena i pro ty, kteří nemají hlubší znalosti HTML nebo CSS.
 \end{frame}
 
 \begin{frame}
