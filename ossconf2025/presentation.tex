@@ -33,7 +33,141 @@ webová verze dokumentu vždy aktuální.
 
 \tableofcontents
 
-\section{Úvod}
+\section{Úvod do TeX4ht}
+
+\begin{frame}{Co je TeX4ht?}
+\begin{itemize}
+    \item \textbf{Nástroj pro konverzi} z LaTeXu do HTML a dalších formátů (ODT, EPUB, JATS XML)
+    \item Zachovává strukturu a formátování původního dokumentu
+    \item Podporuje různé metody pro matematický výstup (obrázky, MathML, MathJax)
+    \item Umožňuje vytvářet obrázky z výstupu \LaTeX u
+    \item Integruje se s běžnými LaTeXovými balíčky
+\end{itemize}
+\end{frame}
+
+\TeX4ht samotný je především balíček, který redefinuje příkazy jiných balíčků tak, aby
+vkládaly tagy výstupních formátů. Vždy se kompiluje do DVI výstupu, který se poté zpracovává
+dalšími nástroji, které vytvoří soubory ve výstupním formátu, CSS soubor, nebo obrázky.
+Části DVI výstupu lze konvertovat na obrázky ve formátu PNG nebo SVG. To se využívá pro podporu
+TikZ nebo PSTricks.
+
+Více informací o \TeX4ht naleznete na  \href{https://www.tug.org/tex4ht/}{oficiálních stránkách}
+a v \href{https://www.kodymirus.cz/tex4ht-doc/tex4ht-doc.html}{dokumentaci}.
+
+\begin{frame}[fragile]{Příklad použití TeX4ht}
+
+
+\begin{block}{Příklad LaTeX kódu}
+\begin{verbatim}
+Příliš {\bfseries žluťoučký} \textit{kůň}
+\end{verbatim}
+\end{block}
+
+
+
+\begin{block}{Výstup v HTML kódu}
+\begin{verbatim}
+Příliš <span class='cmbx-10'>žluťoučký </span>
+<span class='cmti-10'>kůň</span>
+\end{verbatim}
+\end{block}
+
+\begin{block}{Výstup v prohlížeči}
+\includegraphics{img/basic.png} 
+\end{block}
+
+\end{frame}
+
+V předešlém příkladu \TeX4ht převede LaTeXové příkazy pro tučné a kurzívní písmo na HTML tagy.
+Díky tomu, zpracovává DVI soubor, používá informace o použitých fontech a může 
+přidat podporu i pro příkazky, které by jinak šly podporovat jen stěží, jako 
+\verb|\bfseries| použitý v příkladu.
+
+
+Pro kompilaci dokumentů pomocí \TeX4ht se používají dva hlavní nástroje: \texttt{make4ht} a \texttt{tex4ebook}.
+\texttt{tex4ebook} je starší nástroj, který se používá pro konverzi LaTeXových
+dokumentů do formátů pro elektronické knihy, jako je například EPUB. 
+
+\begin{frame}[fragile]{Příklady kompilace pomocí TeX4ht}
+
+\begin{block}{Kompilace do HTML:}
+\begin{verbatim}
+make4ht -ld output_dir soubor.tex
+\end{verbatim}
+\end{block}
+
+
+
+\begin{itemize}
+    \item \texttt{-l} - používá Lua\LaTeX\ místo pdf\LaTeX u
+    \item \texttt{-d output\_dir} - ukládá výstup do adresáře
+\end{itemize}
+
+\begin{block}{Kompilace do EPUB3:}
+\begin{verbatim}
+tex4ebook -f epub3 soubor.tex
+\end{verbatim}
+\end{block}
+
+\begin{itemize}
+    \item \texttt{-f epub3} - specifikuje formát EPUB3
+\end{itemize}
+\end{frame}
+
+\texttt{make4ht} a \texttt{tex4ebook} jsou dva hlavní nástroje pro konverzi, 
+
+
+
+\section{Využití Githubu pro automatické publikování}
+
+\begin{frame}[fragile]{Vytvoření nového GitHub repozitáře}
+\includegraphics[width=\textwidth]{img/template-use.png}
+\end{frame}
+
+Chcete-li začít s vlastní prezentací podle této šablony, klikněte na tlačítko
+"Use this template" na stránce GitHub repozitáře. Tím se ve vašem účtu vytvoří
+nový repozitář se stejnou strukturou a soubory. Poté jej můžete naklonovat,
+upravit obsah a začít vytvářet vlastní snímky a handouty.
+
+
+% \subsection{Github Actions}
+
+\begin{frame}[fragile]{Rozhraní Github Actions}
+\includegraphics[width=\textwidth]{img/github-actions.png}
+\end{frame}
+
+Po pushnutí změn do větve \texttt{main} můžete zkontrolovat záložku
+\texttt{Actions} ve vašem Github repozitáři. Zobrazuje stav workflow, včetně
+informace o úspěšném dokončení nebo případných chybách.
+
+\begin{frame}[fragile]{Chyby}
+\includegraphics[width=\textwidth]{img/github-error.png}
+\end{frame}
+
+Můžete také zkontrolovat logy běhu workflow, abyste viděli, co se pokazilo.
+Pokud narazíte na chybu, bude zobrazena v logu a můžete tyto informace
+použít k řešení problému.
+
+V tomto případě byl nesprávný název TeX souboru. Musel jsem opravit název
+souboru v YAML souboru GitHub Actions.
+
+% \subsection{Publikování HTML verze}
+
+\begin{frame}[fragile]{Nastavení Github Pages}
+\includegraphics[width=\textwidth]{img/github-pages.png}
+\end{frame}
+
+Po úspěšném dokončení workflow můžete nastavit GitHub Pages pro zobrazování obsahu větve \texttt{gh-pages}.
+
+Všechny výstupní soubory vytvořené pomocí \texttt{make4ht} budou dostupné na webu.
+Budou přístupné na adrese:
+\verb|https://username.github.io/repo/|,
+kde \texttt{username} je vaše GitHub uživatelské jméno a \texttt{repo} je název vašeho repozitáře.
+
+Například příklady použité v této prezentaci naleznete na adresách \url{https://michal-h21.github.io/tex4ht-presentation/},
+\url{https://michal-h21.github.io/tex4ht-booksite/}
+
+\section{Šablona pro prezentace}
 
 Tato šablona je určena pro prezentace, které potřebují víc než jen snímky. Umožňuje vytvořit jak samotnou prezentaci, tak podrobný handout s poznámkami a komentáři. Všechny materiály tak lze generovat z jednoho zdrojového souboru – jak pro živou prezentaci, tak pro lidi, kteří se prezentace neúčastnili.
 
@@ -63,14 +197,8 @@ Obsahuje několik hlavních zdrojových souborů, každý s konkrétním účele
 
 Tyto soubory si můžete upravit podle svých potřeb. Minimálně je vhodné nahradit obsah \texttt{presentation.tex} vlastním textem a případně upravit \texttt{preamble.tex}, pokud potřebujete přidat další balíčky nebo příkazy.
 
-\section{Základní použití}
+\subsection{Základní použití}
 
-
-\begin{frame}[fragile]{Vytvoření nového GitHub repozitáře}
-\includegraphics[width=\textwidth]{img/template-use.png}
-\end{frame}
-
-Chcete-li začít s vlastní prezentací podle této šablony, klikněte na tlačítko "Use this template" na stránce GitHub repozitáře. Tím se ve vašem účtu vytvoří nový repozitář se stejnou strukturou a soubory. Poté jej můžete naklonovat, upravit obsah a začít vytvářet vlastní snímky a handouty.
 
 \begin{frame}[fragile]{Použití prostředí frame a komentáře v handoutu}
 
@@ -126,7 +254,7 @@ Příkaz \verb+\mode<beamer|article>{...}+ umožňuje zahrnout obsah, který se 
 zobrazit jak v prezentaci, tak v handoutu. To se může hodit například pro název
 prezentace nebo obsah prezentace.
 
-\section{Kompilace prezentace}
+\subsection{Kompilace prezentace}
 
 \begin{frame}[fragile]{Kompilace do PDF}
 
@@ -225,34 +353,4 @@ Není potřeba v URL specifikovat název souboru - GitHub Pages
 automaticky hledá soubor \texttt{index.html}. Toto usnadňuje sdílení
 prezentace a pomáhá předejít nefunkčním odkazům kvůli neshodě názvů souborů.
 
-Například tato prezentace je dostupná na: \url{https://michal-h21.github.io/tex4ht-presentation/}.
 
-\section{Github Pages}
-
-\begin{frame}[fragile]{Rozhraní Github Actions}
-\includegraphics[width=\textwidth]{img/github-actions.png}
-\end{frame}
-
-Po pushnutí změn do větve \texttt{main} můžete zkontrolovat záložku \texttt{Actions} ve vašem
-Github repozitáři. Zobrazuje stav workflow, včetně informace o úspěšném dokončení nebo případných chybách.
-
-\begin{frame}[fragile]{Chyby}
-\includegraphics[width=\textwidth]{img/github-error.png}
-\end{frame}
-
-Můžete také zkontrolovat logy běhu workflow, abyste viděli, co se pokazilo.
-Pokud narazíte na chybu, bude zobrazena v logu a můžete tyto informace
-použít k řešení problému.
-
-V tomto případě byl nesprávný název TeX souboru. Musel jsem opravit název souboru v YAML souboru GitHub Actions.
-
-\begin{frame}[fragile]{Nastavení Github Pages}
-\includegraphics[width=\textwidth]{img/github-pages.png}
-\end{frame}
-
-Po úspěšném dokončení workflow můžete nastavit GitHub Pages pro zobrazování obsahu větve \texttt{gh-pages}.
-
-Všechny výstupní soubory vytvořené pomocí \texttt{make4ht} budou dostupné na webu.
-Budou přístupné na adrese:
-\verb|https://username.github.io/repo/|,
-kde \texttt{username} je vaše GitHub uživatelské jméno a \texttt{repo} je název vašeho repozitáře.
