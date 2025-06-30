@@ -31,6 +31,7 @@ pokaždé, když dojde ke změně v repozitáři. Tento přístup zajišťuje, �
 webová verze dokumentu vždy aktuální.
 \end{abstract}
 
+
 \tableofcontents
 
 \section{Úvod do TeX4ht}
@@ -86,13 +87,15 @@ přidat podporu i pro příkazky, které by jinak šly podporovat jen stěží, 
 
 Pro kompilaci dokumentů pomocí \TeX4ht se používají dva hlavní nástroje: \texttt{make4ht} a \texttt{tex4ebook}.
 \texttt{tex4ebook} je starší nástroj, který se používá pro konverzi LaTeXových
-dokumentů do formátů pro elektronické knihy, jako je například EPUB. 
+dokumentů do formátů pro elektronické knihy, jako je například EPUB.
+\texttt{make4ht} vznikl později a je určen pro konverzi LaTeXových dokumentů do
+HTML a dalších formátů, jako jsou ODT nebo JATS XML.
 
 \begin{frame}[fragile]{Příklady kompilace pomocí TeX4ht}
 
 \begin{block}{Kompilace do HTML:}
 \begin{verbatim}
-make4ht -ld output_dir soubor.tex
+$ make4ht -ld output_dir soubor.tex
 \end{verbatim}
 \end{block}
 
@@ -105,7 +108,7 @@ make4ht -ld output_dir soubor.tex
 
 \begin{block}{Kompilace do EPUB3:}
 \begin{verbatim}
-tex4ebook -f epub3 soubor.tex
+$ tex4ebook -f epub3 soubor.tex
 \end{verbatim}
 \end{block}
 
@@ -114,21 +117,175 @@ tex4ebook -f epub3 soubor.tex
 \end{itemize}
 \end{frame}
 
-\texttt{make4ht} a \texttt{tex4ebook} jsou dva hlavní nástroje pro konverzi, 
+\begin{frame}[fragile]{Konfigurace výstupního formátu}
+\begin{block}{Konfigurační soubor pro \TeX4ht}
+\begin{verbatim}
+\Preamble{xhtml}
+\Configure{textit}{\HCode{<i>}\NoFonts}{\EndNoFonts\HCode{</i>}}
+\begin{document}
+\EndPreamble
+\end{verbatim}
+\end{block}
 
+\begin{block}{Kompilujeme pomocí:}
+\begin{verbatim}
+$ make4ht -c config.cfg soubor.tex
+\end{verbatim}
+\end{block}
+
+\begin{block}{HTML výstup}
+\begin{verbatim}
+Příliš <span class='cmbx-10'>žluťoučký </span><i>kůň</i>  
+\end{verbatim}
+\end{block}
+\end{frame}
+
+Konfigurační soubor  umožňuje redefinovat výstup
+pro příkazy podporované \TeX4ht. V tomto příkladu
+se jmenuje \texttt{config.cfg} a voláme ho pomocí volby \texttt{-c}.
+Příkaz \verb|\Configure| umožňuje vkládat obsah do háčků, definovaných v 
+konfiguračních souborech \TeX4ht pro jednotlivé balíčky. 
+
+V tomto případě využíváme konfiguraci pro \texttt{textit}, která využívá
+dva háčky -- jeden vkládá před obsah příkazu \verb|\textit|, druhý za něj.
+Tagy vkládáme pomocí příkazu \verb|\HCode|. Abychom zabránili vložení tagů
+\verb|<span>| pro aktuální font, použijeme příkaz \verb|\NoFonts|, který 
+vypíná zpracování fontů. Na konci konfigurace je třeba opět zpracování fontů
+zapnout pomocí \verb|\EndNoFonts|.
+
+\begin{frame}[fragile]{Struktura konfiguračního souboru}
+\begin{verbatim}
+\Preamble{xhtml,<volby tex4ht>}
+<konfigurace>
+\begin{document}
+<pozdní konfigurace>
+\EndPreamble
+\end{verbatim}
+\end{frame}
+
+Více informací o konfiguračních souborech \TeX4ht naleznete v kapitole
+\href{https://www.kodymirus.cz/tex4ht-doc/Configurations.html}{o konfiguracích}
+v dokumentaci \TeX4ht.
+
+\begin{frame}[fragile]{Volby pro \TeX4ht}
+
+\begin{block}{}
+\begin{verbatim}
+$ make4ht soubor.tex "mathml,mathjax"
+\end{verbatim}
+\begin{itemize}
+  \item Volby můžeme zadat jako řetězec v uvozovkách
+  \item Další možností je použít příkaz \verb|\Preamble| v konfiguračním souboru
+\end{itemize}
+\end{block}
+
+\begin{block}{Příklady voleb}
+\begin{itemize}
+  \item \texttt{mathml} – generuje MathML pro matematické výrazy
+  \item \texttt{mathjax} – používá MathJax pro zobrazení matematiky
+  \item \texttt{pic-m} - vytváří obrázky pro inline matematiku
+  \item \texttt{svg} – generuje SVG obrázky pro TikZ nebo PSTricks
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Rozšíření pro make4ht}
+\begin{block}{Povolení rozšíření}
+\begin{verbatim}
+$ make4ht -f html5+název_rozšíření soubor.tex
+\end{verbatim}
+\end{block}
+\begin{block}{Zakázání rozšíření}
+\begin{verbatim}
+$ make4ht -f html5-název_rozšíření soubor.tex 
+\end{verbatim}
+\end{block}
+
+
+
+\begin{block}{Příklady rozšíření}
+\begin{itemize}
+\item \verb|dvisvgm_hashes| -- pro efektivní vytváření SVG obrázků
+\item \verb|common_domfilters| -- oprava HTML výstupu pomocí LuaXML
+\item \verb|staticsite| -- pro vytvoření souborů ve formátu vhodném pro generátory statických webů
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+Rozšíření umožňují přizpůsobit chování \TeX4ht pro specifické potřeby. Většinou upravují výstupní soubory
+produkované \TeX4ht, například  upravují strukturu HTML dokumentu. 
+
+Rozšíření se povolují nebo zakazují pomocí znamének plus a minus za názvem výstupního formátu. 
+Můžeme jich povolit více najednou, například \verb|html5+staticsite+dvisvgm_hashes|.
+Některá rozšíření, například \verb|common_domfilters|, jsou povolena implicitně, ale mohou být vypnuta pomocí znaménka minus.
+
+\begin{frame}[fragile]{Build soubory pro TeX4ht}
+
+\begin{block}{Úprava CSS souboru}
+\begin{verbatim}
+local filter = require("make4ht-filter")  
+local process = filter {  
+  function(text)  
+    -- Nahrazení písma v CSS  
+    return text:gsub("TeXGyreTermesX", "Georgia")  
+  end  
+}  
+Make:match("css", process)  -- Aplikuje filtr na CSS soubory
+\end{verbatim}
+\end{block}
+
+\begin{block}{Použití v make4ht}
+\begin{verbatim}
+$ make4ht -e build.lua soubor.tex
+\end{verbatim}
+\end{block}
+\end{frame}
+
+Build soubory jsou Lua skripty, které upravují kompilační proces. Například 
+v nich můžeme upravovat výstupní soubory. V předešlé ukázce využíváme 
+knihovnu \texttt{make4ht-filter} pro úpravu CSS souboru. Pomocí filtru 
+můžeme definovat funkce, které upraví text daného souboru. Funkce můžeme řetězit.
+V této ukázce nahrazujeme písmo \texttt{TeXGyreTermesX} za \texttt{Georgia} v CSS souboru.
+Filtr poté aplikujeme na všechny CSS soubory pomocí příkazu \texttt{Make:match("css", process)}.
+
+\begin{frame}[fragile]{Úprava kompilačního procesu}
+\begin{block}{Volání programu Xindex}
+\begin{verbatim}
+Make:htlatex {} 
+Make:xindex {} 
+Make:autohtlatex {}
+\end{verbatim}
+\end{block}
+
+\end{frame}
+
+V build souborech můžeme také volat další programy, které se mají spustit. V \texttt{make4ht}
+jsou definovány různé funkce, které je spouští. Například \texttt{Make:htlatex} spustí
+jednu kompilaci pomocí \LaTeX u, \texttt{Make:xindex} spustí program \texttt{xindex}
+a \texttt{Make:autohtlatex} spustí kompilaci \LaTeX em s automatickou detekcí počtu kompilací
+nutných k tomu, aby správně fungovaly křížové odkazy nebo tabulky. Ty totiž potřebují více než jednu kompilaci, k tomu
+aby se správně vytvořily.
 
 
 \section{Využití Githubu pro automatické publikování}
 
-\begin{frame}[fragile]{Vytvoření nového GitHub repozitáře}
-\includegraphics[width=\textwidth]{img/template-use.png}
+\begin{frame}[fragile]{Použití šablony na GitHubu}
+  \includegraphics[width=\textwidth,alt={}]{img/template-use.png}
 \end{frame}
 
-Chcete-li začít s vlastní prezentací podle této šablony, klikněte na tlačítko
-"Use this template" na stránce GitHub repozitáře. Tím se ve vašem účtu vytvoří
+Pro využití šablon na Githubu klikněte na tlačítko
+\enquote{Use this template} na stránce GitHub repozitáře s podporou šablon. 
+
+Tím se ve vašem účtu vytvoří
 nový repozitář se stejnou strukturou a soubory. Poté jej můžete naklonovat,
 upravit obsah a začít vytvářet vlastní snímky a handouty.
 
+\begin{frame}[fragile]{Vytvoření nového GitHub repozitáře}
+  \includegraphics[width=0.6\textwidth,alt={Dialog vytvoření nového repozitáře ze šablony}]{img/new-repo.png}
+\end{frame}
+
+Po 
 
 % \subsection{Github Actions}
 
