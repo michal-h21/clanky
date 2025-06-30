@@ -268,37 +268,109 @@ nutných k tomu, aby správně fungovaly křížové odkazy nebo tabulky. Ty tot
 aby se správně vytvořily.
 
 
-\section{Využití Githubu pro automatické publikování}
 
-\begin{frame}[fragile]{Použití šablony na GitHubu}
-  \includegraphics[width=\textwidth,alt={}]{img/template-use.png}
-\end{frame}
+Github, ale i další repozitáře, jako GitLab nebo Bitbucket,  umožňuje
+spouštět definované workflow (např. build, testy nebo deploy) v reakci na
+události v repozitáři (push, pull request apod.).
 
-Pro využití šablon na Githubu klikněte na tlačítko
-\enquote{Use this template} na stránce GitHub repozitáře s podporou šablon. 
+Tato funkce se nazývá \textbf{GitHub Actions} a dále si ukážeme, jak jí využít pro automatizovanou
+kompilaci dokumentů pomocí \TeX4ht a jejich publikování na webu.
 
-Tím se ve vašem účtu vytvoří
-nový repozitář se stejnou strukturou a soubory. Poté jej můžete naklonovat,
-upravit obsah a začít vytvářet vlastní snímky a handouty.
+Šablony pro \TeX4ht, které dále představím, jsou navrženy tak, aby fungovaly v rámci GitHub Actions. To
+znamená, že dokumenty mohou být automaticky zkompilovány a publikovány online
+pokaždé, když dojde ke změně v repozitáři. Tento přístup zajišťuje, že je
+webová verze dokumentu vždy aktuální.
 
-\begin{frame}[fragile]{Vytvoření nového GitHub repozitáře}
-  \includegraphics[width=0.6\textwidth,alt={Dialog vytvoření nového repozitáře ze šablony}]{img/new-repo.png}
-\end{frame}
-
-Po 
 
 % \subsection{Github Actions}
+\section{Automatické generování HTML výstupu pomocí GitHub Actions}
+
+Tato část vysvětluje, jak se používají
+\href{https://docs.github.com/en/actions/writing-workflows/quickstart}{GitHub
+Actions} k automatickému generování a publikování HTML verze materiálů při
+každém pushnutí změn do větve \texttt{main}.
+
+Výstup je vytvářen pomocí \texttt{make4ht} a publikován do větve \texttt{gh-pages}, což usnadňuje sdílení webové verze prezentace.
+
+\begin{frame}[fragile]{Přehled GitHub Actions}
+
+  \begin{block}{Klíčové části workflow pro sestavení a publikování HTML:}
+
+\begin{verbatim}
+
+    name: Spuštění make4ht
+    uses: xu-cheng/texlive-action/full@v1
+    with:
+      run: |
+      make4ht -lj index -a debug -d out handout.tex
+
+    name: Publikování webových stránek
+    uses: peaceiris/actions-gh-pages@v3
+    with:
+      github_token: ${{ secrets.GITHUB_TOKEN }}
+      publish_dir: ./out
+\end{verbatim}
+\end{block}
+
+\end{frame}
+
+Workflow je definován v souboru \texttt{.github/workflows/main.yml}.
+Tento soubor můžete upravit pro přizpůsobení procesu sestavení, například změnou parametrů pro \texttt{make4ht}.
+
+Používají se dvě GitHub Actions: \href{https://github.com/xu-cheng/texlive-action}{xu-cheng/texlive-action}
+a \href{https://github.com/peaceiris/actions-gh-pages}{peaceiris/actions-gh-pages}.
+První umožňuje používat libovolný příkaz dostupný v TeX Live instalaci, jako \texttt{make4ht} nebo \texttt{lualatex}.
+Druhá publikuje obsah zadaného adresáře do větve \texttt{gh-pages} vašeho repozitáře,
+kterou GitHub Pages používá pro zobrazování statického obsahu.
+
+\begin{frame}[fragile]{Automatické sestavení HTML}
+Změny pushnuté do větve \texttt{main} spustí GitHub Actions workflow, který:
+
+\begin{itemize}
+\item Zkompiluje \texttt{handout.tex} do HTML pomocí \texttt{make4ht}
+\item Publikuje výstup do větve \texttt{gh-pages}
+\end{itemize}
+
+Použitý příkaz je:
+
+\begin{verbatim}
+make4ht -lj index -a debug -d out handout.tex
+\end{verbatim}
+\end{frame}
+
+Tento příkaz vytvoří HTML soubory v adresáři \texttt{out/}, které jsou následně publikovány
+pomocí akce \texttt{peaceiris/actions-gh-pages}, specifikované nastavením
+\texttt{publish_dir}.
+
+\begin{frame}[fragile]{Proč \texttt{-j index}?}
+\begin{itemize}
+\item Volba \texttt{-lj index} je zkratka pro \texttt{-l -j index}
+\item Volba \texttt{-j index} nastaví název výstupního HTML souboru na \texttt{index.html}
+\item To umožňuje používat čisté URL adresy jako:
+
+\begin{verbatim}
+https://username.github.io/repo/
+\end{verbatim}
+
+\end{itemize}
+\end{frame}
+
+Není potřeba v URL specifikovat název souboru - GitHub Pages
+automaticky hledá soubor \texttt{index.html}. Toto usnadňuje sdílení
+prezentace a pomáhá předejít nefunkčním odkazům kvůli neshodě názvů souborů.
+
+
 
 \begin{frame}[fragile]{Rozhraní Github Actions}
 \includegraphics[width=\textwidth]{img/github-actions.png}
 \end{frame}
 
-Po pushnutí změn do větve \texttt{main} můžete zkontrolovat záložku
-\texttt{Actions} ve vašem Github repozitáři. Zobrazuje stav workflow, včetně
+Po každém nahrání změn  můžete zkontrolovat záložku
+\texttt{Actions} ve vašem Github repozitáři. Zobrazuje stav \textit{workflow}, včetně
 informace o úspěšném dokončení nebo případných chybách.
 
 \begin{frame}[fragile]{Chyby}
-\includegraphics[width=\textwidth]{img/github-error.png}
+\includegraphics[width=0.75\textwidth]{img/github-error.png}
 \end{frame}
 
 Můžete také zkontrolovat logy běhu workflow, abyste viděli, co se pokazilo.
@@ -324,6 +396,30 @@ kde \texttt{username} je vaše GitHub uživatelské jméno a \texttt{repo} je n�
 Například příklady použité v této prezentaci naleznete na adresách \url{https://michal-h21.github.io/tex4ht-presentation/},
 \url{https://michal-h21.github.io/tex4ht-booksite/}
 
+\section{Využití šablon na Githubu}
+\begin{frame}[fragile]{Použití šablony na GitHubu}
+  \includegraphics[width=\textwidth,alt={}]{img/template-use.png}
+\end{frame}
+
+Pro využití šablon na Githubu klikněte na tlačítko
+\enquote{Use this template} na stránce GitHub repozitáře s podporou šablon. 
+
+
+\begin{frame}[fragile]{Vytvoření nového GitHub repozitáře}
+  \includegraphics[width=0.6\textwidth,alt={Dialog vytvoření nového repozitáře ze šablony}]{img/new-repo.png}
+\end{frame}
+
+Po vyplnění dialogu pro vytvoření nového repozitáře z šablony se ve vašem účtu vytvoří
+nový repozitář se stejnou strukturou a soubory, jako měl původní repozitář, ovšem bez jeho 
+Git historie.
+
+\begin{frame}[fragile]{Nově vytvořený repozitář}
+\includegraphics[width=0.6\textwidth]{img/created-repo.png}
+\end{frame}
+
+
+Poté nově vytvořený repozitář můžete naklonovat na svůj počítač a začít upravovat 
+obsah souborů. 
 \section{Šablona pro prezentace}
 
 Tato šablona je určena pro prezentace, které potřebují víc než jen snímky. Umožňuje vytvořit jak samotnou prezentaci, tak podrobný handout s poznámkami a komentáři. Všechny materiály tak lze generovat z jednoho zdrojového souboru – jak pro živou prezentaci, tak pro lidi, kteří se prezentace neúčastnili.
@@ -438,76 +534,4 @@ Přepínač \verb|-l| zajistí použití Lua\LaTeX{}u jako překladače.
 HTML verze se generuje z handoutu ve stylu článku, nikoliv z Beamer prezentace.
 To ji činí vhodnější pro webové publikování nebo dlouhodobé sdílení, protože
 obsahuje všechny vysvětlivky a není závislá na rozvržení snímků.
-
-section{Automatické generování HTML výstupu}
-
-Tato část vysvětluje, jak se používají \href{https://docs.github.com/en/actions/writing-workflows/quickstart}{GitHub Actions} k automatickému generování a publikování HTML verze materiálů při každém pushnutí změn do větve \texttt{main}.
-
-Výstup je vytvářen pomocí \texttt{make4ht} a publikován do větve \texttt{gh-pages}, což usnadňuje sdílení webové verze prezentace.
-
-\begin{frame}[fragile]{Přehled GitHub Actions}
-Klíčové části workflow pro sestavení a publikování HTML:
-
-\begin{verbatim}
-
-    name: Spuštění make4ht
-    uses: xu-cheng/texlive-action/full@v1
-    with:
-      run: |
-      make4ht -lj index -a debug -d out handout.tex
-
-    name: Publikování webových stránek
-    uses: peaceiris/actions-gh-pages@v3
-    with:
-      github_token: ${{ secrets.GITHUB_TOKEN }}
-      publish_dir: ./out
-\end{verbatim}
-
-\end{frame}
-
-Workflow je definován v souboru \texttt{.github/workflows/main.yml}.
-Tento soubor můžete upravit pro přizpůsobení procesu sestavení, například změnou parametrů pro \texttt{make4ht}.
-
-Používají se dvě GitHub Actions: \href{https://github.com/xu-cheng/texlive-action}{xu-cheng/texlive-action}
-a \href{https://github.com/peaceiris/actions-gh-pages}{peaceiris/actions-gh-pages}.
-První umožňuje používat libovolný příkaz dostupný v TeX Live instalaci, jako \texttt{make4ht} nebo \texttt{lualatex}.
-Druhá publikuje obsah zadaného adresáře do větve \texttt{gh-pages} vašeho repozitáře,
-kterou GitHub Pages používá pro zobrazování statického obsahu.
-
-\begin{frame}[fragile]{Automatické sestavení HTML}
-Změny pushnuté do větve \texttt{main} spustí GitHub Actions workflow, který:
-
-\begin{itemize}
-\item Zkompiluje \texttt{handout.tex} do HTML pomocí \texttt{make4ht}
-\item Publikuje výstup do větve \texttt{gh-pages}
-\end{itemize}
-
-Použitý příkaz je:
-
-\begin{verbatim}
-make4ht -lj index -a debug -d out handout.tex
-\end{verbatim}
-\end{frame}
-
-Tento příkaz vytvoří HTML soubory v adresáři \texttt{out/}, které jsou následně publikovány
-pomocí akce \texttt{peaceiris/actions-gh-pages}, specifikované nastavením
-\texttt{publish_dir}.
-
-\begin{frame}[fragile]{Proč \texttt{-j index}?}
-\begin{itemize}
-\item Volba \texttt{-lj index} je zkratka pro \texttt{-l -j index}
-\item Volba \texttt{-j index} nastaví název výstupního HTML souboru na \texttt{index.html}
-\item To umožňuje používat čisté URL adresy jako:
-
-\begin{verbatim}
-https://username.github.io/repo/
-\end{verbatim}
-
-\end{itemize}
-\end{frame}
-
-Není potřeba v URL specifikovat název souboru - GitHub Pages
-automaticky hledá soubor \texttt{index.html}. Toto usnadňuje sdílení
-prezentace a pomáhá předejít nefunkčním odkazům kvůli neshodě názvů souborů.
-
 
