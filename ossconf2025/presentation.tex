@@ -100,11 +100,6 @@ přidat podporu i pro příkazky, které by jinak šly podporovat jen stěží, 
 \verb|\bfseries| použitý v příkladu.
 
 
-Pro kompilaci dokumentů pomocí \TeX4ht se používají dva hlavní nástroje: \texttt{make4ht} a \texttt{tex4ebook}.
-\texttt{tex4ebook} je starší nástroj, který se používá pro konverzi LaTeXových
-dokumentů do formátů pro elektronické knihy, jako je například EPUB.
-\texttt{make4ht} vznikl později a je určen pro konverzi LaTeXových dokumentů do
-HTML a dalších formátů, jako jsou ODT nebo JATS XML.
 
 \begin{frame}[fragile]{Příklady kompilace pomocí TeX4ht}
 
@@ -131,6 +126,17 @@ $ tex4ebook -f epub3 soubor.tex
     \item \texttt{-f epub3} - specifikuje formát EPUB3
 \end{itemize}
 \end{frame}
+
+Pro kompilaci dokumentů pomocí \TeX4ht se používají dva hlavní nástroje: \texttt{make4ht} a \texttt{tex4ebook}.
+\texttt{tex4ebook} je starší nástroj, který se používá pro konverzi LaTeXových
+dokumentů do formátů pro elektronické knihy, jako je například EPUB.
+\texttt{make4ht} vznikl později a je určen pro konverzi LaTeXových dokumentů do
+HTML a dalších formátů, jako jsou ODT nebo JATS XML.
+
+Přepínače u obou nástrojů můžeme spojovat, pokud neočekávají argumenty. 
+Volba \verb|-ld outptu_dir| je tedy zkratkou pro \verb|-l -d output_dir|.
+
+
 
 \begin{frame}[fragile]{Konfigurace výstupního formátu}
 \begin{block}{Konfigurační soubor pro \TeX4ht}
